@@ -10,10 +10,17 @@ we try to show that investing into education has a positive effect on the qualit
 ## Solution
 
 ##### Summary
-The main visualization is the world map based on the PISA index for it's legend,
+The main visualization is the world map based on the PISA accumulated score for it's legend,
 views linked to this visualization get updated by clicking on a country.
 
 ##### Sketch
 ![](doc/sketch.png)
 
+##### Main features
+- Different event listeners like onclick and hover (MVP)
+- Dropdown to pick which year you want to look for
+
 ## Prerequisites
+
+##### Data sources
+###### Pisa scores
