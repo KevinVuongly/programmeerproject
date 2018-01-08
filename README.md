@@ -1,4 +1,5 @@
-# Kevin Vuong 1073041
+# Influences on the quality of education
+## Kevin Vuong 10730141
 
 ## Problem statement
 Every country differs from quality of education.
@@ -39,3 +40,18 @@ https://data.oecd.org/eduresource/education-spending.htm
 
 ###### GDP per country
 https://data.oecd.org/gdp/gross-domestic-product-gdp.htm
+
+### External components
+- D3-queue to evaluate asynchronous tasks with configurable concurrency
+- D3-tip to include tooltips
+- bootstrap for the front-end web framework
+
+### Similar related visualization
+![](doc/similarvisualization.png)
+
+The world map is based on population instead of the PISA score but the idea is essentially the same.
+Like my proposal, the world map can be updated through time and the area chart gets updated when clicked on a country. All of this should be possible to implement through D3.
+
+### Hardest parts
+- No experience in creating a world map, especially getting it colored according to a legend
+- Not all data is available for some certain countries creating holes in the visualizations
