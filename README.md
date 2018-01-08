@@ -53,5 +53,5 @@ The world map is based on population instead of the PISA score but the idea is e
 Like my proposal, the world map can be updated through time and the area chart gets updated when clicked on a country. All of this should be possible to implement through D3.
 
 ### Hardest parts
-- No experience in creating a world map, especially getting it colored according to a legend
-- Not all data is available for some certain countries creating holes in the visualizations
+- No experience in creating a world map, especially getting it colored according to a legend and implementing the linked views to the world map
+- Not all data is available for some certain countries creating gaps in the visualizations
