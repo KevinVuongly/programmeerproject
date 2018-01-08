@@ -22,5 +22,20 @@ views linked to this visualization get updated by clicking on a country.
 
 ## Prerequisites
 
-#### Data sources
+##### Data sources
+
 ###### Pisa scores
+https://data.oecd.org/pisa/reading-performance-pisa.htm
+https://data.oecd.org/pisa/mathematics-performance-pisa.htm
+https://data.oecd.org/pisa/science-performance-pisa.htm
+
+Calculate PISA accumulated score to define the country map.
+
+###### Teacher salaries
+https://data.oecd.org/eduresource/teachers-salaries.htm
+
+###### Education spending
+https://data.oecd.org/eduresource/education-spending.htm
+
+###### GDP per country
+https://data.oecd.org/gdp/gross-domestic-product-gdp.htm
