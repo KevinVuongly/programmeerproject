@@ -3,7 +3,7 @@
 
 ## Problem statement
 Every country differs from quality of education.
-For example, given the PISA index in 2015, Singapore scored way higher than Tunisia in every aspect.
+For example, given the PISA index in 2015, Singapore scored way higher than Indonesia in every aspect.
 Striking is the fact that the richer countries score higher than the poorer countries.
 By making an interactive visualization of possible factors for example education spending, GDP or teacher salaries,
 we try to show that investing into education has a positive effect on the quality of education.
