@@ -11,15 +11,17 @@ we try to show that investing into education has a positive effect on the qualit
 ## Solution
 
 ##### Summary
-The main visualization is the world map based on the PISA accumulated score for it's legend,
-views linked to this visualization get updated by clicking on a country.
+The main visualization is the world map based on the PISA scores for it's legend,
+radar chart linked to this visualization get updated by clicking on a country.
+The scatterplot is used to view for positive correlations.
 
 ##### Sketch
 ![](doc/sketch.png)
 
 ##### Main features
 - Different event listeners like onclick and hover (MVP)
-- Dropdown to pick which year you want to look for
+- Dropdown to pick values to change the visualizations for
+- Slider to change for which year you want to see
 
 ## Prerequisites
 
@@ -44,6 +46,7 @@ https://data.oecd.org/gdp/gross-domestic-product-gdp.htm
 ### External components
 - D3-queue to evaluate asynchronous tasks with configurable concurrency
 - D3-tip to include tooltips
+- D3-map to create the world map
 - bootstrap for the front-end web framework
 
 ### Similar related visualization
@@ -54,4 +57,5 @@ Like my proposal, the world map can be updated through time and the area chart g
 
 ### Hardest parts
 - No experience in creating a world map, especially getting it colored according to a legend and implementing the linked views to the world map
+- No experience in creating a radar chart
 - Not all data is available for some certain countries creating gaps in the visualizations
