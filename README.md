@@ -32,8 +32,6 @@ https://data.oecd.org/pisa/reading-performance-pisa.htm
 https://data.oecd.org/pisa/mathematics-performance-pisa.htm  
 https://data.oecd.org/pisa/science-performance-pisa.htm
 
-Calculate PISA accumulated score to define the country map.
-
 ###### Teacher salaries
 https://data.oecd.org/eduresource/teachers-salaries.htm
 
