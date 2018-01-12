@@ -18,7 +18,6 @@ https://data.oecd.org/eduresource/education-spending.htm
 https://data.oecd.org/gdp/gross-domestic-product-gdp.htm
 
 For the world map, we use the following template: http://bl.ocks.org/micahstubbs/8fc2a6477f5d731dc97887a958f6826d
-Because this template reads data in as a tsv file, we have to convert the OECD data into the tsv format.
 
 No major changes to the data needs to be made for it to be usable for the scatterplot.
 
