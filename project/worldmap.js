@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     var projection = d3.geo.mercator()
                        .scale(80)
-                      .translate( [width / 2, 300]);
+                      .translate( [width / 2 - 20, 300]);
 
     var path = d3.geo.path().projection(projection);
 
