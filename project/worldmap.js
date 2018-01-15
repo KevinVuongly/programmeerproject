@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function() {
         legend.append("rect")
             .attr("x", width - 18)
             .attr("width", 18)
-            .attr("height", 18)
+            .attr("height", 20)
             .style("fill", color);
 
         // add text to the legend
