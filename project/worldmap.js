@@ -24,16 +24,14 @@ document.addEventListener("DOMContentLoaded", function() {
                 });
 
     var margin = {top: 20, right: 20, bottom: 30, left: 30},
-                 width = 600 - margin.left - margin.right,
+                 width = 650 - margin.left - margin.right,
                  height = 500 - margin.top - margin.bottom;
 
     var color = d3.scale.threshold()
         .domain([1150,1200,1290,1380,1450,1520,1560,1580,1650])
-        .range(["rgb(103,0,13)", "rgb(165,15,21)", "rgb(203,24,29)",
+        .range(["rgb(72,0,0)", "rgb(103,0,13)", "rgb(165,15,21)", "rgb(203,24,29)",
                 "rgb(239,59,44)", "rgb(251,106,74)", "rgb(252,146,114)",
-                "rgb(252,187,161)","rgb(254,224,210)","rgb(255,245,240)"]);
-
-    var scale0 = (width - 1) / 2 / Math.PI;
+                "rgb(252,187,161)","rgb(254,224,210)", "rgb(255,255,255)"]);
 
     var svg = d3.select("body")
                 .append("svg")
@@ -90,5 +88,28 @@ document.addEventListener("DOMContentLoaded", function() {
                 .style("stroke","black")
                 .style("stroke-width",1);
             });
+
+        // construct legend
+        var legend = svg.selectAll(".legend")
+            .data(color.domain())
+            .enter().append("g")
+            .attr("class", "legend")
+            .attr("transform", function(d, i)
+            { return "translate(0," + Number(height / 2 - 60 + i * 20) + ")"; });
+
+        // create rectangles for the colors of the legend
+        legend.append("rect")
+            .attr("x", width - 18)
+            .attr("width", 18)
+            .attr("height", 18)
+            .style("fill", color);
+
+        // add text to the legend
+        legend.append("text")
+            .attr("x", width - 23)
+            .attr("y", 0)
+            .attr("dy", ".35em")
+            .style("text-anchor", "end")
+            .text(function(d) { return d; });
     }
 })
