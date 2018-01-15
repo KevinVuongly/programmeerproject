@@ -6,13 +6,13 @@ document.addEventListener("DOMContentLoaded", function() {
         .attr("width", 1000)
         .attr("height", 700);
 
-    var slider1 = new simpleSlider();
+    var slider = new simpleSlider();
 
-    slider1.width(600).x(0).y(10).value(1).event(function(){
-
+    slider.width(200).x(0).y(10).value(1).event(function(){
+        console.log(slider.value())
     });
 
-    svg.call(slider1);
+    svg.call(slider);
 
 })
 
@@ -34,7 +34,7 @@ function simpleSlider() {
             .attr("x2", x + (width * value))
             .attr("y1", y)
             .attr("y2", y)
-            .style({stroke: "#51CB3F",
+            .style({stroke: "black",
                     "stroke-linecap": "round",
                     "stroke-width": 6 });
 

@@ -65,13 +65,11 @@ document.addEventListener("DOMContentLoaded", function() {
         .enter().append("path")
             .attr("d", path)
             .style("fill", function(d) { return color(pisaById[d.id]); })
-            .style('stroke', 'black')
-            .style('stroke-width', 2)
             .style("opacity",0.8)
             // tooltips
             .style("stroke","black")
-            .style('stroke-width', 1)
-            .on('mouseover',function(d){
+            .style("stroke-width", 1)
+            .on("mouseover",function(d){
                 tip.show(d);
 
                 d3.select(this)
@@ -79,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 .style("stroke","white")
                 .style("stroke-width", 3);
             })
-            .on('mouseout', function(d){
+            .on("mouseout", function(d){
                 tip.hide(d);
 
                 d3.select(this)
