@@ -17,15 +17,14 @@ document.addEventListener("DOMContentLoaded", function() {
                     else
                     {
                         return "<strong>Country: </strong><span class='details'>"
-                        + d.properties.name + "<br></span>"
-                        + "<strong>PISA score: </strong><span class='details'>"
-                        + "Unknown" +"</span>";
+                        + d.properties.name + "<br></span><strong>PISA score: \
+                        </strong><span class='details'>Unknown</span>";
                     }
                 });
 
     var margin = {top: 50, right: 20, bottom: 30, left: 30},
                  width = 650 - margin.left - margin.right,
-                 height = 530 - margin.top - margin.bottom;
+                 height = 600 - margin.top - margin.bottom;
 
     var color = d3.scale.threshold()
         .domain([1150,1200,1290,1380,1450,1520,1560,1580,1650])
@@ -42,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     var projection = d3.geo.mercator()
                        .scale(80)
-                       .translate( [width / 2 - 20, 280]);
+                       .translate( [width / 2 - 20, 340]);
 
     var path = d3.geo.path().projection(projection);
 
@@ -112,4 +111,12 @@ document.addEventListener("DOMContentLoaded", function() {
             .style("text-anchor", "end")
             .text(function(d) { return d; });
     }
+
+    svg.append("text")
+        .attr("class", "worldmapTitle")
+        .attr("x", (width / 2) + margin.left)
+        .attr("y", 40)
+        .attr("text-anchor", "middle")
+        .style("font-size", "36px")
+        .text("Accumulated PISA score per country");
 })
