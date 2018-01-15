@@ -23,9 +23,9 @@ document.addEventListener("DOMContentLoaded", function() {
                     }
                 });
 
-    var margin = {top: 20, right: 20, bottom: 30, left: 30},
+    var margin = {top: 50, right: 20, bottom: 30, left: 30},
                  width = 650 - margin.left - margin.right,
-                 height = 500 - margin.top - margin.bottom;
+                 height = 530 - margin.top - margin.bottom;
 
     var color = d3.scale.threshold()
         .domain([1150,1200,1290,1380,1450,1520,1560,1580,1650])
@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     var projection = d3.geo.mercator()
                        .scale(80)
-                       .translate( [width / 2 - 20, 300]);
+                       .translate( [width / 2 - 20, 280]);
 
     var path = d3.geo.path().projection(projection);
 
