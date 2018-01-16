@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded", function() {
         .enter().append("path")
             .attr("d", path)
             .style("fill", function(d) { return color(pisaById2015[d.id]); })
-            .style("opacity",0.8)
+            .style("opacity", 0.8)
             // tooltips
             .style("stroke","black")
             .style("stroke-width", 1)
