@@ -1,21 +1,3 @@
-document.addEventListener("DOMContentLoaded", function() {
-
-    var svg = d3.select("body").append("div")
-        .attr("class","slider")
-        .append("svg")
-        .attr("width", 1000)
-        .attr("height", 700);
-
-    var slider = new simpleSlider();
-
-    slider.width(200).x(0).y(10).value(1).event(function(){
-        console.log(slider.value())
-    });
-
-    svg.call(slider);
-
-})
-
 /* Simple, reusable slider in pure d3 */
 
 function simpleSlider() {

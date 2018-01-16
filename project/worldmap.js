@@ -33,6 +33,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 "rgb(252,187,161)","rgb(254,224,210)", "rgb(255,255,255)"]);
 
     var svg = d3.select("body")
+                .append("div")
+                .attr("class", "col-lg-6 col-md-6 col-sm-6 col-xs-12")
+                .append("div")
+                .attr("id", "worldmap")
                 .append("svg")
                 .attr("width", width)
                 .attr("height", height)
@@ -45,18 +49,38 @@ document.addEventListener("DOMContentLoaded", function() {
 
     var path = d3.geo.path().projection(projection);
 
+    svg.append("text")
+        .attr("class", "worldmapTitle")
+        .attr("x", (width / 2))
+        .attr("y", 40)
+        .attr("text-anchor", "middle")
+        .style("font-size", "36px")
+        .text("Accumulated PISA score per country");
+
+    svg.append("text")
+        .attr("class", "year")
+        .attr("x", width - 70)
+        .attr("y", 150)
+        .attr("text-anchor", "middle")
+        .style("font-size", "60px")
+        .text("2015");
+
     svg.call(tip);
 
     queue()
         .defer(d3.json, "world_countries.json")
+        .defer(d3.csv, "data/PISA2015.csv")
         .defer(d3.csv, "data/PISA2012.csv")
         .await(ready);
 
-    function ready(error, data, pisa) {
-        var pisaById = {};
+    var pisaById2015 = [],
+        pisaById2012 = [];
 
-        pisa.forEach(function(d) { pisaById[d.id] = +d.Accumulated; });
-        data.features.forEach(function(d) { d.Accumulated = pisaById[d.id] });
+    function ready(error, data, pisa2015, pisa2012) {
+
+        pisa2015.forEach(function(d) { pisaById2015[d.id] = +d.Accumulated; });
+        pisa2012.forEach(function(d) { pisaById2012[d.id] = +d.Accumulated; });
+        data.features.forEach(function(d) { d.Accumulated = pisaById2015[d.id] });
 
         svg.append("g")
             .attr("class", "countries")
@@ -64,7 +88,7 @@ document.addEventListener("DOMContentLoaded", function() {
             .data(data.features)
         .enter().append("path")
             .attr("d", path)
-            .style("fill", function(d) { return color(pisaById[d.id]); })
+            .style("fill", function(d) { return color(pisaById2015[d.id]); })
             .style("opacity",0.8)
             // tooltips
             .style("stroke","black")
@@ -108,13 +132,47 @@ document.addEventListener("DOMContentLoaded", function() {
             .attr("dy", ".35em")
             .style("text-anchor", "end")
             .text(function(d) { return d; });
-    }
 
-    svg.append("text")
-        .attr("class", "worldmapTitle")
-        .attr("x", (width / 2) + margin.left)
-        .attr("y", 40)
-        .attr("text-anchor", "middle")
-        .style("font-size", "36px")
-        .text("Accumulated PISA score per country");
+        var svgslider = d3.select("body").append("div")
+            .attr("class","slider")
+            .append("svg")
+            .attr("width", 1000)
+            .attr("height", 700);
+
+        var slider = new simpleSlider();
+
+        slider.width(200).x(30).y(10).value(1).event(function(){
+            if (slider.value() <= 0.5)
+            {
+                data.features.forEach(function(d) { d.Accumulated = pisaById2012[d.id] });
+
+                d3.selectAll("path")
+                    .data(data.features)
+                    .transition()
+                    .duration(500)
+                    .style("fill", function(d) { return color(pisaById2012[d.id]); });
+
+                d3.select(".year")
+                    .text("2012");
+
+
+            }
+            else
+            {
+                data.features.forEach(function(d) { d.Accumulated = pisaById2015[d.id] });
+
+                d3.selectAll("path")
+                    .data(data.features)
+                    .transition()
+                    .duration(500)
+                    .style("fill", function(d) { return color(pisaById2015[d.id]); });
+
+                d3.select(".year")
+                    .text("2015");
+            }
+
+        });
+
+        svgslider.call(slider);
+    }
 })
