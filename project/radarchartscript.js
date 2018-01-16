@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		h = 300;
 
 	//Data
-	var d = [
+	var dradar = [
 			  [
 				{axis:"GDP per resident",value:0.59},
 				{axis:"Teacher Salaries",value:0.56},
@@ -29,12 +29,12 @@ document.addEventListener("DOMContentLoaded", function() {
 	  h: h,
 	  maxValue: 1,
 	  levels: 2,
-	  ExtraWidthX: 300
+	  ExtraWidthX: 200
 	}
 
 	//Call function to draw the Radar chart
 	//Will expect that data is in %'s
-	RadarChart.draw("#chart", d, mycfg);
+	RadarChart.draw("#chart", dradar, mycfg);
 
 	////////////////////////////////////////////
 	/////////// Initiate legend ////////////////
@@ -43,6 +43,6 @@ document.addEventListener("DOMContentLoaded", function() {
 	var svg = d3.select('#body')
 		.selectAll('svg')
 		.append('svg')
-		.attr("width", w+300)
+		.attr("width", w+100)
 		.attr("height", h)
 })
