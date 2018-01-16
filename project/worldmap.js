@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function() {
                  height = 600 - margin.top - margin.bottom;
 
     var color = d3.scale.threshold()
-        .domain([1150,1200,1290,1380,1450,1520,1560,1580,1650])
+        .domain([1150,1200,1290,1380,1450,1520,1550,1580,1650])
         .range(["rgb(72,0,0)", "rgb(103,0,13)", "rgb(165,15,21)", "rgb(203,24,29)",
                 "rgb(239,59,44)", "rgb(251,106,74)", "rgb(252,146,114)",
                 "rgb(252,187,161)","rgb(254,224,210)", "rgb(255,255,255)"]);
@@ -149,7 +149,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 d3.selectAll("path")
                     .data(data.features)
                     .transition()
-                    .duration(500)
+                    .duration(250)
                     .style("fill", function(d) { return color(pisaById2012[d.id]); });
 
                 d3.select(".year")
@@ -164,7 +164,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 d3.selectAll("path")
                     .data(data.features)
                     .transition()
-                    .duration(500)
+                    .duration(250)
                     .style("fill", function(d) { return color(pisaById2015[d.id]); });
 
                 d3.select(".year")
