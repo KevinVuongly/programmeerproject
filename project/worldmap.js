@@ -40,14 +40,19 @@ document.addEventListener("DOMContentLoaded", function() {
                 .append("svg")
                 .attr("width", width)
                 .attr("height", height)
-                .append('g')
-                .attr('class', 'map');
 
     var projection = d3.geo.mercator()
                        .scale(80)
                        .translate( [width / 2 - 20, 340]);
 
     var path = d3.geo.path().projection(projection);
+
+    var g = svg.append("g")
+               .attr("class", "countries");
+
+    var zoom = d3.behavior.zoom()
+        .scaleExtent([1, 8])
+        .on("zoom", zoomed);
 
     svg.append("text")
         .attr("class", "worldmapTitle")
@@ -66,6 +71,8 @@ document.addEventListener("DOMContentLoaded", function() {
         .text("2015");
 
     svg.call(tip);
+    svg.call(zoom);
+    svg.call(zoom.event);
 
     queue()
         .defer(d3.json, "world_countries.json")
@@ -82,9 +89,7 @@ document.addEventListener("DOMContentLoaded", function() {
         pisa2012.forEach(function(d) { pisaById2012[d.id] = +d.Accumulated; });
         data.features.forEach(function(d) { d.Accumulated = pisaById2015[d.id] });
 
-        svg.append("g")
-            .attr("class", "countries")
-        .selectAll("path")
+        g.selectAll("path")
             .data(data.features)
         .enter().append("path")
             .attr("d", path)
@@ -136,12 +141,12 @@ document.addEventListener("DOMContentLoaded", function() {
         var svgslider = d3.select("body").append("div")
             .attr("class","slider")
             .append("svg")
-            .attr("width", 1000)
-            .attr("height", 700);
+            .attr("width", 700)
+            .attr("height", 50);
 
         var slider = new simpleSlider();
 
-        slider.width(200).x(30).y(10).value(1).event(function(){
+        slider.width(width).x(30).y(10).value(1).event(function(){
             if (slider.value() <= 0.5)
             {
                 data.features.forEach(function(d) { d.Accumulated = pisaById2012[d.id] });
@@ -175,4 +180,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
         svgslider.call(slider);
     }
+
+    function zoomed() {
+            g.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+    }
+
+    d3.select(self.frameElement).style("height", height + "px");
 })
