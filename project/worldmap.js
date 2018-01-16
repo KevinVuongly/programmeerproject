@@ -97,14 +97,14 @@ document.addEventListener("DOMContentLoaded", function() {
             .style("opacity", 0.8)
             // tooltips
             .style("stroke","black")
-            .style("stroke-width", 1)
+            .style("stroke-width", 0.7)
             .on("mouseover",function(d){
                 tip.show(d);
 
                 d3.select(this)
                 .style("opacity", 1)
                 .style("stroke","white")
-                .style("stroke-width", 3);
+                .style("stroke-width", 2);
             })
             .on("mouseout", function(d){
                 tip.hide(d);
@@ -112,7 +112,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 d3.select(this)
                 .style("opacity", 0.8)
                 .style("stroke","black")
-                .style("stroke-width",1);
+                .style("stroke-width",0.7);
             });
 
         // construct legend
@@ -159,8 +159,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 d3.select(".year")
                     .text("2012");
-
-
             }
             else
             {
@@ -175,7 +173,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 d3.select(".year")
                     .text("2015");
             }
-
         });
 
         svgslider.call(slider);

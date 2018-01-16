@@ -1,3 +1,27 @@
+var w = 300,
+	h = 300;
+
+//Data
+var dradar = [
+		  [
+			{axis:"GDP per resident",value:0},
+			{axis:"Teacher Salaries",value:0},
+			{axis:"Education Spendings",value:0},
+			{axis:"Science",value:0},
+			{axis:"Readings",value:0},
+			{axis:"Mathematics",value:0}
+		  ]
+		];
+
+//Options for the Radar chart, other than default
+var mycfg = {
+  w: w,
+  h: h,
+  maxValue: 1,
+  levels: 2,
+  ExtraWidthX: 200
+}
+
 document.addEventListener("DOMContentLoaded", function() {
 
 	d3.select("body")
@@ -8,41 +32,8 @@ document.addEventListener("DOMContentLoaded", function() {
 	    .append("div")
 	    .attr("id", "chart")
 
-	var w = 300,
-		h = 300;
-
-	//Data
-	var dradar = [
-			  [
-				{axis:"GDP per resident",value:0.59},
-				{axis:"Teacher Salaries",value:0.56},
-				{axis:"Education Spendings",value:0.42},
-				{axis:"Science",value:0.34},
-				{axis:"Readings",value:0.48},
-				{axis:"Mathematics",value:0.50}
-			  ]
-			];
-
-	//Options for the Radar chart, other than default
-	var mycfg = {
-	  w: w,
-	  h: h,
-	  maxValue: 1,
-	  levels: 2,
-	  ExtraWidthX: 200
-	}
-
 	//Call function to draw the Radar chart
 	//Will expect that data is in %'s
 	RadarChart.draw("#chart", dradar, mycfg);
 
-	////////////////////////////////////////////
-	/////////// Initiate legend ////////////////
-	////////////////////////////////////////////
-
-	var svg = d3.select('#body')
-		.selectAll('svg')
-		.append('svg')
-		.attr("width", w+100)
-		.attr("height", h)
 })
