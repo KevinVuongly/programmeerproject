@@ -7,6 +7,9 @@ so the viewer knows what the country has scored
 - Legend shows which color belongs to the range of scores to better understand the world map
 
 # Day 2
-
 - Added slider, world map data gets updated through the slider
 - Added static radar chart
+
+# Day 3
+- Rewrote data for it to be compatible for the radar chart
+- Minor changes to world map to work on newly transformed data

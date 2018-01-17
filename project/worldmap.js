@@ -99,33 +99,33 @@ document.addEventListener("DOMContentLoaded", function() {
         if (error) throw error;
 
         info2015.forEach(function(d) {
-                                        pisaById2015[d.id] = +d.Accumulated;
-                                        GDPById2015[d.id] = +d.GDP;
-                                        SpendingsById2015[d.id] = +d.Spendings;
-                                        SalaryById2015[d.id] = +d.Salary;
-                                        ReadById2015[d.id] = +d.Reading;
-                                        ScienceById2015[d.id] = +d.Science;
-                                        MathById2015[d.id] = +d.Math;
+                                         pisaById2015[d.id] = +d.Accumulated;
+                                         GDPById2015[d.id] = +d.GDP;
+                                         SpendingsById2015[d.id] = +d.Spendings;
+                                         SalaryById2015[d.id] = +d.Salary;
+                                         ReadById2015[d.id] = +d.Reading;
+                                         ScienceById2015[d.id] = +d.Science;
+                                         MathById2015[d.id] = +d.Math;
                                      });
 
         info2012.forEach(function(d) {
-                                        pisaById2012[d.id] = +d.Accumulated;
-                                        GDPById2012[d.id] = +d.GDP;
-                                        SpendingsById2012[d.id] = +d.Spendings;
-                                        SalaryById2012[d.id] = +d.Salary;
-                                        ReadById2012[d.id] = +d.Reading;
-                                        ScienceById2012[d.id] = +d.Science;
-                                        MathById2012[d.id] = +d.Math;
+                                         pisaById2012[d.id] = +d.Accumulated;
+                                         GDPById2012[d.id] = +d.GDP;
+                                         SpendingsById2012[d.id] = +d.Spendings;
+                                         SalaryById2012[d.id] = +d.Salary;
+                                         ReadById2012[d.id] = +d.Reading;
+                                         ScienceById2012[d.id] = +d.Science;
+                                         MathById2012[d.id] = +d.Math;
                                      });
 
         data.features.forEach(function(d) {
-                                            d.Accumulated = pisaById2015[d.id];
-                                            d.GDP = GDPById2015[d.id];
-                                            d.Spendings = SpendingsById2015[d.id];
-                                            d.Salary = SalaryById2015[d.id];
-                                            d.Reading = ReadById2015[d.id];
-                                            d.Science = ScienceById2015[d.id];
-                                            d.Math = MathById2015[d.id];
+                                              d.Accumulated = pisaById2015[d.id];
+                                              d.GDP = GDPById2015[d.id];
+                                              d.Spendings = SpendingsById2015[d.id];
+                                              d.Salary = SalaryById2015[d.id];
+                                              d.Reading = ReadById2015[d.id];
+                                              d.Science = ScienceById2015[d.id];
+                                              d.Math = MathById2015[d.id];
                                           });
 
         g.selectAll("path")
