@@ -76,18 +76,57 @@ document.addEventListener("DOMContentLoaded", function() {
 
     queue()
         .defer(d3.json, "world_countries.json")
-        .defer(d3.csv, "data/PISA2015.csv")
-        .defer(d3.csv, "data/PISA2012.csv")
+        .defer(d3.csv, "data/2015.csv")
+        .defer(d3.csv, "data/2012.csv")
         .await(ready);
 
     var pisaById2015 = [],
-        pisaById2012 = [];
+        pisaById2012 = [],
+        GDPById2015 = [],
+        GDPById2012 = [],
+        SpendingsById2015 = [],
+        SpendingsById2012 = [],
+        SalaryById2015 = [],
+        SalaryById2012 = [],
+        ReadById2015 = [],
+        ReadById2012 = [],
+        ScienceById2015 = [],
+        ScienceById2012 = [],
+        MathById2015 = [],
+        MathById2012 = [];
 
-    function ready(error, data, pisa2015, pisa2012) {
+    function ready(error, data, info2015, info2012) {
+        if (error) throw error;
 
-        pisa2015.forEach(function(d) { pisaById2015[d.id] = +d.Accumulated; });
-        pisa2012.forEach(function(d) { pisaById2012[d.id] = +d.Accumulated; });
-        data.features.forEach(function(d) { d.Accumulated = pisaById2015[d.id] });
+        info2015.forEach(function(d) {
+                                        pisaById2015[d.id] = +d.Accumulated;
+                                        GDPById2015[d.id] = +d.GDP;
+                                        SpendingsById2015[d.id] = +d.Spendings;
+                                        SalaryById2015[d.id] = +d.Salary;
+                                        ReadById2015[d.id] = +d.Reading;
+                                        ScienceById2015[d.id] = +d.Science;
+                                        MathById2015[d.id] = +d.Math;
+                                     });
+
+        info2012.forEach(function(d) {
+                                        pisaById2012[d.id] = +d.Accumulated;
+                                        GDPById2012[d.id] = +d.GDP;
+                                        SpendingsById2012[d.id] = +d.Spendings;
+                                        SalaryById2012[d.id] = +d.Salary;
+                                        ReadById2012[d.id] = +d.Reading;
+                                        ScienceById2012[d.id] = +d.Science;
+                                        MathById2012[d.id] = +d.Math;
+                                     });
+
+        data.features.forEach(function(d) {
+                                            d.Accumulated = pisaById2015[d.id];
+                                            d.GDP = GDPById2015[d.id];
+                                            d.Spendings = SpendingsById2015[d.id];
+                                            d.Salary = SalaryById2015[d.id];
+                                            d.Reading = ReadById2015[d.id];
+                                            d.Science = ScienceById2015[d.id];
+                                            d.Math = MathById2015[d.id];
+                                          });
 
         g.selectAll("path")
             .data(data.features)
@@ -111,8 +150,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 d3.select(this)
                 .style("opacity", 0.8)
-                .style("stroke","black")
-                .style("stroke-width",0.7);
+                .style("stroke", "black")
+                .style("stroke-width", 0.7);
+            })
+            .on("click", function(d){
+
             });
 
         // construct legend
