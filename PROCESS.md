@@ -13,3 +13,4 @@ so the viewer knows what the country has scored
 # Day 3
 - Rewrote data for it to be compatible for the radar chart
 - Minor changes to world map to work on newly transformed data
+- Added zoom and pan to world map
