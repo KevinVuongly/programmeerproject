@@ -14,3 +14,6 @@ so the viewer knows what the country has scored
 - Rewrote data for it to be compatible for the radar chart
 - Minor changes to world map to work on newly transformed data
 - Added zoom and pan to world map
+
+# Day 4
+- Linked world map with radar chart

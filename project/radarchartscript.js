@@ -1,5 +1,5 @@
-var w = 200,
-	h = 200;
+const w = 200,
+	  h = 200;
 
 //Data
 var dradar = [

@@ -33,22 +33,21 @@ document.addEventListener("DOMContentLoaded", function() {
                 "rgb(252,187,161)","rgb(254,224,210)", "rgb(255,255,255)"]);
 
     var svg = d3.select("body")
-                .append("div")
-                .attr("class", "col-lg-6 col-md-6 col-sm-6 col-xs-12")
-                .append("div")
-                .attr("id", "worldmap")
-                .append("svg")
-                .attr("width", width)
-                .attr("height", height)
+        .append("div")
+        .attr("class", "col-lg-6 col-md-6 col-sm-6 col-xs-12")
+        .append("div")
+        .attr("id", "worldmap")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height)
 
     var projection = d3.geo.mercator()
-                       .scale(80)
-                       .translate( [width / 2 - 20, 340]);
+        .scale(80)
+        .translate( [width / 2 - 20, 340]);
 
     var path = d3.geo.path().projection(projection);
 
-    var g = svg.append("g")
-               .attr("class", "countries");
+    var g = svg.append("g").attr("class", "countries");
 
     var zoom = d3.behavior.zoom()
         .scaleExtent([1, 8])
@@ -99,34 +98,34 @@ document.addEventListener("DOMContentLoaded", function() {
         if (error) throw error;
 
         info2015.forEach(function(d) {
-                                         pisaById2015[d.id] = +d.Accumulated;
-                                         GDPById2015[d.id] = +d.GDP;
-                                         SpendingsById2015[d.id] = +d.Spendings;
-                                         SalaryById2015[d.id] = +d.Salary;
-                                         ReadingsById2015[d.id] = +d.Reading;
-                                         ScienceById2015[d.id] = +d.Science;
-                                         MathById2015[d.id] = +d.Math;
-                                     });
+             pisaById2015[d.id] = +d.Accumulated;
+             GDPById2015[d.id] = +d.GDP;
+             SpendingsById2015[d.id] = +d.Spendings;
+             SalaryById2015[d.id] = +d.Salary;
+             ReadingsById2015[d.id] = +d.Reading;
+             ScienceById2015[d.id] = +d.Science;
+             MathById2015[d.id] = +d.Math;
+         });
 
         info2012.forEach(function(d) {
-                                         pisaById2012[d.id] = +d.Accumulated;
-                                         GDPById2012[d.id] = +d.GDP;
-                                         SpendingsById2012[d.id] = +d.Spendings;
-                                         SalaryById2012[d.id] = +d.Salary;
-                                         ReadingsById2012[d.id] = +d.Reading;
-                                         ScienceById2012[d.id] = +d.Science;
-                                         MathById2012[d.id] = +d.Math;
-                                     });
+             pisaById2012[d.id] = +d.Accumulated;
+             GDPById2012[d.id] = +d.GDP;
+             SpendingsById2012[d.id] = +d.Spendings;
+             SalaryById2012[d.id] = +d.Salary;
+             ReadingsById2012[d.id] = +d.Reading;
+             ScienceById2012[d.id] = +d.Science;
+             MathById2012[d.id] = +d.Math;
+         });
 
         data.features.forEach(function(d) {
-                                              d.Accumulated = pisaById2015[d.id];
-                                              d.GDP = GDPById2015[d.id];
-                                              d.Spendings = SpendingsById2015[d.id];
-                                              d.Salary = SalaryById2015[d.id];
-                                              d.Reading = ReadingsById2015[d.id];
-                                              d.Science = ScienceById2015[d.id];
-                                              d.Math = MathById2015[d.id];
-                                          });
+            d.Accumulated = pisaById2015[d.id];
+            d.GDP = GDPById2015[d.id];
+            d.Spendings = SpendingsById2015[d.id];
+            d.Salary = SalaryById2015[d.id];
+            d.Reading = ReadingsById2015[d.id];
+            d.Science = ScienceById2015[d.id];
+            d.Math = MathById2015[d.id];
+        });
 
         var maxGDP = [Math.max.apply(null, Object.values(GDPById2012)),
                       Math.max.apply(null, Object.values(GDPById2015))],
@@ -231,13 +230,13 @@ document.addEventListener("DOMContentLoaded", function() {
             if (slider.value() <= 0.5)
             {
                 data.features.forEach(function(d) {
-                                                      d.Accumulated = pisaById2012[d.id];
-                                                      d.GDP = GDPById2012[d.id];
-                                                      d.Spendings = SpendingsById2012[d.id];
-                                                      d.Salary = SalaryById2012[d.id];
-                                                      d.Reading = ReadingsById2012[d.id];
-                                                      d.Science = ScienceById2012[d.id];
-                                                      d.Math = MathById2012[d.id];
+                    d.Accumulated = pisaById2012[d.id];
+                    d.GDP = GDPById2012[d.id];
+                    d.Spendings = SpendingsById2012[d.id];
+                    d.Salary = SalaryById2012[d.id];
+                    d.Reading = ReadingsById2012[d.id];
+                    d.Science = ScienceById2012[d.id];
+                    d.Math = MathById2012[d.id];
                                                   });
                 d3.selectAll("path")
                     .data(data.features)
@@ -251,22 +250,23 @@ document.addEventListener("DOMContentLoaded", function() {
             else
             {
                 data.features.forEach(function(d) {
-                                                      d.Accumulated = pisaById2015[d.id];
-                                                      d.GDP = GDPById2015[d.id];
-                                                      d.Spendings = SpendingsById2015[d.id];
-                                                      d.Salary = SalaryById2015[d.id];
-                                                      d.Reading = ReadingsById2015[d.id];
-                                                      d.Science = ScienceById2015[d.id];
-                                                      d.Math = MathById2015[d.id];
-                                                  });
-                d3.selectAll("path")
-                    .data(data.features)
-                    .transition()
-                    .duration(250)
-                    .style("fill", function(d) { return color(pisaById2015[d.id]); });
+                    d.Accumulated = pisaById2015[d.id];
+                    d.GDP = GDPById2015[d.id];
+                    d.Spendings = SpendingsById2015[d.id];
+                    d.Salary = SalaryById2015[d.id];
+                    d.Reading = ReadingsById2015[d.id];
+                    d.Science = ScienceById2015[d.id];
+                    d.Math = MathById2015[d.id];
+                });
 
-                d3.select(".year")
-                    .text("2015");
+            d3.selectAll("path")
+                .data(data.features)
+                .transition()
+                .duration(250)
+                .style("fill", function(d) { return color(pisaById2015[d.id]); });
+
+            d3.select(".year")
+                .text("2015");
             }
         });
 
@@ -274,7 +274,8 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function zoomed() {
-            g.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+        g.attr("transform",
+        "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
     }
 
     d3.select(self.frameElement).style("height", height + "px");

@@ -8,7 +8,7 @@ function simpleSlider() {
         x = 0,
         y = 0;
 
-    function slider (selection) {
+    function slider(selection) {
 
         //Line to represent the current value
         var valueLine = selection.append("line")
@@ -65,17 +65,17 @@ function simpleSlider() {
     }
 
 
-    slider.x = function (val) {
+    slider.x = function(val) {
         x = val;
         return slider;
     }
 
-    slider.y = function (val) {
+    slider.y = function(val) {
         y = val;
         return slider;
     }
 
-    slider.value = function (val) {
+    slider.value = function(val) {
         if (val) {
             value = val;
             return slider;
@@ -84,12 +84,12 @@ function simpleSlider() {
         }
     }
 
-    slider.width = function (val) {
+    slider.width = function(val) {
         width = val;
         return slider;
     }
 
-    slider.event = function (val) {
+    slider.event = function(val) {
         event = val;
         return slider;
     }
