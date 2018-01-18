@@ -88,8 +88,8 @@ document.addEventListener("DOMContentLoaded", function() {
         SpendingsById2012 = [],
         SalaryById2015 = [],
         SalaryById2012 = [],
-        ReadById2015 = [],
-        ReadById2012 = [],
+        ReadingsById2015 = [],
+        ReadingsById2012 = [],
         ScienceById2015 = [],
         ScienceById2012 = [],
         MathById2015 = [],
@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                          GDPById2015[d.id] = +d.GDP;
                                          SpendingsById2015[d.id] = +d.Spendings;
                                          SalaryById2015[d.id] = +d.Salary;
-                                         ReadById2015[d.id] = +d.Reading;
+                                         ReadingsById2015[d.id] = +d.Reading;
                                          ScienceById2015[d.id] = +d.Science;
                                          MathById2015[d.id] = +d.Math;
                                      });
@@ -113,7 +113,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                          GDPById2012[d.id] = +d.GDP;
                                          SpendingsById2012[d.id] = +d.Spendings;
                                          SalaryById2012[d.id] = +d.Salary;
-                                         ReadById2012[d.id] = +d.Reading;
+                                         ReadingsById2012[d.id] = +d.Reading;
                                          ScienceById2012[d.id] = +d.Science;
                                          MathById2012[d.id] = +d.Math;
                                      });
@@ -123,10 +123,23 @@ document.addEventListener("DOMContentLoaded", function() {
                                               d.GDP = GDPById2015[d.id];
                                               d.Spendings = SpendingsById2015[d.id];
                                               d.Salary = SalaryById2015[d.id];
-                                              d.Reading = ReadById2015[d.id];
+                                              d.Reading = ReadingsById2015[d.id];
                                               d.Science = ScienceById2015[d.id];
                                               d.Math = MathById2015[d.id];
                                           });
+
+        var maxGDP = [Math.max.apply(null, Object.values(GDPById2012)),
+                      Math.max.apply(null, Object.values(GDPById2015))],
+            maxSalary = [Math.max.apply(null, Object.values(SalaryById2012)) + 1,
+                         Math.max.apply(null, Object.values(SalaryById2015))],
+            maxSpending = [Math.max.apply(null, Object.values(SpendingsById2012)),
+                           Math.max.apply(null, Object.values(SpendingsById2015))],
+            maxScience = [Math.max.apply(null, Object.values(ScienceById2012)),
+                          Math.max.apply(null, Object.values(ScienceById2015))],
+            maxReading = [Math.max.apply(null, Object.values(ReadingsById2012)),
+                          Math.max.apply(null, Object.values(ReadingsById2015))]
+            maxMath = [Math.max.apply(null, Object.values(MathById2012)),
+                       Math.max.apply(null, Object.values(MathById2015))];
 
         g.selectAll("path")
             .data(data.features)
@@ -141,20 +154,46 @@ document.addEventListener("DOMContentLoaded", function() {
                 tip.show(d);
 
                 d3.select(this)
-                .style("opacity", 1)
-                .style("stroke","white")
-                .style("stroke-width", 2);
+                    .style("opacity", 1)
+                    .style("stroke","white")
+                    .style("stroke-width", 2);
             })
             .on("mouseout", function(d){
                 tip.hide(d);
 
                 d3.select(this)
-                .style("opacity", 0.8)
-                .style("stroke", "black")
-                .style("stroke-width", 0.7);
+                    .style("opacity", 0.8)
+                    .style("stroke", "black")
+                    .style("stroke-width", 0.7);
             })
             .on("click", function(d){
+                d3.select("#radarTitle")
+                    .text(d.properties.name);
 
+                if (slider.value() <= 0.5) {
+                    dradar[0][0].value = d.GDP / maxGDP[0];
+                    dradar[0][1].value = d.Salary / maxSalary[0];
+                    dradar[0][2].value = d.Spendings / maxSpending[0];
+                    dradar[0][3].value = d.Science / maxScience[0];
+                    dradar[0][4].value = d.Reading / maxReading[0];
+                    dradar[0][5].value = d.Math / maxMath[0];
+                }
+                else {
+                    dradar[0][0].value = d.GDP / maxGDP[1];
+                    dradar[0][1].value = d.Salary / maxSalary[1];
+                    dradar[0][2].value = d.Spendings / maxSpending[1];
+                    dradar[0][3].value = d.Science / maxScience[1];
+                    dradar[0][4].value = d.Reading / maxReading[1];
+                    dradar[0][5].value = d.Math / maxMath[1];
+                }
+
+                for (i = 0; i < dradar[0].length; i++) {
+                    if (isNaN(dradar[0][i].value)) {
+                        dradar[0][i].value = 0;
+                    }
+                }
+
+                RadarChart.draw("#chart", dradar, mycfg);
             });
 
         // construct legend
@@ -188,11 +227,18 @@ document.addEventListener("DOMContentLoaded", function() {
 
         var slider = new simpleSlider();
 
-        slider.width(width).x(30).y(10).value(1).event(function(){
+        slider.width(width - margin.left - margin.right).x(30).y(10).value(1).event(function(){
             if (slider.value() <= 0.5)
             {
-                data.features.forEach(function(d) { d.Accumulated = pisaById2012[d.id] });
-
+                data.features.forEach(function(d) {
+                                                      d.Accumulated = pisaById2012[d.id];
+                                                      d.GDP = GDPById2012[d.id];
+                                                      d.Spendings = SpendingsById2012[d.id];
+                                                      d.Salary = SalaryById2012[d.id];
+                                                      d.Reading = ReadingsById2012[d.id];
+                                                      d.Science = ScienceById2012[d.id];
+                                                      d.Math = MathById2012[d.id];
+                                                  });
                 d3.selectAll("path")
                     .data(data.features)
                     .transition()
@@ -204,8 +250,15 @@ document.addEventListener("DOMContentLoaded", function() {
             }
             else
             {
-                data.features.forEach(function(d) { d.Accumulated = pisaById2015[d.id] });
-
+                data.features.forEach(function(d) {
+                                                      d.Accumulated = pisaById2015[d.id];
+                                                      d.GDP = GDPById2015[d.id];
+                                                      d.Spendings = SpendingsById2015[d.id];
+                                                      d.Salary = SalaryById2015[d.id];
+                                                      d.Reading = ReadingsById2015[d.id];
+                                                      d.Science = ScienceById2015[d.id];
+                                                      d.Math = MathById2015[d.id];
+                                                  });
                 d3.selectAll("path")
                     .data(data.features)
                     .transition()

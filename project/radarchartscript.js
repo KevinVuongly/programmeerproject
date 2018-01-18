@@ -1,5 +1,5 @@
-var w = 300,
-	h = 300;
+var w = 200,
+	h = 200;
 
 //Data
 var dradar = [
@@ -24,13 +24,21 @@ var mycfg = {
 
 document.addEventListener("DOMContentLoaded", function() {
 
-	d3.select("body")
+	var container = d3.select("body")
 		.append("div")
-		.attr("class", "col-lg-6 col-md-6 col-sm-6 col-xs-12")
+		.attr("class", "col-lg-6 col-md-6 col-sm-6 col-xs-12");
+
+	container.append("div")
+		.attr("id", "body")
 	    .append("div")
-	    .attr("id", "body")
-	    .append("div")
-	    .attr("id", "chart")
+	    .attr("id", "chart");
+
+	container.append("div")
+		.attr("id", "country")
+		.append("text")
+		.attr("id", "radarTitle")
+        .style("font-size", "26px")
+		.text("Click on a country");
 
 	//Call function to draw the Radar chart
 	//Will expect that data is in %'s
