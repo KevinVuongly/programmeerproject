@@ -28,9 +28,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     var color = d3.scale.threshold()
         .domain([1150,1200,1290,1380,1450,1520,1550,1580,1650])
-        .range(["rgb(72,0,0)", "rgb(103,0,13)", "rgb(165,15,21)", "rgb(203,24,29)",
-                "rgb(239,59,44)", "rgb(251,106,74)", "rgb(252,146,114)",
-                "rgb(252,187,161)","rgb(254,224,210)", "rgb(255,255,255)"]);
+        .range(["rgb(72,0,0)", "rgb(103,0,13)", "rgb(165,15,21)",
+                "rgb(203,24,29)", "rgb(239,59,44)", "rgb(251,106,74)",
+                "rgb(252,146,114)", "rgb(252,187,161)", "rgb(254,224,210)"]);
 
     var svg = d3.select("body")
         .append("div")
@@ -129,7 +129,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         var maxGDP = [Math.max.apply(null, Object.values(GDPById2012)),
                       Math.max.apply(null, Object.values(GDPById2015))],
-            maxSalary = [Math.max.apply(null, Object.values(SalaryById2012)) + 1,
+            maxSalary = [Math.max.apply(null, Object.values(SalaryById2012)),
                          Math.max.apply(null, Object.values(SalaryById2015))],
             maxSpending = [Math.max.apply(null, Object.values(SpendingsById2012)),
                            Math.max.apply(null, Object.values(SpendingsById2015))],
@@ -206,8 +206,14 @@ document.addEventListener("DOMContentLoaded", function() {
         // create rectangles for the colors of the legend
         legend.append("rect")
             .attr("x", width - 18)
-            .attr("width", 18)
-            .attr("height", 20)
+            .attr("width", function(d, i) {
+                if (i == color.domain().length - 1) { return 0; }
+                else { return 18; }
+            })
+            .attr("height", function(d, i) {
+                if (i == color.domain().length - 1) { return 0; }
+                else { return 21; }
+            })
             .style("fill", color);
 
         // add text to the legend
@@ -237,7 +243,8 @@ document.addEventListener("DOMContentLoaded", function() {
                     d.Reading = ReadingsById2012[d.id];
                     d.Science = ScienceById2012[d.id];
                     d.Math = MathById2012[d.id];
-                                                  });
+                });
+
                 d3.selectAll("path")
                     .data(data.features)
                     .transition()
