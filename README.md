@@ -1,6 +1,8 @@
 # Influences on the quality of education
 ## Kevin Vuong 10730141
 
+https://kevinvuongly.github.io/programmeerproject/project/index.html
+
 ## Problem statement
 Every country differs from quality of education.
 For example, given the PISA index in 2015, Singapore scored way higher than Indonesia in every aspect.
