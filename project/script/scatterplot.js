@@ -45,8 +45,8 @@ document.addEventListener("DOMContentLoaded", function() {
     svg.call(tip);
 
     queue()
-        .defer(d3.csv, "../data/2015.csv")
-        .defer(d3.csv, "../data/2012.csv")
+        .defer(d3.csv, "data/2015.csv")
+        .defer(d3.csv, "data/2012.csv")
         .await(ready);
 
     function ready(error, info2015, info2012) {
