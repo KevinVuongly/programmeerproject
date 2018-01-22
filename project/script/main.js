@@ -1,7 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
 
-    var format = d3.format(",");
-
     // Set tooltips
     var tip = d3.tip()
                 .attr('class', 'd3-tip')
@@ -22,24 +20,15 @@ document.addEventListener("DOMContentLoaded", function() {
                     }
                 });
 
-    var margin = {top: 50, right: 20, bottom: 30, left: 30},
-                 width = 650 - margin.left - margin.right,
-                 height = 600 - margin.top - margin.bottom;
-
-    var color = d3.scale.threshold()
-        .domain([1150,1200,1290,1380,1450,1520,1550,1580,1650])
-        .range(["rgb(72,0,0)", "rgb(103,0,13)", "rgb(165,15,21)",
-                "rgb(203,24,29)", "rgb(239,59,44)", "rgb(251,106,74)",
-                "rgb(252,146,114)", "rgb(252,187,161)", "rgb(254,224,210)"]);
-
     var svg = d3.select("body")
         .append("div")
-        .attr("class", "col-lg-6 col-md-6 col-sm-6 col-xs-12")
-        .append("div")
-        .attr("id", "worldmap")
-        .append("svg")
-        .attr("width", width)
-        .attr("height", height)
+        .attr("class", "col-lg-12 col-md-12 col-sm-12 col-xs-12 col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-xs-offset-2");
+
+    var worldmap = svg.append("div")
+            .attr("class", "worldmap")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height);
 
     var projection = d3.geo.mercator()
         .scale(80)
@@ -47,13 +36,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
     var path = d3.geo.path().projection(projection);
 
-    var g = svg.append("g").attr("class", "countries");
+    var g = worldmap.append("g").attr("class", "countries");
 
     var zoom = d3.behavior.zoom()
         .scaleExtent([1, 8])
         .on("zoom", zoomed);
 
-    svg.append("text")
+    worldmap.append("text")
         .attr("class", "worldmapTitle")
         .attr("x", (width / 2))
         .attr("y", 40)
@@ -61,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function() {
         .style("font-size", "36px")
         .text("Accumulated PISA score per country");
 
-    svg.append("text")
+    worldmap.append("text")
         .attr("class", "year")
         .attr("x", width - 70)
         .attr("y", 150)
@@ -69,14 +58,20 @@ document.addEventListener("DOMContentLoaded", function() {
         .style("font-size", "60px")
         .text("2015");
 
-    svg.call(tip);
-    svg.call(zoom);
-    svg.call(zoom.event);
+    var svgslider = svg.append("div")
+        .attr("class","slider")
+        .append("svg")
+        .attr("width", 700)
+        .attr("height", 50);
+
+    worldmap.call(tip);
+    worldmap.call(zoom);
+    worldmap.call(zoom.event);
 
     queue()
-        .defer(d3.json, "world_countries.json")
-        .defer(d3.csv, "data/2015.csv")
-        .defer(d3.csv, "data/2012.csv")
+        .defer(d3.json, "../data/world_countries.json")
+        .defer(d3.csv, "../data/2015.csv")
+        .defer(d3.csv, "../data/2012.csv")
         .await(ready);
 
     var pisaById2015 = [],
@@ -105,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function() {
              ReadingsById2015[d.id] = +d.Reading;
              ScienceById2015[d.id] = +d.Science;
              MathById2015[d.id] = +d.Math;
-         });
+         })
 
         info2012.forEach(function(d) {
              pisaById2012[d.id] = +d.Accumulated;
@@ -115,7 +110,7 @@ document.addEventListener("DOMContentLoaded", function() {
              ReadingsById2012[d.id] = +d.Reading;
              ScienceById2012[d.id] = +d.Science;
              MathById2012[d.id] = +d.Math;
-         });
+         })
 
         data.features.forEach(function(d) {
             d.Accumulated = pisaById2015[d.id];
@@ -125,7 +120,7 @@ document.addEventListener("DOMContentLoaded", function() {
             d.Reading = ReadingsById2015[d.id];
             d.Science = ScienceById2015[d.id];
             d.Math = MathById2015[d.id];
-        });
+        })
 
         var maxGDP = [Math.max.apply(null, Object.values(GDPById2012)),
                       Math.max.apply(null, Object.values(GDPById2015))],
@@ -133,10 +128,16 @@ document.addEventListener("DOMContentLoaded", function() {
                          Math.max.apply(null, Object.values(SalaryById2015))],
             maxSpending = [Math.max.apply(null, Object.values(SpendingsById2012)),
                            Math.max.apply(null, Object.values(SpendingsById2015))],
+            minScience = [Math.min.apply(null, Object.values(ScienceById2012)),
+                          Math.min.apply(null, Object.values(ScienceById2015))],
             maxScience = [Math.max.apply(null, Object.values(ScienceById2012)),
                           Math.max.apply(null, Object.values(ScienceById2015))],
+            minReading = [Math.min.apply(null, Object.values(ReadingsById2012)),
+                          Math.min.apply(null, Object.values(ReadingsById2015))],
             maxReading = [Math.max.apply(null, Object.values(ReadingsById2012)),
-                          Math.max.apply(null, Object.values(ReadingsById2015))]
+                          Math.max.apply(null, Object.values(ReadingsById2015))],
+            minMath = [Math.min.apply(null, Object.values(MathById2012)),
+                       Math.min.apply(null, Object.values(MathById2015))],
             maxMath = [Math.max.apply(null, Object.values(MathById2012)),
                        Math.max.apply(null, Object.values(MathById2015))];
 
@@ -165,25 +166,27 @@ document.addEventListener("DOMContentLoaded", function() {
                     .style("stroke", "black")
                     .style("stroke-width", 0.7);
             })
-            .on("click", function(d){
+            .on("click", function(d) {
                 d3.select("#radarTitle")
                     .text(d.properties.name);
 
                 if (slider.value() <= 0.5) {
+                    cfg.color = color(pisaById2012[d.id]);
                     dradar[0][0].value = d.GDP / maxGDP[0];
                     dradar[0][1].value = d.Salary / maxSalary[0];
                     dradar[0][2].value = d.Spendings / maxSpending[0];
-                    dradar[0][3].value = d.Science / maxScience[0];
-                    dradar[0][4].value = d.Reading / maxReading[0];
-                    dradar[0][5].value = d.Math / maxMath[0];
+                    dradar[0][3].value = (d.Science - minScience[0]) / (maxScience[0] - minScience[0]);
+                    dradar[0][4].value = (d.Reading - minReading[0]) / (maxReading[0] - minReading[0]);
+                    dradar[0][5].value = (d.Math - minMath[0]) / (maxMath[0] - minMath[0]);
                 }
                 else {
+                    cfg.color = color(pisaById2015[d.id]);
                     dradar[0][0].value = d.GDP / maxGDP[1];
                     dradar[0][1].value = d.Salary / maxSalary[1];
                     dradar[0][2].value = d.Spendings / maxSpending[1];
-                    dradar[0][3].value = d.Science / maxScience[1];
-                    dradar[0][4].value = d.Reading / maxReading[1];
-                    dradar[0][5].value = d.Math / maxMath[1];
+                    dradar[0][3].value = (d.Science - minScience[1]) / (maxScience[1] - minScience[1]);
+                    dradar[0][4].value = (d.Reading - minReading[1]) / (maxReading[1] - minReading[1]);
+                    dradar[0][5].value = (d.Math - minMath[1]) / (maxMath[1] - minMath[1]);
                 }
 
                 for (i = 0; i < dradar[0].length; i++) {
@@ -196,7 +199,7 @@ document.addEventListener("DOMContentLoaded", function() {
             });
 
         // construct legend
-        var legend = svg.selectAll(".legend")
+        var legend = worldmap.selectAll(".legend")
             .data(color.domain())
             .enter().append("g")
             .attr("class", "legend")
@@ -223,14 +226,6 @@ document.addEventListener("DOMContentLoaded", function() {
             .attr("dy", ".35em")
             .style("text-anchor", "end")
             .text(function(d) { return d; });
-
-        var svgslider = d3.select("body").append("div")
-            .attr("class","slider")
-            .append("svg")
-            .attr("width", 700)
-            .attr("height", 50);
-
-        var slider = new simpleSlider();
 
         slider.width(width - margin.left - margin.right).x(30).y(10).value(1).event(function(){
             if (slider.value() <= 0.5)
@@ -278,6 +273,26 @@ document.addEventListener("DOMContentLoaded", function() {
         });
 
         svgslider.call(slider);
+
+        var container = d3.select("body")
+    		.append("div")
+    		.attr("class", "col-lg-6 col-md-6 col-sm-6 col-xs-12");
+
+    	container.append("div")
+    		.attr("id", "body")
+    	    .append("div")
+    	    .attr("id", "chart");
+
+    	container.append("div")
+    		.attr("id", "country")
+    		.append("text")
+    		.attr("id", "radarTitle")
+            .style("font-size", "26px")
+    		.text("Click on a country");
+
+    	//Call function to draw the Radar chart
+    	//Will expect that data is in %'s
+    	RadarChart.draw("#chart", dradar, mycfg);
     }
 
     function zoomed() {
