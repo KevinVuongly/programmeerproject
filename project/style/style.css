@@ -1,0 +1,4 @@
+.worldmap, .slider {
+    display: table;
+    margin: 0 auto;
+}

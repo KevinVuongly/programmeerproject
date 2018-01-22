@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     var svg = d3.select("body")
         .append("div")
-        .attr("class", "col-lg-12 col-md-12 col-sm-12 col-xs-12 col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-xs-offset-2");
+        .attr("class", "col-lg-12 col-md-12 col-sm-12 col-xs-12");
 
     var worldmap = svg.append("div")
             .attr("class", "worldmap")
@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function() {
     var svgslider = svg.append("div")
         .attr("class","slider")
         .append("svg")
-        .attr("width", 700)
+        .attr("width", 150)
         .attr("height", 50);
 
     worldmap.call(tip);
@@ -227,7 +227,7 @@ document.addEventListener("DOMContentLoaded", function() {
             .style("text-anchor", "end")
             .text(function(d) { return d; });
 
-        slider.width(width - margin.left - margin.right).x(30).y(10).value(1).event(function(){
+        slider.width(100).x(30).y(10).value(1).event(function(){
             if (slider.value() <= 0.5)
             {
                 data.features.forEach(function(d) {

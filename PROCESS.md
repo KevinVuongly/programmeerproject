@@ -17,3 +17,7 @@ so the viewer knows what the country has scored
 - Linked world map with radar chart
 
 # Week 3 Day 1
+- Added static scatterplot
+- Having troubles with local/global variables when trying to add interactivity between visualizations
+- Possible decision: putting all visualizations into a main js file to get rid of
+the problem or keep each visualization in it's own js file and try to find a solution for it(which hasn't been found yet)
