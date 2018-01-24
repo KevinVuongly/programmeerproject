@@ -15,8 +15,6 @@ var color = d3.scale.threshold()
 
 var format = d3.format(",");
 
-var slider = new simpleSlider();
-
 const w = 200,
 	  h = 200;
 

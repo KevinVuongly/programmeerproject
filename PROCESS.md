@@ -21,3 +21,8 @@ so the viewer knows what the country has scored
 - Having troubles with local/global variables when trying to add interactivity between visualizations
 - Possible decision: putting all visualizations into a main js file to get rid of
 the problem or keep each visualization in it's own js file and try to find a solution for it(which hasn't been found yet)
+
+# Week 3 Day 2
+- Added dropdown for scatterplot
+- Had some issues with updating the y-axis, code needs lots of cleaning up to do, not written in functions yet
+- Chose to have all visualizations in a main js file, with functions in separate js files

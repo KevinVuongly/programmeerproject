@@ -334,6 +334,37 @@ document.addEventListener("DOMContentLoaded", function() {
             })
             .on("mouseout", function(d) {
                 tip.hide(d)
+            })
+            .on("click", function(d) {
+                d3.select("#radarTitle")
+                    .text(d.properties.name);
+
+                if (slider.value() <= 0.5) {
+                    cfg.color = color(pisaById2012[d.id]);
+                    dradar[0][0].value = d.GDP / maxGDP[0];
+                    dradar[0][1].value = d.Salary / maxSalary[0];
+                    dradar[0][2].value = d.Spendings / maxSpending[0];
+                    dradar[0][3].value = (d.Science - minScience[0]) / (maxScience[0] - minScience[0]);
+                    dradar[0][4].value = (d.Reading - minReading[0]) / (maxReading[0] - minReading[0]);
+                    dradar[0][5].value = (d.Math - minMath[0]) / (maxMath[0] - minMath[0]);
+                }
+                else {
+                    cfg.color = color(pisaById2015[d.id]);
+                    dradar[0][0].value = d.GDP / maxGDP[1];
+                    dradar[0][1].value = d.Salary / maxSalary[1];
+                    dradar[0][2].value = d.Spendings / maxSpending[1];
+                    dradar[0][3].value = (d.Science - minScience[1]) / (maxScience[1] - minScience[1]);
+                    dradar[0][4].value = (d.Reading - minReading[1]) / (maxReading[1] - minReading[1]);
+                    dradar[0][5].value = (d.Math - minMath[1]) / (maxMath[1] - minMath[1]);
+                }
+
+                for (i = 0; i < dradar[0].length; i++) {
+                    if (isNaN(dradar[0][i].value)) {
+                        dradar[0][i].value = 0;
+                    }
+                }
+
+                RadarChart.draw("#chart", dradar, mycfg);
             });
 
         // add title to the scatterplot
@@ -350,22 +381,22 @@ document.addEventListener("DOMContentLoaded", function() {
                     .property("value");
 
                 if (selectValue == datapoints[0]) {
-                    y.domain(d3.extent(info2015, function(d)
-                             { return spendingsById2015[d.id]; })).nice();
+                    y.domain(d3.extent(data.features, function(d)
+                             { return d.Spendings; })).nice();
 
                     d3.select("#ylabel")
                         .text("Education spendings in millions($)");
                 }
                 else if (selectValue == datapoints[1]) {
-                    y.domain(d3.extent(info2015, function(d)
-                             { return GDPById2015[d.id]; })).nice();
+                    y.domain(d3.extent(data.features, function(d)
+                             { return d.GDP; })).nice();
 
                     d3.select("#ylabel")
                         .text("GDP per capita($)")
                 }
                 else {
-                    y.domain(d3.extent(info2015, function(d)
-                             { return salaryById2015[d.id]; })).nice();
+                    y.domain(d3.extent(data.features, function(d)
+                             { return d.Salary; })).nice();
 
                     d3.select("#ylabel")
                         .text("Teacher salaries in annual earnings($)")
@@ -375,18 +406,18 @@ document.addEventListener("DOMContentLoaded", function() {
                     .transition()
                     .duration(250)
                     .attr("cy", function(d) {
-                        if (isNaN(pisaById2015[d.id])) {
+                        if (isNaN(d.Accumulated)) {
                             return 0;
                         }
                         else {
                             if (selectValue == datapoints[0]) {
-                                return y(spendingsById2015[d.id]);
+                                return y(d.Spendings);
                             }
                             else if (selectValue == datapoints[1]) {
-                                return y(GDPById2015[d.id]);
+                                return y(d.GDP);
                             }
                             else {
-                                return y(salaryById2015[d.id]);
+                                return y(d.Salary);
                             }
                         }
                     })
@@ -396,6 +427,8 @@ document.addEventListener("DOMContentLoaded", function() {
                     .duration(250)
                     .call(yAxis);
             });
+
+        var slider = new simpleSlider();
 
         slider.width(100).x(30).y(10).value(1).event(function(){
             if (slider.value() <= 0.5)
@@ -414,10 +447,61 @@ document.addEventListener("DOMContentLoaded", function() {
                     .data(data.features)
                     .transition()
                     .duration(250)
-                    .style("fill", function(d) { return color(pisaById2012[d.id]); });
+                    .style("fill", function(d) { return color(d.Accumulated); });
 
                 d3.select(".year")
                     .text("2012");
+
+                // update scatterplot to date
+                selectValue = d3.select("select")
+                    .property("value");
+
+                x.domain(d3.extent(data.features, function(d)
+                         { return d.Accumulated; })).nice();
+
+                if (selectValue == datapoints[0]) {
+                    y.domain(d3.extent(data.features, function(d)
+                             { return d.Spendings; })).nice();
+                }
+                else if (selectValue == datapoints[1]) {
+                    y.domain(d3.extent(data.features, function(d)
+                             { return d.GDP; })).nice();
+                }
+                else {
+                    y.domain(d3.extent(data.features, function(d)
+                             { return d.Salary; })).nice();
+                }
+
+                d3.selectAll(".dot")
+                    .data(data.features)
+                    .transition()
+                    .duration(250)
+                    .attr("cy", function(d) {
+                        if (isNaN(d.Accumulated)) {
+                            return 0;
+                        }
+                        else {
+                            if (selectValue == datapoints[0]) {
+                                return y(d.Spendings);
+                            }
+                            else if (selectValue == datapoints[1]) {
+                                return y(d.GDP);
+                            }
+                            else {
+                                return y(d.Salary);
+                            }
+                        }
+                    })
+
+                svgscatter.select(".x.axis")
+                    .transition()
+                    .duration(250)
+                    .call(xAxis);
+
+                svgscatter.select(".y.axis")
+                    .transition()
+                    .duration(250)
+                    .call(yAxis);
             }
             else
             {
@@ -435,10 +519,61 @@ document.addEventListener("DOMContentLoaded", function() {
                 .data(data.features)
                 .transition()
                 .duration(250)
-                .style("fill", function(d) { return color(pisaById2015[d.id]); });
+                .style("fill", function(d) { return color(d.Accumulated); });
 
             d3.select(".year")
                 .text("2015");
+
+            // update scatterplot to date
+            selectValue = d3.select("select")
+                .property("value");
+
+            x.domain(d3.extent(data.features, function(d)
+                     { return d.Accumulated; })).nice();
+
+            if (selectValue == datapoints[0]) {
+                y.domain(d3.extent(data.features, function(d)
+                         { return d.Spendings; })).nice();
+            }
+            else if (selectValue == datapoints[1]) {
+                y.domain(d3.extent(data.features, function(d)
+                         { return d.GDP; })).nice();
+            }
+            else {
+                y.domain(d3.extent(data.features, function(d)
+                         { return d.Salary; })).nice();
+            }
+
+            d3.selectAll(".dot")
+                .data(data.features)
+                .transition()
+                .duration(250)
+                .attr("cy", function(d) {
+                    if (isNaN(d.Accumulated)) {
+                        return 0;
+                    }
+                    else {
+                        if (selectValue == datapoints[0]) {
+                            return y(d.Spendings);
+                        }
+                        else if (selectValue == datapoints[1]) {
+                            return y(d.GDP);
+                        }
+                        else {
+                            return y(d.Salary);
+                        }
+                    }
+                })
+
+            svgscatter.select(".x.axis")
+                .transition()
+                .duration(250)
+                .call(xAxis);
+
+            svgscatter.select(".y.axis")
+                .transition()
+                .duration(250)
+                .call(yAxis);
             }
         });
 
