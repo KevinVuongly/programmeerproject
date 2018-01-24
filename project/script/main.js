@@ -27,12 +27,12 @@ document.addEventListener("DOMContentLoaded", function() {
     var worldmap = svg.append("div")
             .attr("class", "worldmap")
             .append("svg")
-            .attr("width", width)
-            .attr("height", height);
+            .attr("width", widthworld)
+            .attr("height", heightworld);
 
     var projection = d3.geo.mercator()
         .scale(80)
-        .translate( [width / 2 - 20, 340]);
+        .translate( [widthworld / 2 - 20, 340]);
 
     var path = d3.geo.path().projection(projection);
 
@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     worldmap.append("text")
         .attr("class", "worldmapTitle")
-        .attr("x", (width / 2))
+        .attr("x", (widthworld / 2))
         .attr("y", 40)
         .attr("text-anchor", "middle")
         .style("font-size", "36px")
@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     worldmap.append("text")
         .attr("class", "year")
-        .attr("x", width - 70)
+        .attr("x", widthworld - 70)
         .attr("y", 150)
         .attr("text-anchor", "middle")
         .style("font-size", "60px")
@@ -64,6 +64,42 @@ document.addEventListener("DOMContentLoaded", function() {
         .attr("width", 150)
         .attr("height", 50);
 
+    // scale x
+    var x = d3.scale.linear().range([0, widthscatter]);
+
+    // scale y
+    var y = d3.scale.linear().range([heightscatter, 0]);
+
+    // add x-axis
+    var xAxis = d3.svg.axis().scale(x).orient("bottom");
+
+    // add y-axis
+    var yAxis = d3.svg.axis().scale(y).orient("left");
+
+    var mbars = d3.select("body")
+        .append("div")
+        .attr("id", "mbars")
+
+    var datapoints = ["Education spendings", "GDP per capita", "Teacher salaries"];
+
+    var select = mbars.append("select")
+      	.attr("class","select")
+
+    var options = select.selectAll("option")
+    	.data(datapoints).enter()
+    	.append("option")
+    	.text(function (d) { return d; });
+
+    // add svg element
+    var svgscatter = mbars.append("div")
+        .attr("class", "col-lg-6 col-md-6 col-sm-6 col-xs-12")
+        .append("svg")
+        .attr("width", widthscatter + marginscatter.left + marginscatter.right)
+        .attr("height", heightscatter + marginscatter.top + marginscatter.bottom)
+        .append("g")
+        .attr("transform", "translate(" + marginscatter.left + "," + marginscatter.top + ")");
+
+    svgscatter.call(tip);
     worldmap.call(tip);
     worldmap.call(zoom);
     worldmap.call(zoom.event);
@@ -78,16 +114,16 @@ document.addEventListener("DOMContentLoaded", function() {
         pisaById2012 = [],
         GDPById2015 = [],
         GDPById2012 = [],
-        SpendingsById2015 = [],
-        SpendingsById2012 = [],
-        SalaryById2015 = [],
-        SalaryById2012 = [],
-        ReadingsById2015 = [],
-        ReadingsById2012 = [],
-        ScienceById2015 = [],
-        ScienceById2012 = [],
-        MathById2015 = [],
-        MathById2012 = [];
+        spendingsById2015 = [],
+        spendingsById2012 = [],
+        salaryById2015 = [],
+        salaryById2012 = [],
+        readingsById2015 = [],
+        readingsById2012 = [],
+        scienceById2015 = [],
+        scienceById2012 = [],
+        mathById2015 = [],
+        mathById2012 = [];
 
     function ready(error, data, info2015, info2012) {
         if (error) throw error;
@@ -95,51 +131,51 @@ document.addEventListener("DOMContentLoaded", function() {
         info2015.forEach(function(d) {
              pisaById2015[d.id] = +d.Accumulated;
              GDPById2015[d.id] = +d.GDP;
-             SpendingsById2015[d.id] = +d.Spendings;
-             SalaryById2015[d.id] = +d.Salary;
-             ReadingsById2015[d.id] = +d.Reading;
-             ScienceById2015[d.id] = +d.Science;
-             MathById2015[d.id] = +d.Math;
+             spendingsById2015[d.id] = +d.Spendings;
+             salaryById2015[d.id] = +d.Salary;
+             readingsById2015[d.id] = +d.Reading;
+             scienceById2015[d.id] = +d.Science;
+             mathById2015[d.id] = +d.Math;
          })
 
         info2012.forEach(function(d) {
              pisaById2012[d.id] = +d.Accumulated;
              GDPById2012[d.id] = +d.GDP;
-             SpendingsById2012[d.id] = +d.Spendings;
-             SalaryById2012[d.id] = +d.Salary;
-             ReadingsById2012[d.id] = +d.Reading;
-             ScienceById2012[d.id] = +d.Science;
-             MathById2012[d.id] = +d.Math;
+             spendingsById2012[d.id] = +d.Spendings;
+             salaryById2012[d.id] = +d.Salary;
+             readingsById2012[d.id] = +d.Reading;
+             scienceById2012[d.id] = +d.Science;
+             mathById2012[d.id] = +d.Math;
          })
 
         data.features.forEach(function(d) {
             d.Accumulated = pisaById2015[d.id];
             d.GDP = GDPById2015[d.id];
-            d.Spendings = SpendingsById2015[d.id];
-            d.Salary = SalaryById2015[d.id];
-            d.Reading = ReadingsById2015[d.id];
-            d.Science = ScienceById2015[d.id];
-            d.Math = MathById2015[d.id];
+            d.Spendings = spendingsById2015[d.id];
+            d.Salary = salaryById2015[d.id];
+            d.Reading = readingsById2015[d.id];
+            d.Science = scienceById2015[d.id];
+            d.Math = mathById2015[d.id];
         })
 
         var maxGDP = [Math.max.apply(null, Object.values(GDPById2012)),
                       Math.max.apply(null, Object.values(GDPById2015))],
-            maxSalary = [Math.max.apply(null, Object.values(SalaryById2012)),
-                         Math.max.apply(null, Object.values(SalaryById2015))],
-            maxSpending = [Math.max.apply(null, Object.values(SpendingsById2012)),
-                           Math.max.apply(null, Object.values(SpendingsById2015))],
-            minScience = [Math.min.apply(null, Object.values(ScienceById2012)),
-                          Math.min.apply(null, Object.values(ScienceById2015))],
-            maxScience = [Math.max.apply(null, Object.values(ScienceById2012)),
-                          Math.max.apply(null, Object.values(ScienceById2015))],
-            minReading = [Math.min.apply(null, Object.values(ReadingsById2012)),
-                          Math.min.apply(null, Object.values(ReadingsById2015))],
-            maxReading = [Math.max.apply(null, Object.values(ReadingsById2012)),
-                          Math.max.apply(null, Object.values(ReadingsById2015))],
-            minMath = [Math.min.apply(null, Object.values(MathById2012)),
-                       Math.min.apply(null, Object.values(MathById2015))],
-            maxMath = [Math.max.apply(null, Object.values(MathById2012)),
-                       Math.max.apply(null, Object.values(MathById2015))];
+            maxSalary = [Math.max.apply(null, Object.values(salaryById2012)),
+                         Math.max.apply(null, Object.values(salaryById2015))],
+            maxSpending = [Math.max.apply(null, Object.values(spendingsById2012)),
+                           Math.max.apply(null, Object.values(spendingsById2015))],
+            minScience = [Math.min.apply(null, Object.values(scienceById2012)),
+                          Math.min.apply(null, Object.values(scienceById2015))],
+            maxScience = [Math.max.apply(null, Object.values(scienceById2012)),
+                          Math.max.apply(null, Object.values(scienceById2015))],
+            minReading = [Math.min.apply(null, Object.values(readingsById2012)),
+                          Math.min.apply(null, Object.values(readingsById2015))],
+            maxReading = [Math.max.apply(null, Object.values(readingsById2012)),
+                          Math.max.apply(null, Object.values(readingsById2015))],
+            minMath = [Math.min.apply(null, Object.values(mathById2012)),
+                       Math.min.apply(null, Object.values(mathById2015))],
+            maxMath = [Math.max.apply(null, Object.values(mathById2012)),
+                       Math.max.apply(null, Object.values(mathById2015))];
 
         g.selectAll("path")
             .data(data.features)
@@ -204,11 +240,11 @@ document.addEventListener("DOMContentLoaded", function() {
             .enter().append("g")
             .attr("class", "legend")
             .attr("transform", function(d, i)
-            { return "translate(0," + Number(height / 2 - 60 + i * 20) + ")"; });
+            { return "translate(0," + Number(heightworld / 2 - 60 + i * 20) + ")"; });
 
         // create rectangles for the colors of the legend
         legend.append("rect")
-            .attr("x", width - 18)
+            .attr("x", widthworld - 18)
             .attr("width", function(d, i) {
                 if (i == color.domain().length - 1) { return 0; }
                 else { return 18; }
@@ -221,11 +257,145 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // add text to the legend
         legend.append("text")
-            .attr("x", width - 23)
+            .attr("x", widthworld - 23)
             .attr("y", 0)
             .attr("dy", ".35em")
             .style("text-anchor", "end")
             .text(function(d) { return d; });
+
+        /////////////////
+        // SCATTERPLOT //
+        /////////////////
+
+        // construct domain and range
+        x.domain(d3.extent(info2015, function(d)
+                 { return pisaById2015[d.id]; })).nice();
+        y.domain(d3.extent(info2015, function(d)
+                 { return spendingsById2015[d.id]; })).nice();
+
+        // add x-axis
+        svgscatter.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + heightscatter + ")")
+            .call(xAxis)
+            .append("text")
+            .attr("class", "label")
+            .attr("id", "xlabel")
+            .attr("x", widthscatter)
+            .attr("y", -6)
+            .style("text-anchor", "end")
+            .text("PISA accumulated score");
+
+        // add y-axis
+        svgscatter.append("g")
+            .attr("class", "y axis")
+            .call(yAxis)
+            .append("text")
+            .attr("class", "label")
+            .attr("id", "ylabel")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 6)
+            .attr("dy", ".71em")
+            .style("text-anchor", "end")
+            .text("Spendings in millions($)");
+
+        // draw scatterplot
+        svgscatter.selectAll(".dot")
+            .data(data.features)
+            .enter().append("circle")
+            .attr("class", "dot")
+            .attr("r", function (d) {
+                if (isNaN(pisaById2015[d.id])) {
+                    return 0;
+                }
+                else {
+                    return 3;
+                }
+            })
+            .attr("cx", function(d) {
+                if (isNaN(pisaById2015[d.id])) {
+                    return 0;
+                }
+                else {
+                    return x(pisaById2015[d.id]);
+                }
+            })
+            .attr("cy", function(d) {
+                if (isNaN(pisaById2015[d.id])) {
+                    return 0;
+                }
+                else {
+                    return y(spendingsById2015[d.id]);
+                }
+            })
+            .style("fill", function(d) { return color(pisaById2015[d.id]); })
+            .on("mouseover", function(d) {
+                tip.show(d)
+            })
+            .on("mouseout", function(d) {
+                tip.hide(d)
+            });
+
+        // add title to the scatterplot
+        svgscatter.append("text")
+            .attr("x", (widthscatter / 2))
+            .attr("y", 0 - (marginscatter.top / 2) + 10)
+            .attr("text-anchor", "middle")
+            .style("font-size", "24px")
+            .text("Education spendings");
+
+        select.data(data.features)
+            .on("change", function(d) {
+                selectValue = d3.select("select")
+                    .property("value");
+
+                if (selectValue == datapoints[0]) {
+                    y.domain(d3.extent(info2015, function(d)
+                             { return spendingsById2015[d.id]; })).nice();
+
+                    d3.select("#ylabel")
+                        .text("Education spendings in millions($)");
+                }
+                else if (selectValue == datapoints[1]) {
+                    y.domain(d3.extent(info2015, function(d)
+                             { return GDPById2015[d.id]; })).nice();
+
+                    d3.select("#ylabel")
+                        .text("GDP per capita($)")
+                }
+                else {
+                    y.domain(d3.extent(info2015, function(d)
+                             { return salaryById2015[d.id]; })).nice();
+
+                    d3.select("#ylabel")
+                        .text("Teacher salaries in annual earnings($)")
+                }
+
+                d3.selectAll(".dot")
+                    .transition()
+                    .duration(250)
+                    .attr("cy", function(d) {
+                        if (isNaN(pisaById2015[d.id])) {
+                            return 0;
+                        }
+                        else {
+                            if (selectValue == datapoints[0]) {
+                                return y(spendingsById2015[d.id]);
+                            }
+                            else if (selectValue == datapoints[1]) {
+                                return y(GDPById2015[d.id]);
+                            }
+                            else {
+                                return y(salaryById2015[d.id]);
+                            }
+                        }
+                    })
+
+                svgscatter.select(".y.axis")
+                    .transition()
+                    .duration(250)
+                    .call(yAxis);
+            });
 
         slider.width(100).x(30).y(10).value(1).event(function(){
             if (slider.value() <= 0.5)
@@ -233,11 +403,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 data.features.forEach(function(d) {
                     d.Accumulated = pisaById2012[d.id];
                     d.GDP = GDPById2012[d.id];
-                    d.Spendings = SpendingsById2012[d.id];
-                    d.Salary = SalaryById2012[d.id];
-                    d.Reading = ReadingsById2012[d.id];
-                    d.Science = ScienceById2012[d.id];
-                    d.Math = MathById2012[d.id];
+                    d.Spendings = spendingsById2012[d.id];
+                    d.Salary = salaryById2012[d.id];
+                    d.Reading = readingsById2012[d.id];
+                    d.Science = scienceById2012[d.id];
+                    d.Math = mathById2012[d.id];
                 });
 
                 d3.selectAll("path")
@@ -254,11 +424,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 data.features.forEach(function(d) {
                     d.Accumulated = pisaById2015[d.id];
                     d.GDP = GDPById2015[d.id];
-                    d.Spendings = SpendingsById2015[d.id];
-                    d.Salary = SalaryById2015[d.id];
-                    d.Reading = ReadingsById2015[d.id];
-                    d.Science = ScienceById2015[d.id];
-                    d.Math = MathById2015[d.id];
+                    d.Spendings = spendingsById2015[d.id];
+                    d.Salary = salaryById2015[d.id];
+                    d.Reading = readingsById2015[d.id];
+                    d.Science = scienceById2015[d.id];
+                    d.Math = mathById2015[d.id];
                 });
 
             d3.selectAll("path")
@@ -300,5 +470,5 @@ document.addEventListener("DOMContentLoaded", function() {
         "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
     }
 
-    d3.select(self.frameElement).style("height", height + "px");
+    d3.select(self.frameElement).style("height", heightworld + "px");
 })

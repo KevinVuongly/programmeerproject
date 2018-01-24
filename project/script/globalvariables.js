@@ -1,6 +1,11 @@
-var margin = {top: 50, right: 20, bottom: 30, left: 30},
-             width = 650 - margin.left - margin.right,
-             height = 600 - margin.top - margin.bottom;
+var marginworld = {top: 50, right: 20, bottom: 30, left: 30},
+             widthworld = 650 - marginworld.left - marginworld.right,
+             heightworld = 600 - marginworld.top - marginworld.bottom;
+
+// width and height of barchart
+var marginscatter = {top: 20, right: 30, bottom: 30, left: 60},
+    widthscatter = 600 - marginscatter.left - marginscatter.right,
+    heightscatter = 400 - marginscatter.top - marginscatter.bottom;
 
 var color = d3.scale.threshold()
     .domain([1150,1200,1290,1380,1450,1520,1550,1580,1650])
