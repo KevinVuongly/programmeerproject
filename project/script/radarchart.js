@@ -8,24 +8,6 @@
 //For a bit of extra information check the blog about it:
 //http://nbremer.blogspot.nl/2013/09/making-d3-radar-chart-look-bit-better.html
 
-var cfg = {
-    radius: 5,
-    w: 200,
-    h: 200,
-    factor: 1,
-    factorLegend: .85,
-    levels: 3,
-    maxValue: 0,
-    radians: 2 * Math.PI,
-    opacityArea: 0.5,
-    ToRight: 5,
-    TranslateX: 80,
-    TranslateY: 30,
-    ExtraWidthX: 100,
-    ExtraWidthY: 200,
-    color: d3.rgb(251, 106, 74)
-};
-
 var RadarChart = {
     draw: function(id, d, options) {
 

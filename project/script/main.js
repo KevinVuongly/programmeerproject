@@ -251,6 +251,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (i == color.domain().length - 1) { return 0; }
                 else { return 21; }
             })
+            .style("opacity", 0.8)
             .style("fill", color);
 
         // add text to the legend
@@ -327,6 +328,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             })
             .style("fill", function(d) { return color(pisaById2015[d.id]); })
+            .style("opacity", 0.8)
             .on("mouseover", function(d) {
                 tip.show(d)
 
