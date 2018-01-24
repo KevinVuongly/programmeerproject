@@ -80,8 +80,6 @@ document.addEventListener("DOMContentLoaded", function() {
         .append("div")
         .attr("id", "mbars")
 
-    var datapoints = ["Education spendings", "GDP per capita", "Teacher salaries"];
-
     var select = mbars.append("select")
       	.attr("class","select")
 
@@ -331,9 +329,16 @@ document.addEventListener("DOMContentLoaded", function() {
             .style("fill", function(d) { return color(pisaById2015[d.id]); })
             .on("mouseover", function(d) {
                 tip.show(d)
+
+                d3.select(this)
+                    .attr("r", 8);
+
             })
             .on("mouseout", function(d) {
                 tip.hide(d)
+
+                d3.select(this)
+                    .attr("r", 3);
             })
             .on("click", function(d) {
                 d3.select("#radarTitle")
@@ -367,13 +372,14 @@ document.addEventListener("DOMContentLoaded", function() {
                 RadarChart.draw("#chart", dradar, mycfg);
             });
 
-        // add title to the scatterplot
+        // add initial title to the scatterplot
         svgscatter.append("text")
+            .attr("class", "scatterTitle")
             .attr("x", (widthscatter / 2))
             .attr("y", 0 - (marginscatter.top / 2) + 10)
             .attr("text-anchor", "middle")
             .style("font-size", "24px")
-            .text("Education spendings");
+            .text(datapoints[0]);
 
         select.data(data.features)
             .on("change", function(d) {
@@ -384,6 +390,9 @@ document.addEventListener("DOMContentLoaded", function() {
                     y.domain(d3.extent(data.features, function(d)
                              { return d.Spendings; })).nice();
 
+                    d3.select(".scatterTitle")
+                        .text(datapoints[0]);
+
                     d3.select("#ylabel")
                         .text("Education spendings in millions($)");
                 }
@@ -391,12 +400,18 @@ document.addEventListener("DOMContentLoaded", function() {
                     y.domain(d3.extent(data.features, function(d)
                              { return d.GDP; })).nice();
 
+                    d3.select(".scatterTitle")
+                        .text(datapoints[1]);
+
                     d3.select("#ylabel")
-                        .text("GDP per capita($)")
+                        .text("GDP per capita($)");
                 }
                 else {
                     y.domain(d3.extent(data.features, function(d)
                              { return d.Salary; })).nice();
+
+                    d3.select(".scatterTitle")
+                        .text(datapoints[2]);
 
                     d3.select("#ylabel")
                         .text("Teacher salaries in annual earnings($)")
@@ -595,8 +610,8 @@ document.addEventListener("DOMContentLoaded", function() {
             .style("font-size", "26px")
     		.text("Click on a country");
 
-    	//Call function to draw the Radar chart
-    	//Will expect that data is in %'s
+    	// Call function to draw the Radar chart
+    	// Will expect that data is in %'s
     	RadarChart.draw("#chart", dradar, mycfg);
     }
 

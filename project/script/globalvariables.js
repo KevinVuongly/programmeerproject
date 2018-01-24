@@ -18,7 +18,7 @@ var format = d3.format(",");
 const w = 200,
 	  h = 200;
 
-//Data
+// data
 var dradar = [
 		  [
 			{axis:"GDP per resident",value:0},
@@ -30,7 +30,25 @@ var dradar = [
 		  ]
 		];
 
-//Options for the Radar chart, other than default
+        var cfg = {
+            radius: 5,
+            w: 200,
+            h: 200,
+            factor: 1,
+            factorLegend: .85,
+            levels: 3,
+            maxValue: 0,
+            radians: 2 * Math.PI,
+            opacityArea: 0.5,
+            ToRight: 5,
+            TranslateX: 80,
+            TranslateY: 30,
+            ExtraWidthX: 100,
+            ExtraWidthY: 200,
+            color: d3.rgb(0, 0, 0)
+        };
+
+// options for the Radar chart, other than default
 var mycfg = {
   w: w,
   h: h,
@@ -38,3 +56,5 @@ var mycfg = {
   levels: 2,
   ExtraWidthX: 200
 }
+
+var datapoints = ["Education spendings", "GDP per capita", "Teacher salaries"];

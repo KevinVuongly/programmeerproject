@@ -8,3 +8,7 @@
 .dot {
     stroke: #000;
 }
+
+.dot:hover {
+    stroke: #fff;
+}
