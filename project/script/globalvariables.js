@@ -30,23 +30,27 @@ var dradar = [
 		  ]
 		];
 
-        var cfg = {
-            radius: 5,
-            w: 200,
-            h: 200,
-            factor: 1,
-            factorLegend: .85,
-            levels: 3,
-            maxValue: 0,
-            radians: 2 * Math.PI,
-            opacityArea: 0.5,
-            ToRight: 5,
-            TranslateX: 80,
-            TranslateY: 30,
-            ExtraWidthX: 100,
-            ExtraWidthY: 200,
-            color: d3.rgb(0, 0, 0)
-        };
+var cfg = {
+    radius: 5,
+    w: 200,
+    h: 200,
+    factor: 1,
+    factorLegend: .85,
+    levels: 3,
+    maxValue: 0,
+    radians: 2 * Math.PI,
+    opacityArea: 0.5,
+    ToRight: 5,
+    TranslateX: 80,
+    TranslateY: 30,
+    ExtraWidthX: 100,
+    ExtraWidthY: 200,
+    color: d3.rgb(0, 0, 0)
+};
+
+var currentCountry = {
+    id: 0,
+};
 
 // options for the Radar chart, other than default
 var mycfg = {

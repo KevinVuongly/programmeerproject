@@ -79,6 +79,7 @@ document.addEventListener("DOMContentLoaded", function() {
     var mbars = d3.select("body")
         .append("div")
         .attr("id", "mbars")
+        .attr("class", "col-lg-6 col-md-6 col-sm-6 col-xs-12")
 
     var select = mbars.append("select")
       	.attr("class","select")
@@ -90,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // add svg element
     var svgscatter = mbars.append("div")
-        .attr("class", "col-lg-6 col-md-6 col-sm-6 col-xs-12")
+        .attr("class", "scatterplot")
         .append("svg")
         .attr("width", widthscatter + marginscatter.left + marginscatter.right)
         .attr("height", heightscatter + marginscatter.top + marginscatter.bottom)
@@ -230,6 +231,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
 
                 RadarChart.draw("#chart", dradar, mycfg);
+
+                currentCountry = {
+                    id: d.id,
+                };
             });
 
         // construct legend
@@ -372,6 +377,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
 
                 RadarChart.draw("#chart", dradar, mycfg);
+
+                currentCountry = {
+                    id: d.id,
+                };
             });
 
         // add initial title to the scatterplot
@@ -519,6 +528,22 @@ document.addEventListener("DOMContentLoaded", function() {
                     .transition()
                     .duration(250)
                     .call(yAxis);
+
+                cfg.color = color(pisaById2012[currentCountry.id]);
+                dradar[0][0].value = GDPById2012[currentCountry.id] / maxGDP[0];
+                dradar[0][1].value = salaryById2012[currentCountry.id] / maxSalary[0];
+                dradar[0][2].value = spendingsById2012[currentCountry.id] / maxSpending[0];
+                dradar[0][3].value = (scienceById2012[currentCountry.id] - minScience[0]) / (maxScience[0] - minScience[0]);
+                dradar[0][4].value = (readingsById2012[currentCountry.id] - minReading[0]) / (maxReading[0] - minReading[0]);
+                dradar[0][5].value = (mathById2012[currentCountry.id] - minMath[0]) / (maxMath[0] - minMath[0]);
+
+                for (i = 0; i < dradar[0].length; i++) {
+                    if (isNaN(dradar[0][i].value)) {
+                        dradar[0][i].value = 0;
+                    }
+                }
+
+                RadarChart.draw("#chart", dradar, mycfg);
             }
             else
             {
@@ -591,6 +616,22 @@ document.addEventListener("DOMContentLoaded", function() {
                 .transition()
                 .duration(250)
                 .call(yAxis);
+
+            cfg.color = color(pisaById2015[currentCountry.id]);
+            dradar[0][0].value = GDPById2015[currentCountry.id] / maxGDP[1];
+            dradar[0][1].value = salaryById2015[currentCountry.id] / maxSalary[1];
+            dradar[0][2].value = spendingsById2015[currentCountry.id] / maxSpending[1];
+            dradar[0][3].value = (scienceById2015[currentCountry.id] - minScience[1]) / (maxScience[1] - minScience[1]);
+            dradar[0][4].value = (readingsById2015[currentCountry.id] - minReading[1]) / (maxReading[1] - minReading[1]);
+            dradar[0][5].value = (mathById2015[currentCountry.id] - minMath[1]) / (maxMath[1] - minMath[1]);
+
+            for (i = 0; i < dradar[0].length; i++) {
+                if (isNaN(dradar[0][i].value)) {
+                    dradar[0][i].value = 0;
+                }
+            }
+
+            RadarChart.draw("#chart", dradar, mycfg);
             }
         });
 

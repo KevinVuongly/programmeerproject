@@ -26,3 +26,11 @@ the problem or keep each visualization in it's own js file and try to find a sol
 - Added dropdown for scatterplot
 - Had some issues with updating the y-axis, code needs lots of cleaning up to do, not written in functions yet
 - Chose to have all visualizations in a main js file, with functions in separate js files
+
+# Week 3 Day 3
+- Linked scatterplot with the radar chart
+- Didn't find any obstacles concerning the linked views
+
+# Week 3 Day 4
+- Linked radar chart with the slider, radar chart gets updated for the country that is currently visualized for
+- Had some issues with saving the country's information, decided to create a variable to save the country's id

@@ -12,3 +12,8 @@
 .dot:hover {
     stroke: #fff;
 }
+
+.scatterplot {
+    display: table;
+    margin: 0 auto;
+}
