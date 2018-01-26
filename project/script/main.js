@@ -309,7 +309,7 @@ document.addEventListener("DOMContentLoaded", function() {
             .enter().append("circle")
             .attr("class", "dot")
             .attr("r", function (d) {
-                if (isNaN(pisaById2015[d.id])) {
+                if (isNaN(d.Accumulated) || d.Spendings == 0) {
                     return 0;
                 }
                 else {
@@ -317,22 +317,22 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             })
             .attr("cx", function(d) {
-                if (isNaN(pisaById2015[d.id])) {
+                if (isNaN(d.Accumulated)) {
                     return 0;
                 }
                 else {
-                    return x(pisaById2015[d.id]);
+                    return x(d.Accumulated);
                 }
             })
             .attr("cy", function(d) {
-                if (isNaN(pisaById2015[d.id])) {
+                if (isNaN(d.Accumulated)) {
                     return 0;
                 }
                 else {
-                    return y(spendingsById2015[d.id]);
+                    return y(d.Spendings);
                 }
             })
-            .style("fill", function(d) { return color(pisaById2015[d.id]); })
+            .style("fill", function(d) { return color(d.Accumulated); })
             .style("opacity", 0.8)
             .on("mouseover", function(d) {
                 tip.show(d)
@@ -447,6 +447,32 @@ document.addEventListener("DOMContentLoaded", function() {
                             }
                         }
                     })
+                    .attr("r", function(d) {
+                        if (selectValue == datapoints[0]) {
+                            if (d.Spendings == 0 || isNaN(d.Accumulated)) {
+                                return 0;
+                            }
+                            else {
+                                return 3;
+                            }
+                        }
+                        else if (selectValue == datapoints[1]) {
+                            if (d.GDP == 0 || isNaN(d.Accumulated)) {
+                                return 0;
+                            }
+                            else {
+                                return 3;
+                            }
+                        }
+                        else {
+                            if (d.Salary == 0 || isNaN(d.Accumulated)) {
+                                return 0;
+                            }
+                            else {
+                                return 3;
+                            }
+                        }
+                    });
 
                 svgscatter.select(".y.axis")
                     .transition()
@@ -518,6 +544,32 @@ document.addEventListener("DOMContentLoaded", function() {
                             }
                         }
                     })
+                    .attr("r", function(d) {
+                        if (selectValue == datapoints[0]) {
+                            if (d.Spendings == 0 || isNaN(d.Accumulated)) {
+                                return 0;
+                            }
+                            else {
+                                return 3;
+                            }
+                        }
+                        else if (selectValue == datapoints[1]) {
+                            if (d.GDP == 0 || isNaN(d.Accumulated)) {
+                                return 0;
+                            }
+                            else {
+                                return 3;
+                            }
+                        }
+                        else {
+                            if (d.Salary == 0 || isNaN(d.Accumulated)) {
+                                return 0;
+                            }
+                            else {
+                                return 3;
+                            }
+                        }
+                    });
 
                 svgscatter.select(".x.axis")
                     .transition()
@@ -606,6 +658,32 @@ document.addEventListener("DOMContentLoaded", function() {
                         }
                     }
                 })
+                .attr("r", function(d) {
+                    if (selectValue == datapoints[0]) {
+                        if (d.Spendings == 0 || isNaN(d.Accumulated)) {
+                            return 0;
+                        }
+                        else {
+                            return 3;
+                        }
+                    }
+                    else if (selectValue == datapoints[1]) {
+                        if (d.GDP == 0 || isNaN(d.Accumulated)) {
+                            return 0;
+                        }
+                        else {
+                            return 3;
+                        }
+                    }
+                    else {
+                        if (d.Salary == 0 || isNaN(d.Accumulated)) {
+                            return 0;
+                        }
+                        else {
+                            return 3;
+                        }
+                    }
+                });
 
             svgscatter.select(".x.axis")
                 .transition()
