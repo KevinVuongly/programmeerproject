@@ -157,10 +157,16 @@ document.addEventListener("DOMContentLoaded", function() {
             d.Math = mathById2015[d.id];
         })
 
-        var maxGDP = [Math.max.apply(null, Object.values(GDPById2012)),
+        var minGDP = [Math.min.apply(null, Object.values(GDPById2012).filter(getMinimum)),
+                      Math.min.apply(null, Object.values(GDPById2015).filter(getMinimum))],
+            maxGDP = [Math.max.apply(null, Object.values(GDPById2012)),
                       Math.max.apply(null, Object.values(GDPById2015))],
+            minSalary = [Math.min.apply(null, Object.values(salaryById2012).filter(getMinimum)),
+                         Math.min.apply(null, Object.values(salaryById2015).filter(getMinimum))],
             maxSalary = [Math.max.apply(null, Object.values(salaryById2012)),
                          Math.max.apply(null, Object.values(salaryById2015))],
+            minSpending = [Math.min.apply(null, Object.values(spendingsById2012).filter(getMinimum)),
+                           Math.min.apply(null, Object.values(spendingsById2015).filter(getMinimum))],
             maxSpending = [Math.max.apply(null, Object.values(spendingsById2012)),
                            Math.max.apply(null, Object.values(spendingsById2015))],
             minScience = [Math.min.apply(null, Object.values(scienceById2012)),
@@ -207,25 +213,25 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 if (slider.value() <= 0.5) {
                     cfg.color = color(pisaById2012[d.id]);
-                    dradar[0][0].value = d.GDP / maxGDP[0];
-                    dradar[0][1].value = d.Salary / maxSalary[0];
-                    dradar[0][2].value = d.Spendings / maxSpending[0];
+                    dradar[0][0].value = (d.GDP - minGDP[0]) / (maxGDP[0] - minGDP[0]);
+                    dradar[0][1].value = (d.Salary - minSalary[0]) / (maxSalary[0] - minSalary[0]);
+                    dradar[0][2].value = (d.Spendings - minSpending[0]) / (maxSpending[0] - minSpending[0]);
                     dradar[0][3].value = (d.Science - minScience[0]) / (maxScience[0] - minScience[0]);
                     dradar[0][4].value = (d.Reading - minReading[0]) / (maxReading[0] - minReading[0]);
                     dradar[0][5].value = (d.Math - minMath[0]) / (maxMath[0] - minMath[0]);
                 }
                 else {
                     cfg.color = color(pisaById2015[d.id]);
-                    dradar[0][0].value = d.GDP / maxGDP[1];
-                    dradar[0][1].value = d.Salary / maxSalary[1];
-                    dradar[0][2].value = d.Spendings / maxSpending[1];
+                    dradar[0][0].value = (d.GDP - minGDP[1]) / (maxGDP[1] - minGDP[1]);
+                    dradar[0][1].value = (d.Salary - minSalary[1]) / (maxSalary[1] - minSalary[1]);
+                    dradar[0][2].value = (d.Spendings - minSpending[1]) / (maxSpending[1] - minSpending[1]);
                     dradar[0][3].value = (d.Science - minScience[1]) / (maxScience[1] - minScience[1]);
                     dradar[0][4].value = (d.Reading - minReading[1]) / (maxReading[1] - minReading[1]);
                     dradar[0][5].value = (d.Math - minMath[1]) / (maxMath[1] - minMath[1]);
                 }
 
                 for (i = 0; i < dradar[0].length; i++) {
-                    if (isNaN(dradar[0][i].value)) {
+                    if (dradar[0][i].value < 0 || isNaN(dradar[0][i].value)) {
                         dradar[0][i].value = 0;
                     }
                 }
@@ -243,7 +249,7 @@ document.addEventListener("DOMContentLoaded", function() {
             .enter().append("g")
             .attr("class", "legend")
             .attr("transform", function(d, i)
-            { return "translate(0," + Number(heightworld / 2 - 60 + i * 20) + ")"; });
+            { return "translate(0," + Number(heightworld / 2 + 100 - i * 20) + ")"; });
 
         // create rectangles for the colors of the legend
         legend.append("rect")
@@ -262,7 +268,7 @@ document.addEventListener("DOMContentLoaded", function() {
         // add text to the legend
         legend.append("text")
             .attr("x", widthworld - 23)
-            .attr("y", 0)
+            .attr("y", 21)
             .attr("dy", ".35em")
             .style("text-anchor", "end")
             .text(function(d) { return d; });
@@ -276,6 +282,20 @@ document.addEventListener("DOMContentLoaded", function() {
                  { return pisaById2015[d.id]; })).nice();
         y.domain(d3.extent(info2015, function(d)
                  { return spendingsById2015[d.id]; })).nice();
+
+        // initial regression line
+        var lg = calcLinear(info2015, "Accumulated", "Spendings",
+                            Number(d3.min(info2015, function(d) { return d.Accumulated})),
+                            maxSpending[1]);
+
+        svgscatter.append("line")
+	        .attr("class", "regression")
+            .attr("stroke-width", 2)
+            .attr("stroke", "black")
+	        .attr("x1", x(lg.ptA.x))
+	        .attr("y1", y(lg.ptA.y))
+	        .attr("x2", x(lg.ptB.x))
+	        .attr("y2", y(lg.ptB.y));
 
         // add x-axis
         svgscatter.append("g")
@@ -353,25 +373,25 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 if (slider.value() <= 0.5) {
                     cfg.color = color(pisaById2012[d.id]);
-                    dradar[0][0].value = d.GDP / maxGDP[0];
-                    dradar[0][1].value = d.Salary / maxSalary[0];
-                    dradar[0][2].value = d.Spendings / maxSpending[0];
+                    dradar[0][0].value = (d.GDP - minGDP[0]) / (maxGDP[0] - minGDP[0]);
+                    dradar[0][1].value = (d.Salary - minSalary[0]) / (maxSalary[0] - minSalary[0]);
+                    dradar[0][2].value = (d.Spendings - minSpending[0]) / (maxSpending[0] - minSpending[0]);
                     dradar[0][3].value = (d.Science - minScience[0]) / (maxScience[0] - minScience[0]);
                     dradar[0][4].value = (d.Reading - minReading[0]) / (maxReading[0] - minReading[0]);
                     dradar[0][5].value = (d.Math - minMath[0]) / (maxMath[0] - minMath[0]);
                 }
                 else {
                     cfg.color = color(pisaById2015[d.id]);
-                    dradar[0][0].value = d.GDP / maxGDP[1];
-                    dradar[0][1].value = d.Salary / maxSalary[1];
-                    dradar[0][2].value = d.Spendings / maxSpending[1];
+                    dradar[0][0].value = (d.GDP - minGDP[1]) / (maxGDP[1] - minGDP[1]);
+                    dradar[0][1].value = (d.Salary - minSalary[1]) / (maxSalary[1] - minSalary[1]);
+                    dradar[0][2].value = (d.Spendings - minSpending[1]) / (maxSpending[1] - minSpending[1]);
                     dradar[0][3].value = (d.Science - minScience[1]) / (maxScience[1] - minScience[1]);
                     dradar[0][4].value = (d.Reading - minReading[1]) / (maxReading[1] - minReading[1]);
                     dradar[0][5].value = (d.Math - minMath[1]) / (maxMath[1] - minMath[1]);
                 }
 
                 for (i = 0; i < dradar[0].length; i++) {
-                    if (isNaN(dradar[0][i].value)) {
+                    if (dradar[0][i].value < 0 || isNaN(dradar[0][i].value)) {
                         dradar[0][i].value = 0;
                     }
                 }
@@ -392,6 +412,7 @@ document.addEventListener("DOMContentLoaded", function() {
             .style("font-size", "24px")
             .text(datapoints[0]);
 
+        // update scatterplot according to dropdown
         select.data(data.features)
             .on("change", function(d) {
                 selectValue = d3.select("select")
@@ -406,6 +427,25 @@ document.addEventListener("DOMContentLoaded", function() {
 
                     d3.select("#ylabel")
                         .text("Education spendings in millions($)");
+
+                    if (slider.value() <= 0.5){
+                        var lg = calcLinear(info2012, "Accumulated", "Spendings",
+                                            Number(d3.min(info2012, function(d) { return d.Accumulated})),
+                                            maxSpending[0]);
+                    }
+                    else {
+                        var lg = calcLinear(info2015, "Accumulated", "Spendings",
+                                            Number(d3.min(info2015, function(d) { return d.Accumulated})),
+                                            maxSpending[1]);
+                    }
+
+                    d3.select(".regression")
+                        .transition()
+                        .duration(250)
+                        .attr("x1", x(lg.ptA.x))
+                        .attr("y1", y(lg.ptA.y))
+                        .attr("x2", x(lg.ptB.x))
+                        .attr("y2", y(lg.ptB.y));
                 }
                 else if (selectValue == datapoints[1]) {
                     y.domain(d3.extent(data.features, function(d)
@@ -416,6 +456,25 @@ document.addEventListener("DOMContentLoaded", function() {
 
                     d3.select("#ylabel")
                         .text("GDP per capita($)");
+
+                        if (slider.value() <= 0.5){
+                            var lg = calcLinear(info2012, "Accumulated", "GDP",
+                                                Number(d3.min(info2012, function(d) { return d.Accumulated})),
+                                                maxGDP[0]);
+                        }
+                        else {
+                            var lg = calcLinear(info2015, "Accumulated", "GDP",
+                                                Number(d3.min(info2015, function(d) { return d.Accumulated})),
+                                                maxGDP[1]);
+                        }
+
+                    d3.select(".regression")
+                        .transition()
+                        .duration(250)
+                        .attr("x1", x(lg.ptA.x))
+                        .attr("y1", y(lg.ptA.y))
+                        .attr("x2", x(lg.ptB.x))
+                        .attr("y2", y(lg.ptB.y));
                 }
                 else {
                     y.domain(d3.extent(data.features, function(d)
@@ -426,6 +485,33 @@ document.addEventListener("DOMContentLoaded", function() {
 
                     d3.select("#ylabel")
                         .text("Teacher salaries in annual earnings($)")
+
+                        if (slider.value() <= 0.5){
+                            var lg = calcLinear(info2012, "Accumulated", "Salary",
+                                                Number(d3.min(info2012, function(d) { return d.Accumulated})),
+                                                maxSalary[0]);
+                        }
+                        else {
+                            var lg = calcLinear(info2015, "Accumulated", "Salary",
+                                                Number(d3.min(info2015, function(d) { return d.Accumulated})),
+                                                maxSalary[1]);
+                        }
+
+
+                    if (isNaN(lg.ptA.y) || isNaN(lg.ptB.x)) {
+                        lg.ptA.x = 0
+                        lg.ptA.y = 0
+                        lg.ptB.x = 0
+                        lg.ptB.y = 0
+                    }
+
+                    d3.select(".regression")
+                        .transition()
+                        .duration(250)
+                        .attr("x1", x(lg.ptA.x))
+                        .attr("y1", y(lg.ptA.y))
+                        .attr("x2", x(lg.ptB.x))
+                        .attr("y2", y(lg.ptB.y));
                 }
 
                 d3.selectAll(".dot")
@@ -514,15 +600,42 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (selectValue == datapoints[0]) {
                     y.domain(d3.extent(data.features, function(d)
                              { return d.Spendings; })).nice();
+
+                    var lg = calcLinear(info2012, "Accumulated", "Spendings",
+                                        Number(d3.min(info2012, function(d) { return d.Accumulated})),
+                                        maxSpending[0]);
                 }
                 else if (selectValue == datapoints[1]) {
                     y.domain(d3.extent(data.features, function(d)
                              { return d.GDP; })).nice();
+
+                    var lg = calcLinear(info2012, "Accumulated", "GDP",
+                                        Number(d3.min(info2012, function(d) { return d.Accumulated})),
+                                        maxGDP[0]);
                 }
                 else {
                     y.domain(d3.extent(data.features, function(d)
                              { return d.Salary; })).nice();
+
+                    var lg = calcLinear(info2012, "Accumulated", "Salary",
+                                        Number(d3.min(info2012, function(d) { return d.Accumulated})),
+                                        maxSalary[0]);
                 }
+
+                if (isNaN(lg.ptA.y) || isNaN(lg.ptB.x)) {
+                    lg.ptA.x = 0
+                    lg.ptA.y = 0
+                    lg.ptB.x = 0
+                    lg.ptB.y = 0
+                }
+
+                d3.select(".regression")
+                    .transition()
+                    .duration(250)
+                    .attr("x1", x(lg.ptA.x))
+                    .attr("y1", y(lg.ptA.y))
+                    .attr("x2", x(lg.ptB.x))
+                    .attr("y2", y(lg.ptB.y));
 
                 d3.selectAll(".dot")
                     .data(data.features)
@@ -582,15 +695,15 @@ document.addEventListener("DOMContentLoaded", function() {
                     .call(yAxis);
 
                 cfg.color = color(pisaById2012[currentCountry.id]);
-                dradar[0][0].value = GDPById2012[currentCountry.id] / maxGDP[0];
-                dradar[0][1].value = salaryById2012[currentCountry.id] / maxSalary[0];
-                dradar[0][2].value = spendingsById2012[currentCountry.id] / maxSpending[0];
+                dradar[0][0].value = GDPById2012[currentCountry.id] / (maxGDP[0] - minGDP[0]);
+                dradar[0][1].value = salaryById2012[currentCountry.id] / (maxSalary[0] - minSalary[0]);
+                dradar[0][2].value = spendingsById2012[currentCountry.id] / (maxSpending[0] - minSpending[0]);
                 dradar[0][3].value = (scienceById2012[currentCountry.id] - minScience[0]) / (maxScience[0] - minScience[0]);
                 dradar[0][4].value = (readingsById2012[currentCountry.id] - minReading[0]) / (maxReading[0] - minReading[0]);
                 dradar[0][5].value = (mathById2012[currentCountry.id] - minMath[0]) / (maxMath[0] - minMath[0]);
 
                 for (i = 0; i < dradar[0].length; i++) {
-                    if (isNaN(dradar[0][i].value)) {
+                    if (dradar[0][i].value < 0 || isNaN(dradar[0][i].value)) {
                         dradar[0][i].value = 0;
                     }
                 }
@@ -628,15 +741,35 @@ document.addEventListener("DOMContentLoaded", function() {
             if (selectValue == datapoints[0]) {
                 y.domain(d3.extent(data.features, function(d)
                          { return d.Spendings; })).nice();
+
+                var lg = calcLinear(info2015, "Accumulated", "Spendings",
+                                    Number(d3.min(info2015, function(d) { return d.Accumulated})),
+                                    maxSpending[1]);
             }
             else if (selectValue == datapoints[1]) {
                 y.domain(d3.extent(data.features, function(d)
                          { return d.GDP; })).nice();
+
+                var lg = calcLinear(info2015, "Accumulated", "GDP",
+                                    Number(d3.min(info2015, function(d) { return d.Accumulated})),
+                                    maxGDP[1]);
             }
             else {
                 y.domain(d3.extent(data.features, function(d)
                          { return d.Salary; })).nice();
+
+                var lg = calcLinear(info2015, "Accumulated", "Salary",
+                                    Number(d3.min(info2015, function(d) { return d.Accumulated})),
+                                    maxSalary[1]);
             }
+
+            d3.select(".regression")
+                .transition()
+                .duration(250)
+                .attr("x1", x(lg.ptA.x))
+                .attr("y1", y(lg.ptA.y))
+                .attr("x2", x(lg.ptB.x))
+                .attr("y2", y(lg.ptB.y));
 
             d3.selectAll(".dot")
                 .data(data.features)
@@ -696,15 +829,15 @@ document.addEventListener("DOMContentLoaded", function() {
                 .call(yAxis);
 
             cfg.color = color(pisaById2015[currentCountry.id]);
-            dradar[0][0].value = GDPById2015[currentCountry.id] / maxGDP[1];
-            dradar[0][1].value = salaryById2015[currentCountry.id] / maxSalary[1];
-            dradar[0][2].value = spendingsById2015[currentCountry.id] / maxSpending[1];
+            dradar[0][0].value = GDPById2015[currentCountry.id] / (maxGDP[1] - minGDP[1]);
+            dradar[0][1].value = salaryById2015[currentCountry.id] / (maxSalary[1] - minSalary[1]);
+            dradar[0][2].value = spendingsById2015[currentCountry.id] / (maxSpending[1] - minSpending[1]);
             dradar[0][3].value = (scienceById2015[currentCountry.id] - minScience[1]) / (maxScience[1] - minScience[1]);
             dradar[0][4].value = (readingsById2015[currentCountry.id] - minReading[1]) / (maxReading[1] - minReading[1]);
             dradar[0][5].value = (mathById2015[currentCountry.id] - minMath[1]) / (maxMath[1] - minMath[1]);
 
             for (i = 0; i < dradar[0].length; i++) {
-                if (isNaN(dradar[0][i].value)) {
+                if (dradar[0][i].value < 0 || isNaN(dradar[0][i].value)) {
                     dradar[0][i].value = 0;
                 }
             }
