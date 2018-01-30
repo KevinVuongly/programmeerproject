@@ -1,7 +1,7 @@
 # Influences on the quality of education
 ## Kevin Vuong 10730141
 
-https://kevinvuongly.github.io/programmeerproject/project/index.html
+https://kevinvuongly.github.io/programmeerproject/project/templates/index.html
 
 ## Problem statement
 Every country differs from quality of education.
