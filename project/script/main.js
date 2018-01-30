@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     }
                 });
 
+    // set worldmap
     var svg = d3.select("body")
         .append("div")
         .attr("class", "col-lg-12 col-md-12 col-sm-12 col-xs-12");
@@ -58,22 +59,18 @@ document.addEventListener("DOMContentLoaded", function() {
         .style("font-size", "60px")
         .text("2015");
 
+    // set slider
     var svgslider = svg.append("div")
         .attr("class","slider")
         .append("svg")
         .attr("width", 150)
         .attr("height", 50);
 
-    // scale x
+    // initialize scatterplot
     var x = d3.scale.linear().range([0, widthscatter]);
-
-    // scale y
     var y = d3.scale.linear().range([heightscatter, 0]);
 
-    // add x-axis
     var xAxis = d3.svg.axis().scale(x).orient("bottom");
-
-    // add y-axis
     var yAxis = d3.svg.axis().scale(y).orient("left");
 
     var mbars = d3.select("body")
@@ -81,6 +78,7 @@ document.addEventListener("DOMContentLoaded", function() {
         .attr("id", "mbars")
         .attr("class", "col-lg-6 col-md-6 col-sm-6 col-xs-12")
 
+    // set dropdown for scatterplot
     var select = mbars.append("select")
       	.attr("class","select")
 
@@ -89,7 +87,6 @@ document.addEventListener("DOMContentLoaded", function() {
     	.append("option")
     	.text(function (d) { return d; });
 
-    // add svg element
     var svgscatter = mbars.append("div")
         .attr("class", "scatterplot")
         .append("svg")
@@ -180,7 +177,11 @@ document.addEventListener("DOMContentLoaded", function() {
             minMath = [Math.min.apply(null, Object.values(mathById2012)),
                        Math.min.apply(null, Object.values(mathById2015))],
             maxMath = [Math.max.apply(null, Object.values(mathById2012)),
-                       Math.max.apply(null, Object.values(mathById2015))];
+                       Math.max.apply(null, Object.values(mathById2015))],
+            minAccumulated = [Math.min.apply(null, Object.values(pisaById2012)),
+                              Math.min.apply(null, Object.values(pisaById2015))],
+            maxAccumulated = [Math.max.apply(null, Object.values(pisaById2012)),
+                              Math.max.apply(null, Object.values(pisaById2015))];
 
         g.selectAll("path")
             .data(data.features)
@@ -188,7 +189,6 @@ document.addEventListener("DOMContentLoaded", function() {
             .attr("d", path)
             .style("fill", function(d) { return color(pisaById2015[d.id]); })
             .style("opacity", 0.8)
-            // tooltips
             .style("stroke","black")
             .style("stroke-width", 0.7)
             .on("mouseover",function(d){
@@ -285,8 +285,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // initial regression line
         var lg = calcLinear(info2015, "Accumulated", "Spendings",
-                            Number(d3.min(info2015, function(d) { return d.Accumulated})),
-                            maxSpending[1]);
+                            minAccumulated[1],
+                            maxAccumulated[1]);
 
         svgscatter.append("line")
 	        .attr("class", "regression")
@@ -430,13 +430,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
                     if (slider.value() <= 0.5){
                         var lg = calcLinear(info2012, "Accumulated", "Spendings",
-                                            Number(d3.min(info2012, function(d) { return d.Accumulated})),
-                                            maxSpending[0]);
+                                            minAccumulated[0],
+                                            maxAccumulated[0]);
                     }
                     else {
                         var lg = calcLinear(info2015, "Accumulated", "Spendings",
-                                            Number(d3.min(info2015, function(d) { return d.Accumulated})),
-                                            maxSpending[1]);
+                                            minAccumulated[1],
+                                            maxAccumulated[1]);
                     }
 
                     d3.select(".regression")
@@ -459,13 +459,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
                         if (slider.value() <= 0.5){
                             var lg = calcLinear(info2012, "Accumulated", "GDP",
-                                                Number(d3.min(info2012, function(d) { return d.Accumulated})),
-                                                maxGDP[0]);
+                                                minAccumulated[0],
+                                                maxAccumulated[0]);
                         }
                         else {
                             var lg = calcLinear(info2015, "Accumulated", "GDP",
-                                                Number(d3.min(info2015, function(d) { return d.Accumulated})),
-                                                maxGDP[1]);
+                                                minAccumulated[1],
+                                                maxAccumulated[1]);
                         }
 
                     d3.select(".regression")
@@ -488,22 +488,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
                         if (slider.value() <= 0.5){
                             var lg = calcLinear(info2012, "Accumulated", "Salary",
-                                                Number(d3.min(info2012, function(d) { return d.Accumulated})),
-                                                maxSalary[0]);
+                                                minAccumulated[0],
+                                                maxAccumulated[0]);
                         }
                         else {
                             var lg = calcLinear(info2015, "Accumulated", "Salary",
-                                                Number(d3.min(info2015, function(d) { return d.Accumulated})),
-                                                maxSalary[1]);
+                                                minAccumulated[1],
+                                                maxAccumulated[1]);
                         }
-
-
-                    if (isNaN(lg.ptA.y) || isNaN(lg.ptB.x)) {
-                        lg.ptA.x = 0
-                        lg.ptA.y = 0
-                        lg.ptB.x = 0
-                        lg.ptB.y = 0
-                    }
 
                     d3.select(".regression")
                         .transition()
@@ -602,24 +594,24 @@ document.addEventListener("DOMContentLoaded", function() {
                              { return d.Spendings; })).nice();
 
                     var lg = calcLinear(info2012, "Accumulated", "Spendings",
-                                        Number(d3.min(info2012, function(d) { return d.Accumulated})),
-                                        maxSpending[0]);
+                                        minAccumulated[0],
+                                        maxAccumulated[0]);
                 }
                 else if (selectValue == datapoints[1]) {
                     y.domain(d3.extent(data.features, function(d)
                              { return d.GDP; })).nice();
 
                     var lg = calcLinear(info2012, "Accumulated", "GDP",
-                                        Number(d3.min(info2012, function(d) { return d.Accumulated})),
-                                        maxGDP[0]);
+                                        minAccumulated[0],
+                                        maxAccumulated[0]);
                 }
                 else {
                     y.domain(d3.extent(data.features, function(d)
                              { return d.Salary; })).nice();
 
                     var lg = calcLinear(info2012, "Accumulated", "Salary",
-                                        Number(d3.min(info2012, function(d) { return d.Accumulated})),
-                                        maxSalary[0]);
+                                        minAccumulated[0],
+                                        maxAccumulated[0]);
                 }
 
                 if (isNaN(lg.ptA.y) || isNaN(lg.ptB.x)) {
@@ -743,24 +735,24 @@ document.addEventListener("DOMContentLoaded", function() {
                          { return d.Spendings; })).nice();
 
                 var lg = calcLinear(info2015, "Accumulated", "Spendings",
-                                    Number(d3.min(info2015, function(d) { return d.Accumulated})),
-                                    maxSpending[1]);
+                                    minAccumulated[1],
+                                    maxAccumulated[1]);
             }
             else if (selectValue == datapoints[1]) {
                 y.domain(d3.extent(data.features, function(d)
                          { return d.GDP; })).nice();
 
                 var lg = calcLinear(info2015, "Accumulated", "GDP",
-                                    Number(d3.min(info2015, function(d) { return d.Accumulated})),
-                                    maxGDP[1]);
+                                    minAccumulated[1],
+                                    maxAccumulated[1]);
             }
             else {
                 y.domain(d3.extent(data.features, function(d)
                          { return d.Salary; })).nice();
 
                 var lg = calcLinear(info2015, "Accumulated", "Salary",
-                                    Number(d3.min(info2015, function(d) { return d.Accumulated})),
-                                    maxSalary[1]);
+                                    minAccumulated[1],
+                                    maxAccumulated[1]);
             }
 
             d3.select(".regression")

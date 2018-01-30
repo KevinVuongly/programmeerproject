@@ -2,13 +2,10 @@ function getMinimum(point) {
     return point > 0;
 }
 
-function calcLinear(data, x, y, minX, maxY){
-    /////////
-    //SLOPE//
-    /////////
+function calcLinear(data, x, y, minX, maxX){
 
-    // Get just the points
     var pts = [];
+
     data.forEach(function(d,i){
         var obj = {};
         obj.x = Number(d[x]);
@@ -20,13 +17,8 @@ function calcLinear(data, x, y, minX, maxY){
         }
     });
 
-    // Let n = the number of data points
     var n = pts.length
 
-    // Let a equal n times the summation of all x-values multiplied by their corresponding y-values
-    // Let b equal the sum of all x-values times the sum of all y-values
-    // Let c equal n times the sum of all squared x-values
-    // Let d equal the squared sum of all x-values
     var sum = 0;
     var xSum = 0;
     var ySum = 0;
@@ -44,34 +36,35 @@ function calcLinear(data, x, y, minX, maxY){
     var c = sumSq * n;
     var d = xSum * xSum;
 
-    // Plug the values that you calculated for a, b, c, and d into the following equation to calculate the slope
-    // slope = m = (a - b) / (c - d)
     var m = (a - b) / (c - d);
 
-    /////////////
-    //INTERCEPT//
-    /////////////
+    var b = (ySum - m * xSum) / n;
 
-    // Let e equal the sum of all y-values
-    var e = ySum;
+    var y1 = m * minX + b,
+        y2 = m * maxX + b;
 
-    // Let f equal the slope times the sum of all x-values
-    var f = m * xSum;
-
-    // Plug the values you have calculated for e and f into the following equation for the y-intercept
-    // y-intercept = b = (e - f) / n
-    var b = (e - f) / n;
-
-    // return an object of two points
-    // each point is an object with an x and y coordinate
-    return {
-        ptA : {
-            x: minX,
-            y: m * minX + b
-        },
-        ptB : {
-            y: maxY,
-            x: (maxY - b) / m
+    if (isNaN(y1) || isNaN(y2)) {
+        return {
+            ptA : {
+                x: 0,
+                y: 0
+            },
+            ptB : {
+                x: 0,
+                y: 0
+            }
+        }
+    }
+    else {
+        return {
+            ptA : {
+                x: minX,
+                y: y1
+            },
+            ptB : {
+                x: maxX,
+                y: y2
+            }
         }
     }
 }

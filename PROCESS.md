@@ -34,3 +34,7 @@ the problem or keep each visualization in it's own js file and try to find a sol
 # Week 3 Day 4
 - Linked radar chart with the slider, radar chart gets updated for the country that is currently visualized for
 - Had some issues with saving the country's information, decided to create a variable to save the country's id
+
+# Week 4 Day 1
+- Added updateable regression line to scatterplot, I decided to add this to substantiate my story
+- Had some issues with holes in data, rewritten the function to fix this issue
