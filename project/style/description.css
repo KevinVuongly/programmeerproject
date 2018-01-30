@@ -1,0 +1,24 @@
+/*  Name: Kevin Vuong
+ *  Student number: 10730141
+ */
+
+html, body {
+  height: 100%;
+}
+
+body {
+    font: 14px sans-serif;
+    margin: auto;
+    position: relative;
+
+    /* This centers our sketch horizontally. */
+    justify-content: center;
+
+    /* This centers our sketch vertically. */
+    align-items: center;
+
+}
+
+#title, #student {
+    text-align: center;
+}

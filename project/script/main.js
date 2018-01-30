@@ -101,9 +101,9 @@ document.addEventListener("DOMContentLoaded", function() {
     worldmap.call(zoom.event);
 
     queue()
-        .defer(d3.json, "data/world_countries.json")
-        .defer(d3.csv, "data/2015.csv")
-        .defer(d3.csv, "data/2012.csv")
+        .defer(d3.json, "../data/world_countries.json")
+        .defer(d3.csv, "../data/2015.csv")
+        .defer(d3.csv, "../data/2012.csv")
         .await(ready);
 
     var pisaById2015 = [],
