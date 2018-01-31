@@ -227,7 +227,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     Math: d.Math
                 };
 
-                updateValues("#radarTitle", currentCountry);
+                updateRadarValues("#radarTitle", currentCountry);
 
                 radarChart.draw("#chart", dradar, mycfg);
             });
@@ -376,7 +376,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     Math: d.Math
                 };
 
-                updateValues("#radarTitle", currentCountry);
+                updateRadarValues("#radarTitle", currentCountry);
 
                 radarChart.draw("#chart", dradar, mycfg);
             });
@@ -506,7 +506,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             currentCountry.slider = slider.value();
 
-            updateValues("#radarTitle", currentCountry);
+            updateRadarValues("#radarTitle", currentCountry);
 
             d3.selectAll("path")
                 .data(data.features)
@@ -611,7 +611,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    function updateValues(id, country) {
+    function updateRadarValues(id, country) {
         d3.select(id)
             .text(country.name);
 
