@@ -8,8 +8,8 @@
 //For a bit of extra information check the blog about it:
 //http://nbremer.blogspot.nl/2013/09/making-d3-radar-chart-look-bit-better.html
 
-const w = 200,
-	  h = 200;
+const w = 380,
+	  h = 380;
 
 // data
 var dradar = [
