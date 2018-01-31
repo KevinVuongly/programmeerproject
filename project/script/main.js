@@ -119,7 +119,8 @@ document.addEventListener("DOMContentLoaded", function() {
         .attr("width", widthscatter + marginscatter.left + marginscatter.right)
         .attr("height", heightscatter + marginscatter.top + marginscatter.bottom)
         .append("g")
-        .attr("transform", "translate(" + marginscatter.left + "," + marginscatter.top + ")");
+        .attr("transform", "translate(" + marginscatter.left
+               + "," + marginscatter.top + ")");
 
     svgscatter.call(tip);
     worldmap.call(tip);
@@ -189,6 +190,7 @@ document.addEventListener("DOMContentLoaded", function() {
             .data(data.features)
         .enter().append("path")
             .attr("d", path)
+            .attr("class", "country")
             .style("fill", function(d) { return color(pisaById2015[d.id]); })
             .style("opacity", 0.8)
             .style("stroke","black")
@@ -210,6 +212,10 @@ document.addEventListener("DOMContentLoaded", function() {
                     .style("stroke-width", 0.7);
             })
             .on("click", function(d) {
+
+                $('html,body').animate({
+                    scrollTop: $("#chart").offset().top},
+                    'slow');
 
                 updateData(data.features, slider.value());
 
@@ -433,7 +439,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     rangeRegression.y = "Salary";
                 }
 
-                var lg = calcLinear(year, rangeRegression);
+                lg = calcLinear(year, rangeRegression);
 
                 line.ptA = lg.ptA;
                 line.ptB = lg.ptB;
@@ -541,7 +547,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 rangeRegression.y = "Salary";
             }
 
-            var lg = calcLinear(year, rangeRegression);
+            lg = calcLinear(year, rangeRegression);
 
             line.ptA = lg.ptA;
             line.ptB = lg.ptB;
@@ -582,8 +588,6 @@ document.addEventListener("DOMContentLoaded", function() {
             .style("font-size", "26px")
     		.text("Click on a country");
 
-    	// Call function to draw the Radar chart
-    	// Will expect that data is in %'s
     	radarChart.draw("#chart", dradar, mycfg);
     }
 
@@ -627,7 +631,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         else {
             cfg.color = color(country.color2015);
-
             dradar[0][0].value = (country.GDP - ranges.minGDP[1]) / (ranges.maxGDP[1] - ranges.minGDP[1]);
             dradar[0][1].value = (country.Salary - ranges.minSalary[1]) / (ranges.maxSalary[1] - ranges.minSalary[1]);
             dradar[0][2].value = (country.Spendings - ranges.minSpendings[1]) / (ranges.maxSpendings[1] - ranges.minSpendings[1]);
