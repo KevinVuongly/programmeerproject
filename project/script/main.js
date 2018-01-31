@@ -208,28 +208,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     .style("stroke-width", 0.7);
             })
             .on("click", function(d) {
-                if (slider.value() <= 0.5){
-                    data.features.forEach(function(d) {
-                        d.Accumulated = pisaById2012[d.id];
-                        d.GDP = GDPById2012[d.id];
-                        d.Spendings = spendingsById2012[d.id];
-                        d.Salary = salaryById2012[d.id];
-                        d.Reading = readingsById2012[d.id];
-                        d.Science = scienceById2012[d.id];
-                        d.Math = mathById2012[d.id];
-                    })
-                }
-                else {
-                    data.features.forEach(function(d) {
-                        d.Accumulated = pisaById2015[d.id];
-                        d.GDP = GDPById2015[d.id];
-                        d.Spendings = spendingsById2015[d.id];
-                        d.Salary = salaryById2015[d.id];
-                        d.Reading = readingsById2015[d.id];
-                        d.Science = scienceById2015[d.id];
-                        d.Math = mathById2015[d.id];
-                    })
-                }
+                updateData(data.features, slider.value());
 
                 updateValues("#radarTitle", d.properties.name, slider.value(),
                                         pisaById2012[d.id], pisaById2015[d.id],
@@ -371,28 +350,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     .attr("r", 3);
             })
             .on("click", function(d) {
-                if (slider.value() <= 0.5){
-                    data.features.forEach(function(d) {
-                        d.Accumulated = pisaById2012[d.id];
-                        d.GDP = GDPById2012[d.id];
-                        d.Spendings = spendingsById2012[d.id];
-                        d.Salary = salaryById2012[d.id];
-                        d.Reading = readingsById2012[d.id];
-                        d.Science = scienceById2012[d.id];
-                        d.Math = mathById2012[d.id];
-                    })
-                }
-                else {
-                    data.features.forEach(function(d) {
-                        d.Accumulated = pisaById2015[d.id];
-                        d.GDP = GDPById2015[d.id];
-                        d.Spendings = spendingsById2015[d.id];
-                        d.Salary = salaryById2015[d.id];
-                        d.Reading = readingsById2015[d.id];
-                        d.Science = scienceById2015[d.id];
-                        d.Math = mathById2015[d.id];
-                    })
-                }
+                updateData(data.features, slider.value());
 
                 updateValues("#radarTitle", d.properties.name, slider.value(),
                                         pisaById2012[d.id], pisaById2015[d.id],
@@ -612,6 +570,30 @@ document.addEventListener("DOMContentLoaded", function() {
     	// Call function to draw the Radar chart
     	// Will expect that data is in %'s
     	radarChart.draw("#chart", dradar, mycfg);
+    }
+    function updateData(data, sliderValue) {
+        if (sliderValue <= 0.5){
+            data.forEach(function(d) {
+                d.Accumulated = pisaById2012[d.id];
+                d.GDP = GDPById2012[d.id];
+                d.Spendings = spendingsById2012[d.id];
+                d.Salary = salaryById2012[d.id];
+                d.Reading = readingsById2012[d.id];
+                d.Science = scienceById2012[d.id];
+                d.Math = mathById2012[d.id];
+            })
+        }
+        else {
+            data.forEach(function(d) {
+                d.Accumulated = pisaById2015[d.id];
+                d.GDP = GDPById2015[d.id];
+                d.Spendings = spendingsById2015[d.id];
+                d.Salary = salaryById2015[d.id];
+                d.Reading = readingsById2015[d.id];
+                d.Science = scienceById2015[d.id];
+                d.Math = mathById2015[d.id];
+            })
+        }
     }
 
     function updateValues(id, name, sliderValue, countryColor2012, countryColor2015, d) {
