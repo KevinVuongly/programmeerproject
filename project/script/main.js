@@ -210,6 +210,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     .style("stroke-width", 0.7);
             })
             .on("click", function(d) {
+
                 updateData(data.features, slider.value());
 
                 // remember country, needed when updating radarchart for slider

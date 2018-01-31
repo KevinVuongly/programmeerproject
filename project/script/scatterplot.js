@@ -1,4 +1,4 @@
-var marginscatter = {top: 50, right: 30, bottom: 30, left: 60},
+var marginscatter = {top: 70, right: 30, bottom: 30, left: 60},
     widthscatter = 600 - marginscatter.left - marginscatter.right,
     heightscatter = 400 - marginscatter.top - marginscatter.bottom;
 
