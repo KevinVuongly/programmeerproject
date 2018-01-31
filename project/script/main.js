@@ -432,9 +432,6 @@ document.addEventListener("DOMContentLoaded", function() {
                         .text("Education spendings in millions($)");
 
                     dropdown = "Spendings";
-
-
-
                 }
                 else if (selectValue == datapoints[1]) {
                     y.domain(d3.extent(data.features, function(d)
@@ -467,51 +464,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 drawRegression(".regression", x, y, lg);
 
-                d3.selectAll(".dot")
-                    .transition()
-                    .duration(250)
-                    .attr("cy", function(d) {
-                        if (isNaN(d.Accumulated)) {
-                            return 0;
-                        }
-                        else {
-                            if (selectValue == datapoints[0]) {
-                                return y(d.Spendings);
-                            }
-                            else if (selectValue == datapoints[1]) {
-                                return y(d.GDP);
-                            }
-                            else {
-                                return y(d.Salary);
-                            }
-                        }
-                    })
-                    .attr("r", function(d) {
-                        if (selectValue == datapoints[0]) {
-                            if (d.Spendings == 0 || isNaN(d.Accumulated)) {
-                                return 0;
-                            }
-                            else {
-                                return 3;
-                            }
-                        }
-                        else if (selectValue == datapoints[1]) {
-                            if (d.GDP == 0 || isNaN(d.Accumulated)) {
-                                return 0;
-                            }
-                            else {
-                                return 3;
-                            }
-                        }
-                        else {
-                            if (d.Salary == 0 || isNaN(d.Accumulated)) {
-                                return 0;
-                            }
-                            else {
-                                return 3;
-                            }
-                        }
-                    });
+                updateScatter(".dot", x, y, d);
 
                 svgscatter.select(".y.axis")
                     .transition()
@@ -623,52 +576,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             drawRegression(".regression", x, y, lg);
 
-            d3.selectAll(".dot")
-                .data(data.features)
-                .transition()
-                .duration(250)
-                .attr("cy", function(d) {
-                    if (isNaN(d.Accumulated)) {
-                        return 0;
-                    }
-                    else {
-                        if (selectValue == datapoints[0]) {
-                            return y(d.Spendings);
-                        }
-                        else if (selectValue == datapoints[1]) {
-                            return y(d.GDP);
-                        }
-                        else {
-                            return y(d.Salary);
-                        }
-                    }
-                })
-                .attr("r", function(d) {
-                    if (selectValue == datapoints[0]) {
-                        if (d.Spendings == 0 || isNaN(d.Accumulated)) {
-                            return 0;
-                        }
-                        else {
-                            return 3;
-                        }
-                    }
-                    else if (selectValue == datapoints[1]) {
-                        if (d.GDP == 0 || isNaN(d.Accumulated)) {
-                            return 0;
-                        }
-                        else {
-                            return 3;
-                        }
-                    }
-                    else {
-                        if (d.Salary == 0 || isNaN(d.Accumulated)) {
-                            return 0;
-                        }
-                        else {
-                            return 3;
-                        }
-                    }
-                });
+            updateScatter(".dot", x, y, data.features);
 
             svgscatter.select(".x.axis")
                 .transition()

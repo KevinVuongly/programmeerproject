@@ -84,3 +84,51 @@ function drawRegression(id, x, y, points) {
         .attr("x2", x(points.ptB.x))
         .attr("y2", y(points.ptB.y));
 }
+
+function updateScatter(id, x, y, d) {
+    d3.selectAll(id)
+        .transition()
+        .duration(250)
+        .attr("cy", function(d) {
+            if (isNaN(d.Accumulated)) {
+                return 0;
+            }
+            else {
+                if (selectValue == datapoints[0]) {
+                    return y(d.Spendings);
+                }
+                else if (selectValue == datapoints[1]) {
+                    return y(d.GDP);
+                }
+                else {
+                    return y(d.Salary);
+                }
+            }
+        })
+        .attr("r", function(d) {
+            if (selectValue == datapoints[0]) {
+                if (d.Spendings == 0 || isNaN(d.Accumulated)) {
+                    return 0;
+                }
+                else {
+                    return 3;
+                }
+            }
+            else if (selectValue == datapoints[1]) {
+                if (d.GDP == 0 || isNaN(d.Accumulated)) {
+                    return 0;
+                }
+                else {
+                    return 3;
+                }
+            }
+            else {
+                if (d.Salary == 0 || isNaN(d.Accumulated)) {
+                    return 0;
+                }
+                else {
+                    return 3;
+                }
+            }
+        });
+}
