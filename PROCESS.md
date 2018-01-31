@@ -38,3 +38,7 @@ the problem or keep each visualization in it's own js file and try to find a sol
 # Week 4 Day 1
 - Added updateable regression line to scatterplot, I decided to add this to substantiate my story
 - Had some issues with holes in data, rewritten the function to fix this issue
+
+# Week 4 Day 2
+- Worked on code quality, lines of duplicate code rewritten to update functions
+- To keep interfaces small, rewrote variables into objects

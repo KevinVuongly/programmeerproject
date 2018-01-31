@@ -75,14 +75,14 @@ function calcLinear(data, x, y, minX, maxX){
     }
 }
 
-function drawRegression(id, x, y, points) {
+function drawRegression(id, points) {
     d3.select(id)
         .transition()
         .duration(250)
-        .attr("x1", x(points.ptA.x))
-        .attr("y1", y(points.ptA.y))
-        .attr("x2", x(points.ptB.x))
-        .attr("y2", y(points.ptB.y));
+        .attr("x1", points.x(points.ptA.x))
+        .attr("y1", points.y(points.ptA.y))
+        .attr("x2", points.x(points.ptB.x))
+        .attr("y2", points.y(points.ptB.y));
 }
 
 function updateScatter(id, x, y, d) {

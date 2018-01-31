@@ -264,6 +264,13 @@ document.addEventListener("DOMContentLoaded", function() {
         var year = info2015,
             yearPoint = 1;
 
+        var line = {
+            x: x,
+            y: y,
+            ptA: 0,
+            ptB: 0
+        }
+
         var lg = calcLinear(year, "Accumulated", "Spendings",
                             ranges.minAccumulated[yearPoint],
                             ranges.maxAccumulated[yearPoint]);
@@ -416,7 +423,10 @@ document.addEventListener("DOMContentLoaded", function() {
                                     ranges.minAccumulated[yearPoint],
                                     ranges.maxAccumulated[yearPoint]);
 
-                drawRegression(".regression", x, y, lg);
+                line.ptA = lg.ptA;
+                line.ptB = lg.ptB;
+
+                drawRegression(".regression", line);
 
                 updateScatter(".dot", x, y, d);
 
@@ -523,7 +533,10 @@ document.addEventListener("DOMContentLoaded", function() {
                                 ranges.minAccumulated[yearPoint],
                                 ranges.maxAccumulated[yearPoint]);
 
-            drawRegression(".regression", x, y, lg);
+            line.ptA = lg.ptA;
+            line.ptB = lg.ptB;
+
+            drawRegression(".regression", line);
 
             updateScatter(".dot", x, y, data.features);
 
