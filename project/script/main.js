@@ -8,12 +8,26 @@ var color = d3.scale.threshold()
             "rgb(203,24,29)", "rgb(239,59,44)", "rgb(251,106,74)",
             "rgb(252,146,114)", "rgb(252,187,161)", "rgb(254,224,210)"]);
 
-var format = d3.format(",");
+var pisaById2015 = [],
+    pisaById2012 = [],
+    GDPById2015 = [],
+    GDPById2012 = [],
+    spendingsById2015 = [],
+    spendingsById2012 = [],
+    salaryById2015 = [],
+    salaryById2012 = [],
+    readingsById2015 = [],
+    readingsById2012 = [],
+    scienceById2015 = [],
+    scienceById2012 = [],
+    mathById2015 = [],
+    mathById2012 = [];
 
 document.addEventListener("DOMContentLoaded", function() {
 
     // Set tooltips
-    var tip = d3.tip()
+    var format = d3.format(","),
+        tip = d3.tip()
                 .attr('class', 'd3-tip')
                 .offset([-10, 0])
                 .html(function(d) {
@@ -118,21 +132,6 @@ document.addEventListener("DOMContentLoaded", function() {
         .defer(d3.csv, "../data/2012.csv")
         .await(ready);
 
-    var pisaById2015 = [],
-        pisaById2012 = [],
-        GDPById2015 = [],
-        GDPById2012 = [],
-        spendingsById2015 = [],
-        spendingsById2012 = [],
-        salaryById2015 = [],
-        salaryById2012 = [],
-        readingsById2015 = [],
-        readingsById2012 = [],
-        scienceById2015 = [],
-        scienceById2012 = [],
-        mathById2015 = [],
-        mathById2012 = [];
-
     function ready(error, data, info2015, info2012) {
         if (error) throw error;
 
@@ -156,15 +155,15 @@ document.addEventListener("DOMContentLoaded", function() {
              mathById2012[d.id] = +d.Math;
          })
 
-        data.features.forEach(function(d) {
-            d.Accumulated = pisaById2015[d.id];
-            d.GDP = GDPById2015[d.id];
-            d.Spendings = spendingsById2015[d.id];
-            d.Salary = salaryById2015[d.id];
-            d.Reading = readingsById2015[d.id];
-            d.Science = scienceById2015[d.id];
-            d.Math = mathById2015[d.id];
-        })
+         data.features.forEach(function(d) {
+             d.Accumulated = pisaById2015[d.id];
+             d.GDP = GDPById2015[d.id];
+             d.Spendings = spendingsById2015[d.id];
+             d.Salary = salaryById2015[d.id];
+             d.Reading = readingsById2015[d.id];
+             d.Science = scienceById2015[d.id];
+             d.Math = mathById2015[d.id];
+         })
 
         ranges = {
             minGDP: radarChart.createMin(GDPById2012, GDPById2015),
@@ -571,6 +570,7 @@ document.addEventListener("DOMContentLoaded", function() {
     	// Will expect that data is in %'s
     	radarChart.draw("#chart", dradar, mycfg);
     }
+
     function updateData(data, sliderValue) {
         if (sliderValue <= 0.5){
             data.forEach(function(d) {
@@ -631,6 +631,4 @@ document.addEventListener("DOMContentLoaded", function() {
         g.attr("transform",
         "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
     }
-
-    d3.select(self.frameElement).style("height", heightworld + "px");
 })
