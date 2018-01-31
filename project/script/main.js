@@ -1,3 +1,15 @@
+var marginworld = {top: 50, right: 20, bottom: 30, left: 30},
+             widthworld = 650 - marginworld.left - marginworld.right,
+             heightworld = 600 - marginworld.top - marginworld.bottom;
+
+var color = d3.scale.threshold()
+    .domain([1150,1200,1290,1380,1450,1520,1550,1580,1650])
+    .range(["rgb(72,0,0)", "rgb(103,0,13)", "rgb(165,15,21)",
+            "rgb(203,24,29)", "rgb(239,59,44)", "rgb(251,106,74)",
+            "rgb(252,146,114)", "rgb(252,187,161)", "rgb(254,224,210)"]);
+
+var format = d3.format(",");
+
 document.addEventListener("DOMContentLoaded", function() {
 
     // Set tooltips
@@ -154,34 +166,22 @@ document.addEventListener("DOMContentLoaded", function() {
             d.Math = mathById2015[d.id];
         })
 
-        var minGDP = [Math.min.apply(null, Object.values(GDPById2012).filter(getMinimum)),
-                      Math.min.apply(null, Object.values(GDPById2015).filter(getMinimum))],
-            maxGDP = [Math.max.apply(null, Object.values(GDPById2012)),
-                      Math.max.apply(null, Object.values(GDPById2015))],
-            minSalary = [Math.min.apply(null, Object.values(salaryById2012).filter(getMinimum)),
-                         Math.min.apply(null, Object.values(salaryById2015).filter(getMinimum))],
-            maxSalary = [Math.max.apply(null, Object.values(salaryById2012)),
-                         Math.max.apply(null, Object.values(salaryById2015))],
-            minSpending = [Math.min.apply(null, Object.values(spendingsById2012).filter(getMinimum)),
-                           Math.min.apply(null, Object.values(spendingsById2015).filter(getMinimum))],
-            maxSpending = [Math.max.apply(null, Object.values(spendingsById2012)),
-                           Math.max.apply(null, Object.values(spendingsById2015))],
-            minScience = [Math.min.apply(null, Object.values(scienceById2012)),
-                          Math.min.apply(null, Object.values(scienceById2015))],
-            maxScience = [Math.max.apply(null, Object.values(scienceById2012)),
-                          Math.max.apply(null, Object.values(scienceById2015))],
-            minReading = [Math.min.apply(null, Object.values(readingsById2012)),
-                          Math.min.apply(null, Object.values(readingsById2015))],
-            maxReading = [Math.max.apply(null, Object.values(readingsById2012)),
-                          Math.max.apply(null, Object.values(readingsById2015))],
-            minMath = [Math.min.apply(null, Object.values(mathById2012)),
-                       Math.min.apply(null, Object.values(mathById2015))],
-            maxMath = [Math.max.apply(null, Object.values(mathById2012)),
-                       Math.max.apply(null, Object.values(mathById2015))],
-            minAccumulated = [Math.min.apply(null, Object.values(pisaById2012)),
-                              Math.min.apply(null, Object.values(pisaById2015))],
-            maxAccumulated = [Math.max.apply(null, Object.values(pisaById2012)),
-                              Math.max.apply(null, Object.values(pisaById2015))];
+        var ranges = {
+            minGDP: radarChart.createMin(GDPById2012, GDPById2015),
+            maxGDP: radarChart.createMax(GDPById2012, GDPById2015),
+            minSalary: radarChart.createMin(salaryById2012, salaryById2015),
+            maxSalary: radarChart.createMax(salaryById2012, salaryById2015),
+            minSpendings: radarChart.createMin(spendingsById2012, spendingsById2015),
+            maxSpendings: radarChart.createMax(spendingsById2012, spendingsById2015),
+            minScience: radarChart.createMin(scienceById2012, scienceById2015),
+            maxScience: radarChart.createMax(scienceById2012, scienceById2015),
+            minReading: radarChart.createMin(readingsById2012, readingsById2015),
+            maxReading: radarChart.createMax(readingsById2012, readingsById2015),
+            minMath: radarChart.createMin(mathById2012, mathById2015),
+            maxMath: radarChart.createMax(mathById2012, mathById2015),
+            minAccumulated: radarChart.createMin(pisaById2012, pisaById2015),
+            maxAccumulated: radarChart.createMax(pisaById2012, pisaById2015)
+        }
 
         g.selectAll("path")
             .data(data.features)
@@ -208,38 +208,38 @@ document.addEventListener("DOMContentLoaded", function() {
                     .style("stroke-width", 0.7);
             })
             .on("click", function(d) {
-                d3.select("#radarTitle")
-                    .text(d.properties.name);
-
-                if (slider.value() <= 0.5) {
-                    cfg.color = color(pisaById2012[d.id]);
-                    dradar[0][0].value = (d.GDP - minGDP[0]) / (maxGDP[0] - minGDP[0]);
-                    dradar[0][1].value = (d.Salary - minSalary[0]) / (maxSalary[0] - minSalary[0]);
-                    dradar[0][2].value = (d.Spendings - minSpending[0]) / (maxSpending[0] - minSpending[0]);
-                    dradar[0][3].value = (d.Science - minScience[0]) / (maxScience[0] - minScience[0]);
-                    dradar[0][4].value = (d.Reading - minReading[0]) / (maxReading[0] - minReading[0]);
-                    dradar[0][5].value = (d.Math - minMath[0]) / (maxMath[0] - minMath[0]);
+                if (slider.value() <= 0.5){
+                    data.features.forEach(function(d) {
+                        d.Accumulated = pisaById2012[d.id];
+                        d.GDP = GDPById2012[d.id];
+                        d.Spendings = spendingsById2012[d.id];
+                        d.Salary = salaryById2012[d.id];
+                        d.Reading = readingsById2012[d.id];
+                        d.Science = scienceById2012[d.id];
+                        d.Math = mathById2012[d.id];
+                    })
                 }
                 else {
-                    cfg.color = color(pisaById2015[d.id]);
-                    dradar[0][0].value = (d.GDP - minGDP[1]) / (maxGDP[1] - minGDP[1]);
-                    dradar[0][1].value = (d.Salary - minSalary[1]) / (maxSalary[1] - minSalary[1]);
-                    dradar[0][2].value = (d.Spendings - minSpending[1]) / (maxSpending[1] - minSpending[1]);
-                    dradar[0][3].value = (d.Science - minScience[1]) / (maxScience[1] - minScience[1]);
-                    dradar[0][4].value = (d.Reading - minReading[1]) / (maxReading[1] - minReading[1]);
-                    dradar[0][5].value = (d.Math - minMath[1]) / (maxMath[1] - minMath[1]);
+                    data.features.forEach(function(d) {
+                        d.Accumulated = pisaById2015[d.id];
+                        d.GDP = GDPById2015[d.id];
+                        d.Spendings = spendingsById2015[d.id];
+                        d.Salary = salaryById2015[d.id];
+                        d.Reading = readingsById2015[d.id];
+                        d.Science = scienceById2015[d.id];
+                        d.Math = mathById2015[d.id];
+                    })
                 }
 
-                for (i = 0; i < dradar[0].length; i++) {
-                    if (dradar[0][i].value < 0 || isNaN(dradar[0][i].value)) {
-                        dradar[0][i].value = 0;
-                    }
-                }
+                radarChart.updateValues("#radarTitle", d.properties.name, slider.value(),
+                                        pisaById2012[d.id], pisaById2015[d.id],
+                                        d, ranges);
 
-                RadarChart.draw("#chart", dradar, mycfg);
+                radarChart.draw("#chart", dradar, mycfg);
 
                 currentCountry = {
                     id: d.id,
+                    name: d.properties.name
                 };
             });
 
@@ -284,9 +284,12 @@ document.addEventListener("DOMContentLoaded", function() {
                  { return spendingsById2015[d.id]; })).nice();
 
         // initial regression line
-        var lg = calcLinear(info2015, "Accumulated", "Spendings",
-                            minAccumulated[1],
-                            maxAccumulated[1]);
+        var year = info2015,
+            yearPoint = 1;
+
+        var lg = calcLinear(year, "Accumulated", "Spendings",
+                            ranges.minAccumulated[yearPoint],
+                            ranges.maxAccumulated[yearPoint]);
 
         svgscatter.append("line")
 	        .attr("class", "regression")
@@ -368,38 +371,38 @@ document.addEventListener("DOMContentLoaded", function() {
                     .attr("r", 3);
             })
             .on("click", function(d) {
-                d3.select("#radarTitle")
-                    .text(d.properties.name);
-
-                if (slider.value() <= 0.5) {
-                    cfg.color = color(pisaById2012[d.id]);
-                    dradar[0][0].value = (d.GDP - minGDP[0]) / (maxGDP[0] - minGDP[0]);
-                    dradar[0][1].value = (d.Salary - minSalary[0]) / (maxSalary[0] - minSalary[0]);
-                    dradar[0][2].value = (d.Spendings - minSpending[0]) / (maxSpending[0] - minSpending[0]);
-                    dradar[0][3].value = (d.Science - minScience[0]) / (maxScience[0] - minScience[0]);
-                    dradar[0][4].value = (d.Reading - minReading[0]) / (maxReading[0] - minReading[0]);
-                    dradar[0][5].value = (d.Math - minMath[0]) / (maxMath[0] - minMath[0]);
+                if (slider.value() <= 0.5){
+                    data.features.forEach(function(d) {
+                        d.Accumulated = pisaById2012[d.id];
+                        d.GDP = GDPById2012[d.id];
+                        d.Spendings = spendingsById2012[d.id];
+                        d.Salary = salaryById2012[d.id];
+                        d.Reading = readingsById2012[d.id];
+                        d.Science = scienceById2012[d.id];
+                        d.Math = mathById2012[d.id];
+                    })
                 }
                 else {
-                    cfg.color = color(pisaById2015[d.id]);
-                    dradar[0][0].value = (d.GDP - minGDP[1]) / (maxGDP[1] - minGDP[1]);
-                    dradar[0][1].value = (d.Salary - minSalary[1]) / (maxSalary[1] - minSalary[1]);
-                    dradar[0][2].value = (d.Spendings - minSpending[1]) / (maxSpending[1] - minSpending[1]);
-                    dradar[0][3].value = (d.Science - minScience[1]) / (maxScience[1] - minScience[1]);
-                    dradar[0][4].value = (d.Reading - minReading[1]) / (maxReading[1] - minReading[1]);
-                    dradar[0][5].value = (d.Math - minMath[1]) / (maxMath[1] - minMath[1]);
+                    data.features.forEach(function(d) {
+                        d.Accumulated = pisaById2015[d.id];
+                        d.GDP = GDPById2015[d.id];
+                        d.Spendings = spendingsById2015[d.id];
+                        d.Salary = salaryById2015[d.id];
+                        d.Reading = readingsById2015[d.id];
+                        d.Science = scienceById2015[d.id];
+                        d.Math = mathById2015[d.id];
+                    })
                 }
 
-                for (i = 0; i < dradar[0].length; i++) {
-                    if (dradar[0][i].value < 0 || isNaN(dradar[0][i].value)) {
-                        dradar[0][i].value = 0;
-                    }
-                }
+                radarChart.updateValues("#radarTitle", d.properties.name, slider.value(),
+                                        pisaById2012[d.id], pisaById2015[d.id],
+                                        d, ranges);
 
-                RadarChart.draw("#chart", dradar, mycfg);
+                radarChart.draw("#chart", dradar, mycfg);
 
                 currentCountry = {
                     id: d.id,
+                    name: d.properties.name
                 };
             });
 
@@ -428,24 +431,10 @@ document.addEventListener("DOMContentLoaded", function() {
                     d3.select("#ylabel")
                         .text("Education spendings in millions($)");
 
-                    if (slider.value() <= 0.5){
-                        var lg = calcLinear(info2012, "Accumulated", "Spendings",
-                                            minAccumulated[0],
-                                            maxAccumulated[0]);
-                    }
-                    else {
-                        var lg = calcLinear(info2015, "Accumulated", "Spendings",
-                                            minAccumulated[1],
-                                            maxAccumulated[1]);
-                    }
+                    var lg = calcLinear(year, "Accumulated", "Spendings",
+                                        ranges.minAccumulated[yearPoint],
+                                        ranges.maxAccumulated[yearPoint]);
 
-                    d3.select(".regression")
-                        .transition()
-                        .duration(250)
-                        .attr("x1", x(lg.ptA.x))
-                        .attr("y1", y(lg.ptA.y))
-                        .attr("x2", x(lg.ptB.x))
-                        .attr("y2", y(lg.ptB.y));
                 }
                 else if (selectValue == datapoints[1]) {
                     y.domain(d3.extent(data.features, function(d)
@@ -457,24 +446,9 @@ document.addEventListener("DOMContentLoaded", function() {
                     d3.select("#ylabel")
                         .text("GDP per capita($)");
 
-                        if (slider.value() <= 0.5){
-                            var lg = calcLinear(info2012, "Accumulated", "GDP",
-                                                minAccumulated[0],
-                                                maxAccumulated[0]);
-                        }
-                        else {
-                            var lg = calcLinear(info2015, "Accumulated", "GDP",
-                                                minAccumulated[1],
-                                                maxAccumulated[1]);
-                        }
-
-                    d3.select(".regression")
-                        .transition()
-                        .duration(250)
-                        .attr("x1", x(lg.ptA.x))
-                        .attr("y1", y(lg.ptA.y))
-                        .attr("x2", x(lg.ptB.x))
-                        .attr("y2", y(lg.ptB.y));
+                    var lg = calcLinear(year, "Accumulated", "GDP",
+                                        ranges.minAccumulated[yearPoint],
+                                        ranges.maxAccumulated[yearPoint]);
                 }
                 else {
                     y.domain(d3.extent(data.features, function(d)
@@ -486,25 +460,18 @@ document.addEventListener("DOMContentLoaded", function() {
                     d3.select("#ylabel")
                         .text("Teacher salaries in annual earnings($)")
 
-                        if (slider.value() <= 0.5){
-                            var lg = calcLinear(info2012, "Accumulated", "Salary",
-                                                minAccumulated[0],
-                                                maxAccumulated[0]);
-                        }
-                        else {
-                            var lg = calcLinear(info2015, "Accumulated", "Salary",
-                                                minAccumulated[1],
-                                                maxAccumulated[1]);
-                        }
-
-                    d3.select(".regression")
-                        .transition()
-                        .duration(250)
-                        .attr("x1", x(lg.ptA.x))
-                        .attr("y1", y(lg.ptA.y))
-                        .attr("x2", x(lg.ptB.x))
-                        .attr("y2", y(lg.ptB.y));
+                    var lg = calcLinear(year, "Accumulated", "Salary",
+                                        ranges.minAccumulated[yearPoint],
+                                        ranges.maxAccumulated[yearPoint]);
                 }
+
+                d3.select(".regression")
+                    .transition()
+                    .duration(250)
+                    .attr("x1", x(lg.ptA.x))
+                    .attr("y1", y(lg.ptA.y))
+                    .attr("x2", x(lg.ptB.x))
+                    .attr("y2", y(lg.ptB.y));
 
                 d3.selectAll(".dot")
                     .transition()
@@ -573,134 +540,24 @@ document.addEventListener("DOMContentLoaded", function() {
                     d.Math = mathById2012[d.id];
                 });
 
-                d3.selectAll("path")
-                    .data(data.features)
-                    .transition()
-                    .duration(250)
-                    .style("fill", function(d) { return color(d.Accumulated); });
-
                 d3.select(".year")
                     .text("2012");
 
-                // update scatterplot to date
-                selectValue = d3.select("select")
-                    .property("value");
+                year = info2012;
+                yearPoint = 0;
 
-                x.domain(d3.extent(data.features, function(d)
-                         { return d.Accumulated; })).nice();
-
-                if (selectValue == datapoints[0]) {
-                    y.domain(d3.extent(data.features, function(d)
-                             { return d.Spendings; })).nice();
-
-                    var lg = calcLinear(info2012, "Accumulated", "Spendings",
-                                        minAccumulated[0],
-                                        maxAccumulated[0]);
-                }
-                else if (selectValue == datapoints[1]) {
-                    y.domain(d3.extent(data.features, function(d)
-                             { return d.GDP; })).nice();
-
-                    var lg = calcLinear(info2012, "Accumulated", "GDP",
-                                        minAccumulated[0],
-                                        maxAccumulated[0]);
-                }
-                else {
-                    y.domain(d3.extent(data.features, function(d)
-                             { return d.Salary; })).nice();
-
-                    var lg = calcLinear(info2012, "Accumulated", "Salary",
-                                        minAccumulated[0],
-                                        maxAccumulated[0]);
+                countryData = {
+                    GDP: GDPById2012[currentCountry.id],
+                    Salary: salaryById2012[currentCountry.id],
+                    Spendings: spendingsById2012[currentCountry.id],
+                    Science: scienceById2012[currentCountry.id],
+                    Reading: readingsById2012[currentCountry.id],
+                    Math: mathById2012[currentCountry.id]
                 }
 
-                if (isNaN(lg.ptA.y) || isNaN(lg.ptB.x)) {
-                    lg.ptA.x = 0
-                    lg.ptA.y = 0
-                    lg.ptB.x = 0
-                    lg.ptB.y = 0
-                }
-
-                d3.select(".regression")
-                    .transition()
-                    .duration(250)
-                    .attr("x1", x(lg.ptA.x))
-                    .attr("y1", y(lg.ptA.y))
-                    .attr("x2", x(lg.ptB.x))
-                    .attr("y2", y(lg.ptB.y));
-
-                d3.selectAll(".dot")
-                    .data(data.features)
-                    .transition()
-                    .duration(250)
-                    .attr("cy", function(d) {
-                        if (isNaN(d.Accumulated)) {
-                            return 0;
-                        }
-                        else {
-                            if (selectValue == datapoints[0]) {
-                                return y(d.Spendings);
-                            }
-                            else if (selectValue == datapoints[1]) {
-                                return y(d.GDP);
-                            }
-                            else {
-                                return y(d.Salary);
-                            }
-                        }
-                    })
-                    .attr("r", function(d) {
-                        if (selectValue == datapoints[0]) {
-                            if (d.Spendings == 0 || isNaN(d.Accumulated)) {
-                                return 0;
-                            }
-                            else {
-                                return 3;
-                            }
-                        }
-                        else if (selectValue == datapoints[1]) {
-                            if (d.GDP == 0 || isNaN(d.Accumulated)) {
-                                return 0;
-                            }
-                            else {
-                                return 3;
-                            }
-                        }
-                        else {
-                            if (d.Salary == 0 || isNaN(d.Accumulated)) {
-                                return 0;
-                            }
-                            else {
-                                return 3;
-                            }
-                        }
-                    });
-
-                svgscatter.select(".x.axis")
-                    .transition()
-                    .duration(250)
-                    .call(xAxis);
-
-                svgscatter.select(".y.axis")
-                    .transition()
-                    .duration(250)
-                    .call(yAxis);
-
-                cfg.color = color(pisaById2012[currentCountry.id]);
-                dradar[0][0].value = GDPById2012[currentCountry.id] / (maxGDP[0] - minGDP[0]);
-                dradar[0][1].value = salaryById2012[currentCountry.id] / (maxSalary[0] - minSalary[0]);
-                dradar[0][2].value = spendingsById2012[currentCountry.id] / (maxSpending[0] - minSpending[0]);
-                dradar[0][3].value = (scienceById2012[currentCountry.id] - minScience[0]) / (maxScience[0] - minScience[0]);
-                dradar[0][4].value = (readingsById2012[currentCountry.id] - minReading[0]) / (maxReading[0] - minReading[0]);
-                dradar[0][5].value = (mathById2012[currentCountry.id] - minMath[0]) / (maxMath[0] - minMath[0]);
-
-                for (i = 0; i < dradar[0].length; i++) {
-                    if (dradar[0][i].value < 0 || isNaN(dradar[0][i].value)) {
-                        dradar[0][i].value = 0;
-                    }
-                }
-
-                RadarChart.draw("#chart", dradar, mycfg);
+                radarChart.updateValues("#radarTitle", currentCountry.name, slider.value(),
+                                        pisaById2012[currentCountry.id], pisaById2015[currentCountry.id],
+                                        countryData, ranges);
             }
             else
             {
@@ -714,14 +571,31 @@ document.addEventListener("DOMContentLoaded", function() {
                     d.Math = mathById2015[d.id];
                 });
 
+                d3.select(".year")
+                    .text("2015");
+
+                year = info2015;
+                yearPoint = 1;
+
+                countryData = {
+                    GDP: GDPById2015[currentCountry.id],
+                    Salary: salaryById2015[currentCountry.id],
+                    Spendings: spendingsById2015[currentCountry.id],
+                    Science: scienceById2015[currentCountry.id],
+                    Reading: readingsById2015[currentCountry.id],
+                    Math: mathById2015[currentCountry.id]
+                }
+
+                radarChart.updateValues("#radarTitle", currentCountry.name, slider.value(),
+                                        pisaById2012[currentCountry.id], pisaById2015[currentCountry.id],
+                                        countryData, ranges);
+            }
+
             d3.selectAll("path")
                 .data(data.features)
                 .transition()
                 .duration(250)
                 .style("fill", function(d) { return color(d.Accumulated); });
-
-            d3.select(".year")
-                .text("2015");
 
             // update scatterplot to date
             selectValue = d3.select("select")
@@ -734,25 +608,32 @@ document.addEventListener("DOMContentLoaded", function() {
                 y.domain(d3.extent(data.features, function(d)
                          { return d.Spendings; })).nice();
 
-                var lg = calcLinear(info2015, "Accumulated", "Spendings",
-                                    minAccumulated[1],
-                                    maxAccumulated[1]);
+                var lg = calcLinear(year, "Accumulated", "Spendings",
+                                    ranges.minAccumulated[yearPoint],
+                                    ranges.maxAccumulated[yearPoint]);
             }
             else if (selectValue == datapoints[1]) {
                 y.domain(d3.extent(data.features, function(d)
                          { return d.GDP; })).nice();
 
-                var lg = calcLinear(info2015, "Accumulated", "GDP",
-                                    minAccumulated[1],
-                                    maxAccumulated[1]);
+                var lg = calcLinear(year, "Accumulated", "GDP",
+                                    ranges.minAccumulated[yearPoint],
+                                    ranges.maxAccumulated[yearPoint]);
             }
             else {
                 y.domain(d3.extent(data.features, function(d)
                          { return d.Salary; })).nice();
 
-                var lg = calcLinear(info2015, "Accumulated", "Salary",
-                                    minAccumulated[1],
-                                    maxAccumulated[1]);
+                var lg = calcLinear(year, "Accumulated", "Salary",
+                                    ranges.minAccumulated[yearPoint],
+                                    ranges.maxAccumulated[yearPoint]);
+            }
+
+            if (isNaN(lg.ptA.y) || isNaN(lg.ptB.x)) {
+                lg.ptA.x = 0
+                lg.ptA.y = 0
+                lg.ptB.x = 0
+                lg.ptB.y = 0
             }
 
             d3.select(".regression")
@@ -820,22 +701,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 .duration(250)
                 .call(yAxis);
 
-            cfg.color = color(pisaById2015[currentCountry.id]);
-            dradar[0][0].value = GDPById2015[currentCountry.id] / (maxGDP[1] - minGDP[1]);
-            dradar[0][1].value = salaryById2015[currentCountry.id] / (maxSalary[1] - minSalary[1]);
-            dradar[0][2].value = spendingsById2015[currentCountry.id] / (maxSpending[1] - minSpending[1]);
-            dradar[0][3].value = (scienceById2015[currentCountry.id] - minScience[1]) / (maxScience[1] - minScience[1]);
-            dradar[0][4].value = (readingsById2015[currentCountry.id] - minReading[1]) / (maxReading[1] - minReading[1]);
-            dradar[0][5].value = (mathById2015[currentCountry.id] - minMath[1]) / (maxMath[1] - minMath[1]);
-
-            for (i = 0; i < dradar[0].length; i++) {
-                if (dradar[0][i].value < 0 || isNaN(dradar[0][i].value)) {
-                    dradar[0][i].value = 0;
-                }
-            }
-
-            RadarChart.draw("#chart", dradar, mycfg);
-            }
+            radarChart.draw("#chart", dradar, mycfg);
         });
 
         svgslider.call(slider);
@@ -858,7 +724,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     	// Call function to draw the Radar chart
     	// Will expect that data is in %'s
-    	RadarChart.draw("#chart", dradar, mycfg);
+    	radarChart.draw("#chart", dradar, mycfg);
     }
 
     function zoomed() {

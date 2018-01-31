@@ -8,7 +8,63 @@
 //For a bit of extra information check the blog about it:
 //http://nbremer.blogspot.nl/2013/09/making-d3-radar-chart-look-bit-better.html
 
-var RadarChart = {
+const w = 200,
+	  h = 200;
+
+// data
+var dradar = [
+		  [
+			{axis:"GDP per resident",value:0},
+			{axis:"Teacher Salaries",value:0},
+			{axis:"Education Spendings",value:0},
+			{axis:"Science",value:0},
+			{axis:"Readings",value:0},
+			{axis:"Mathematics",value:0}
+		  ]
+		];
+
+var cfg = {
+    radius: 5,
+    w: 200,
+    h: 200,
+    factor: 1,
+    factorLegend: .85,
+    levels: 3,
+    maxValue: 0,
+    radians: 2 * Math.PI,
+    opacityArea: 0.5,
+    ToRight: 5,
+    TranslateX: 80,
+    TranslateY: 30,
+    ExtraWidthX: 100,
+    ExtraWidthY: 200,
+    color: d3.rgb(0, 0, 0)
+};
+
+var currentCountry = {
+    id: 0,
+};
+
+// options for the Radar chart, other than default
+var mycfg = {
+  w: w,
+  h: h,
+  maxValue: 1,
+  levels: 2,
+  ExtraWidthX: 200
+}
+
+var radarChart = {
+    createMin: function(Id2012, Id2015) {
+        return [Math.min.apply(null, Object.values(Id2012).filter(getMinimum)),
+                Math.min.apply(null, Object.values(Id2015).filter(getMinimum))];
+    },
+
+    createMax: function(Id2012, Id2015) {
+        return [Math.max.apply(null, Object.values(Id2012)),
+                Math.max.apply(null, Object.values(Id2015))];
+    },
+
     draw: function(id, d, options) {
 
         if ('undefined' !== typeof options) {
@@ -217,5 +273,35 @@ var RadarChart = {
 	        .style('opacity', 0)
 			.style('font-family', 'sans-serif')
 			.style('font-size', '13px');
+    },
+
+    updateValues: function(id, name, sliderValue, countryColor2012, countryColor2015, d, ranges) {
+        d3.select(id)
+            .text(name);
+
+        if (sliderValue <= 0.5) {
+            cfg.color = color(countryColor2012);
+            dradar[0][0].value = (d.GDP - ranges.minGDP[0]) / (ranges.maxGDP[0] - ranges.minGDP[0]);
+            dradar[0][1].value = (d.Salary - ranges.minSalary[0]) / (ranges.maxSalary[0] - ranges.minSalary[0]);
+            dradar[0][2].value = (d.Spendings - ranges.minSpendings[0]) / (ranges.maxSpendings[0] - ranges.minSpendings[0]);
+            dradar[0][3].value = (d.Science - ranges.minScience[0]) / (ranges.maxScience[0] - ranges.minScience[0]);
+            dradar[0][4].value = (d.Reading - ranges.minReading[0]) / (ranges.maxReading[0] - ranges.minReading[0]);
+            dradar[0][5].value = (d.Math - ranges.minMath[0]) / (ranges.maxMath[0] - ranges.minMath[0]);
+        }
+        else {
+            cfg.color = color(countryColor2015);
+            dradar[0][0].value = (d.GDP - ranges.minGDP[1]) / (ranges.maxGDP[1] - ranges.minGDP[1]);
+            dradar[0][1].value = (d.Salary - ranges.minSalary[1]) / (ranges.maxSalary[1] - ranges.minSalary[1]);
+            dradar[0][2].value = (d.Spendings - ranges.minSpendings[1]) / (ranges.maxSpendings[1] - ranges.minSpendings[1]);
+            dradar[0][3].value = (d.Science - ranges.minScience[1]) / (ranges.maxScience[1] - ranges.minScience[1]);
+            dradar[0][4].value = (d.Reading - ranges.minReading[1]) / (ranges.maxReading[1] - ranges.minReading[1]);
+            dradar[0][5].value = (d.Math - ranges.minMath[1]) / (ranges.maxMath[1] - ranges.minMath[1]);
+        }
+
+        for (i = 0; i < dradar[0].length; i++) {
+            if (dradar[0][i].value < 0 || isNaN(dradar[0][i].value)) {
+                dradar[0][i].value = 0;
+            }
+        }
     }
 };

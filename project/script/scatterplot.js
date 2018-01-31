@@ -1,3 +1,9 @@
+var marginscatter = {top: 20, right: 30, bottom: 30, left: 60},
+    widthscatter = 600 - marginscatter.left - marginscatter.right,
+    heightscatter = 400 - marginscatter.top - marginscatter.bottom;
+
+var datapoints = ["Education spendings", "GDP per capita", "Teacher salaries"];
+
 function getMinimum(point) {
     return point > 0;
 }
