@@ -43,6 +43,7 @@ var cfg = {
 
 var currentCountry = {
     id: 0,
+    name: "Click on a country"
 };
 
 // options for the Radar chart, other than default
@@ -52,6 +53,23 @@ var mycfg = {
   maxValue: 1,
   levels: 2,
   ExtraWidthX: 200
+}
+
+var ranges = {
+    minGDP: 0,
+    maxGDP: 0,
+    minSalary: 0,
+    maxSalary: 0,
+    minSpendings: 0,
+    maxSpendings: 0,
+    minScience: 0,
+    maxScience: 0,
+    minReading: 0,
+    maxReading: 0,
+    minMath: 0,
+    maxMath:0,
+    minAccumulated: 0,
+    maxAccumulated: 0
 }
 
 var radarChart = {

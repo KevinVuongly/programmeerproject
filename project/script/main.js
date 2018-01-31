@@ -166,7 +166,7 @@ document.addEventListener("DOMContentLoaded", function() {
             d.Math = mathById2015[d.id];
         })
 
-        var ranges = {
+        ranges = {
             minGDP: radarChart.createMin(GDPById2012, GDPById2015),
             maxGDP: radarChart.createMax(GDPById2012, GDPById2015),
             minSalary: radarChart.createMin(salaryById2012, salaryById2015),
@@ -464,7 +464,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 var lg = calcLinear(year, "Accumulated", dropdown,
                                     ranges.minAccumulated[yearPoint],
                                     ranges.maxAccumulated[yearPoint]);
-                                    
+
                 drawRegression(".regression", x, y, lg);
 
                 d3.selectAll(".dot")
