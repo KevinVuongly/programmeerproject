@@ -4,18 +4,25 @@ var marginscatter = {top: 20, right: 30, bottom: 30, left: 60},
 
 var datapoints = ["Education spendings", "GDP per capita", "Teacher salaries"];
 
+var rangeRegression = {
+    x: "Accumulated",
+    y: "Spendings",
+    minX: 0,
+    maxX: 0
+}
+
 function getMinimum(point) {
     return point > 0;
 }
 
-function calcLinear(data, x, y, minX, maxX){
+function calcLinear(data, info){
 
     var pts = [];
 
     data.forEach(function(d,i){
         var obj = {};
-        obj.x = Number(d[x]);
-        obj.y = Number(d[y]);
+        obj.x = Number(d[info.x]);
+        obj.y = Number(d[info.y]);
         obj.mult = obj.x * obj.y;
 
         if (obj.mult > 0) {
@@ -46,8 +53,8 @@ function calcLinear(data, x, y, minX, maxX){
 
     var b = (ySum - m * xSum) / n;
 
-    var y1 = m * minX + b,
-        y2 = m * maxX + b;
+    var y1 = m * info.minX + b,
+        y2 = m * info.maxX + b;
 
     if (isNaN(y1) || isNaN(y2)) {
         return {
@@ -64,11 +71,11 @@ function calcLinear(data, x, y, minX, maxX){
     else {
         return {
             ptA : {
-                x: minX,
+                x: info.minX,
                 y: y1
             },
             ptB : {
-                x: maxX,
+                x: info.maxX,
                 y: y2
             }
         }

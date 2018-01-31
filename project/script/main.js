@@ -104,7 +104,7 @@ document.addEventListener("DOMContentLoaded", function() {
         .attr("id", "mbars")
         .attr("class", "col-lg-6 col-md-6 col-sm-6 col-xs-12")
 
-    // set dropdown for scatterplot
+    // set rangeRegression.y for scatterplot
     var select = mbars.append("select")
       	.attr("class","select")
 
@@ -277,9 +277,10 @@ document.addEventListener("DOMContentLoaded", function() {
             ptB: 0
         }
 
-        var lg = calcLinear(year, "Accumulated", "Spendings",
-                            ranges.minAccumulated[yearPoint],
-                            ranges.maxAccumulated[yearPoint]);
+        rangeRegression.minX = ranges.minAccumulated[yearPoint];
+        rangeRegression.maxX = ranges.maxAccumulated[yearPoint];
+
+        var lg = calcLinear(info2015, rangeRegression);
 
         svgscatter.append("line")
 	        .attr("class", "regression")
@@ -404,7 +405,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     d3.select("#ylabel")
                         .text("Education spendings in millions($)");
 
-                    dropdown = "Spendings";
+                    rangeRegression.y = "Spendings";
                 }
                 else if (selectValue == datapoints[1]) {
                     y.domain(d3.extent(data.features, function(d)
@@ -416,7 +417,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     d3.select("#ylabel")
                         .text("GDP per capita($)");
 
-                    dropdown = "GDP";
+                    rangeRegression.y = "GDP";
                 }
                 else {
                     y.domain(d3.extent(data.features, function(d)
@@ -428,12 +429,10 @@ document.addEventListener("DOMContentLoaded", function() {
                     d3.select("#ylabel")
                         .text("Teacher salaries in annual earnings($)")
 
-                    dropdown = "Salary";
+                    rangeRegression.y = "Salary";
                 }
 
-                var lg = calcLinear(year, "Accumulated", dropdown,
-                                    ranges.minAccumulated[yearPoint],
-                                    ranges.maxAccumulated[yearPoint]);
+                var lg = calcLinear(year, rangeRegression);
 
                 line.ptA = lg.ptA;
                 line.ptB = lg.ptB;
@@ -501,6 +500,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 currentCountry.Math = mathById2015[currentCountry.id];
             }
 
+            // reset domain of regression line according to current year
+            rangeRegression.minX = ranges.minAccumulated[yearPoint];
+            rangeRegression.maxX = ranges.maxAccumulated[yearPoint];
+
             currentCountry.slider = slider.value();
 
             updateValues("#radarTitle", currentCountry);
@@ -522,24 +525,22 @@ document.addEventListener("DOMContentLoaded", function() {
                 y.domain(d3.extent(data.features, function(d)
                          { return d.Spendings; })).nice();
 
-                dropdown = "Spendings";
+                rangeRegression.y = "Spendings";
             }
             else if (selectValue == datapoints[1]) {
                 y.domain(d3.extent(data.features, function(d)
                          { return d.GDP; })).nice();
 
-                dropdown = "GDP";
+                rangeRegression.y = "GDP";
             }
             else {
                 y.domain(d3.extent(data.features, function(d)
                          { return d.Salary; })).nice();
 
-                dropdown = "Salary";
+                rangeRegression.y = "Salary";
             }
 
-            var lg = calcLinear(year, "Accumulated", dropdown,
-                                ranges.minAccumulated[yearPoint],
-                                ranges.maxAccumulated[yearPoint]);
+            var lg = calcLinear(year, rangeRegression);
 
             line.ptA = lg.ptA;
             line.ptB = lg.ptB;
