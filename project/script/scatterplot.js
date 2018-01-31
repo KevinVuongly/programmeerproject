@@ -2,6 +2,23 @@ var marginscatter = {top: 20, right: 30, bottom: 30, left: 60},
     widthscatter = 600 - marginscatter.left - marginscatter.right,
     heightscatter = 400 - marginscatter.top - marginscatter.bottom;
 
+var ranges = {
+    minGDP: 0,
+    maxGDP: 0,
+    minSalary: 0,
+    maxSalary: 0,
+    minSpendings: 0,
+    maxSpendings: 0,
+    minScience: 0,
+    maxScience: 0,
+    minReading: 0,
+    maxReading: 0,
+    minMath: 0,
+    maxMath: 0,
+    minAccumulated: 0,
+    maxAccumulated: 0
+}
+
 var datapoints = ["Education spendings", "GDP per capita", "Teacher salaries"];
 
 var rangeRegression = {

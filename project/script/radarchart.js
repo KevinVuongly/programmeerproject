@@ -64,23 +64,6 @@ var mycfg = {
   ExtraWidthX: 200
 }
 
-var ranges = {
-    minGDP: 0,
-    maxGDP: 0,
-    minSalary: 0,
-    maxSalary: 0,
-    minSpendings: 0,
-    maxSpendings: 0,
-    minScience: 0,
-    maxScience: 0,
-    minReading: 0,
-    maxReading: 0,
-    minMath: 0,
-    maxMath:0,
-    minAccumulated: 0,
-    maxAccumulated: 0
-}
-
 var radarChart = {
     createMin: function(Id2012, Id2015) {
         return [Math.min.apply(null, Object.values(Id2012).filter(getMinimum)),
