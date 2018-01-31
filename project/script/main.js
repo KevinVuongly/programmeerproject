@@ -1,6 +1,6 @@
 var marginworld = {top: 50, right: 20, bottom: 30, left: 30},
-             widthworld = 650 - marginworld.left - marginworld.right,
-             heightworld = 600 - marginworld.top - marginworld.bottom;
+     widthworld = 650 - marginworld.left - marginworld.right,
+     heightworld = 600 - marginworld.top - marginworld.bottom;
 
 var color = d3.scale.threshold()
     .domain([1150,1200,1290,1380,1450,1520,1550,1580,1650])
@@ -231,7 +231,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     })
                 }
 
-                radarChart.updateValues("#radarTitle", d.properties.name, slider.value(),
+                updateValues("#radarTitle", d.properties.name, slider.value(),
                                         pisaById2012[d.id], pisaById2015[d.id],
                                         d, ranges);
 
@@ -394,7 +394,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     })
                 }
 
-                radarChart.updateValues("#radarTitle", d.properties.name, slider.value(),
+                updateValues("#radarTitle", d.properties.name, slider.value(),
                                         pisaById2012[d.id], pisaById2015[d.id],
                                         d, ranges);
 
@@ -502,7 +502,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     Math: mathById2012[currentCountry.id]
                 }
 
-                radarChart.updateValues("#radarTitle", currentCountry.name, slider.value(),
+                updateValues("#radarTitle", currentCountry.name, slider.value(),
                                         pisaById2012[currentCountry.id], pisaById2015[currentCountry.id],
                                         countryData, ranges);
             }
@@ -533,7 +533,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     Math: mathById2015[currentCountry.id]
                 }
 
-                radarChart.updateValues("#radarTitle", currentCountry.name, slider.value(),
+                updateValues("#radarTitle", currentCountry.name, slider.value(),
                                         pisaById2012[currentCountry.id], pisaById2015[currentCountry.id],
                                         countryData, ranges);
             }
@@ -612,6 +612,37 @@ document.addEventListener("DOMContentLoaded", function() {
     	// Call function to draw the Radar chart
     	// Will expect that data is in %'s
     	radarChart.draw("#chart", dradar, mycfg);
+    }
+
+    function updateValues(id, name, sliderValue, countryColor2012, countryColor2015, d, ranges) {
+        d3.select(id)
+            .text(name);
+
+        if (sliderValue <= 0.5) {
+            cfg.color = color(countryColor2012);
+            dradar[0][0].value = (d.GDP - ranges.minGDP[0]) / (ranges.maxGDP[0] - ranges.minGDP[0]);
+            dradar[0][1].value = (d.Salary - ranges.minSalary[0]) / (ranges.maxSalary[0] - ranges.minSalary[0]);
+            dradar[0][2].value = (d.Spendings - ranges.minSpendings[0]) / (ranges.maxSpendings[0] - ranges.minSpendings[0]);
+            dradar[0][3].value = (d.Science - ranges.minScience[0]) / (ranges.maxScience[0] - ranges.minScience[0]);
+            dradar[0][4].value = (d.Reading - ranges.minReading[0]) / (ranges.maxReading[0] - ranges.minReading[0]);
+            dradar[0][5].value = (d.Math - ranges.minMath[0]) / (ranges.maxMath[0] - ranges.minMath[0]);
+        }
+        else {
+            cfg.color = color(countryColor2015);
+
+            dradar[0][0].value = (d.GDP - ranges.minGDP[1]) / (ranges.maxGDP[1] - ranges.minGDP[1]);
+            dradar[0][1].value = (d.Salary - ranges.minSalary[1]) / (ranges.maxSalary[1] - ranges.minSalary[1]);
+            dradar[0][2].value = (d.Spendings - ranges.minSpendings[1]) / (ranges.maxSpendings[1] - ranges.minSpendings[1]);
+            dradar[0][3].value = (d.Science - ranges.minScience[1]) / (ranges.maxScience[1] - ranges.minScience[1]);
+            dradar[0][4].value = (d.Reading - ranges.minReading[1]) / (ranges.maxReading[1] - ranges.minReading[1]);
+            dradar[0][5].value = (d.Math - ranges.minMath[1]) / (ranges.maxMath[1] - ranges.minMath[1]);
+        }
+
+        for (i = 0; i < dradar[0].length; i++) {
+            if (dradar[0][i].value < 0 || isNaN(dradar[0][i].value)) {
+                dradar[0][i].value = 0;
+            }
+        }
     }
 
     function zoomed() {
