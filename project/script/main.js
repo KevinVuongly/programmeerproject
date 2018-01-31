@@ -190,7 +190,6 @@ document.addEventListener("DOMContentLoaded", function() {
             .data(data.features)
         .enter().append("path")
             .attr("d", path)
-            .attr("class", "country")
             .style("fill", function(d) { return color(pisaById2015[d.id]); })
             .style("opacity", 0.8)
             .style("stroke","black")
