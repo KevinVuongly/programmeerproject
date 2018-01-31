@@ -43,7 +43,16 @@ var cfg = {
 
 var currentCountry = {
     id: 0,
-    name: "Click on a country"
+    name: "Click on a country",
+	color2012: 0,
+	color2015: 0,
+	slider: 0,
+	GDP: 0,
+	Salary: 0,
+	Spendings: 0,
+	Science: 0,
+	Reading: 0,
+	Math: 0
 };
 
 // options for the Radar chart, other than default

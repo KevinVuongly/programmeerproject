@@ -218,10 +218,16 @@ document.addEventListener("DOMContentLoaded", function() {
                     name: d.properties.name,
                     color2012: pisaById2012[d.id],
                     color2015: pisaById2015[d.id],
-                    slider: slider.value()
+                    slider: slider.value(),
+                    GDP: d.GDP,
+                    Salary: d.Salary,
+                    Spendings: d.Spendings,
+                    Science: d.Science,
+                    Reading: d.Reading,
+                    Math: d.Math
                 };
 
-                updateValues("#radarTitle", currentCountry, d);
+                updateValues("#radarTitle", currentCountry);
 
                 radarChart.draw("#chart", dradar, mycfg);
             });
@@ -360,10 +366,16 @@ document.addEventListener("DOMContentLoaded", function() {
                     name: d.properties.name,
                     color2012: pisaById2012[d.id],
                     color2015: pisaById2015[d.id],
-                    slider: slider.value()
+                    slider: slider.value(),
+                    GDP: d.GDP,
+                    Salary: d.Salary,
+                    Spendings: d.Spendings,
+                    Science: d.Science,
+                    Reading: d.Reading,
+                    Math: d.Math
                 };
 
-                updateValues("#radarTitle", currentCountry, d);
+                updateValues("#radarTitle", currentCountry);
 
                 radarChart.draw("#chart", dradar, mycfg);
             });
@@ -457,14 +469,12 @@ document.addEventListener("DOMContentLoaded", function() {
                 year = info2012;
                 yearPoint = 0;
 
-                countryData = {
-                    GDP: GDPById2012[currentCountry.id],
-                    Salary: salaryById2012[currentCountry.id],
-                    Spendings: spendingsById2012[currentCountry.id],
-                    Science: scienceById2012[currentCountry.id],
-                    Reading: readingsById2012[currentCountry.id],
-                    Math: mathById2012[currentCountry.id]
-                }
+                currentCountry.GDP = GDPById2012[currentCountry.id];
+                currentCountry.Salary = salaryById2012[currentCountry.id];
+                currentCountry.Spendings = spendingsById2012[currentCountry.id];
+                currentCountry.Science = scienceById2012[currentCountry.id];
+                currentCountry.Reading = readingsById2012[currentCountry.id];
+                currentCountry.Math = mathById2012[currentCountry.id];
             }
             else {
                 data.features.forEach(function(d) {
@@ -483,19 +493,17 @@ document.addEventListener("DOMContentLoaded", function() {
                 year = info2015;
                 yearPoint = 1;
 
-                countryData = {
-                    GDP: GDPById2015[currentCountry.id],
-                    Salary: salaryById2015[currentCountry.id],
-                    Spendings: spendingsById2015[currentCountry.id],
-                    Science: scienceById2015[currentCountry.id],
-                    Reading: readingsById2015[currentCountry.id],
-                    Math: mathById2015[currentCountry.id]
-                }
+                currentCountry.GDP = GDPById2015[currentCountry.id];
+                currentCountry.Salary = salaryById2015[currentCountry.id];
+                currentCountry.Spendings = spendingsById2015[currentCountry.id];
+                currentCountry.Science = scienceById2015[currentCountry.id];
+                currentCountry.Reading = readingsById2015[currentCountry.id];
+                currentCountry.Math = mathById2015[currentCountry.id];
             }
 
             currentCountry.slider = slider.value();
 
-            updateValues("#radarTitle", currentCountry, countryData);
+            updateValues("#radarTitle", currentCountry);
 
             d3.selectAll("path")
                 .data(data.features)
@@ -602,28 +610,28 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    function updateValues(id, country, d) {
+    function updateValues(id, country) {
         d3.select(id)
             .text(country.name);
 
         if (country.slider <= 0.5) {
             cfg.color = color(country.color2012);
-            dradar[0][0].value = (d.GDP - ranges.minGDP[0]) / (ranges.maxGDP[0] - ranges.minGDP[0]);
-            dradar[0][1].value = (d.Salary - ranges.minSalary[0]) / (ranges.maxSalary[0] - ranges.minSalary[0]);
-            dradar[0][2].value = (d.Spendings - ranges.minSpendings[0]) / (ranges.maxSpendings[0] - ranges.minSpendings[0]);
-            dradar[0][3].value = (d.Science - ranges.minScience[0]) / (ranges.maxScience[0] - ranges.minScience[0]);
-            dradar[0][4].value = (d.Reading - ranges.minReading[0]) / (ranges.maxReading[0] - ranges.minReading[0]);
-            dradar[0][5].value = (d.Math - ranges.minMath[0]) / (ranges.maxMath[0] - ranges.minMath[0]);
+            dradar[0][0].value = (country.GDP - ranges.minGDP[0]) / (ranges.maxGDP[0] - ranges.minGDP[0]);
+            dradar[0][1].value = (country.Salary - ranges.minSalary[0]) / (ranges.maxSalary[0] - ranges.minSalary[0]);
+            dradar[0][2].value = (country.Spendings - ranges.minSpendings[0]) / (ranges.maxSpendings[0] - ranges.minSpendings[0]);
+            dradar[0][3].value = (country.Science - ranges.minScience[0]) / (ranges.maxScience[0] - ranges.minScience[0]);
+            dradar[0][4].value = (country.Reading - ranges.minReading[0]) / (ranges.maxReading[0] - ranges.minReading[0]);
+            dradar[0][5].value = (country.Math - ranges.minMath[0]) / (ranges.maxMath[0] - ranges.minMath[0]);
         }
         else {
             cfg.color = color(country.color2015);
 
-            dradar[0][0].value = (d.GDP - ranges.minGDP[1]) / (ranges.maxGDP[1] - ranges.minGDP[1]);
-            dradar[0][1].value = (d.Salary - ranges.minSalary[1]) / (ranges.maxSalary[1] - ranges.minSalary[1]);
-            dradar[0][2].value = (d.Spendings - ranges.minSpendings[1]) / (ranges.maxSpendings[1] - ranges.minSpendings[1]);
-            dradar[0][3].value = (d.Science - ranges.minScience[1]) / (ranges.maxScience[1] - ranges.minScience[1]);
-            dradar[0][4].value = (d.Reading - ranges.minReading[1]) / (ranges.maxReading[1] - ranges.minReading[1]);
-            dradar[0][5].value = (d.Math - ranges.minMath[1]) / (ranges.maxMath[1] - ranges.minMath[1]);
+            dradar[0][0].value = (country.GDP - ranges.minGDP[1]) / (ranges.maxGDP[1] - ranges.minGDP[1]);
+            dradar[0][1].value = (country.Salary - ranges.minSalary[1]) / (ranges.maxSalary[1] - ranges.minSalary[1]);
+            dradar[0][2].value = (country.Spendings - ranges.minSpendings[1]) / (ranges.maxSpendings[1] - ranges.minSpendings[1]);
+            dradar[0][3].value = (country.Science - ranges.minScience[1]) / (ranges.maxScience[1] - ranges.minScience[1]);
+            dradar[0][4].value = (country.Reading - ranges.minReading[1]) / (ranges.maxReading[1] - ranges.minReading[1]);
+            dradar[0][5].value = (country.Math - ranges.minMath[1]) / (ranges.maxMath[1] - ranges.minMath[1]);
         }
 
         for (i = 0; i < dradar[0].length; i++) {
