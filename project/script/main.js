@@ -135,6 +135,7 @@ document.addEventListener("DOMContentLoaded", function() {
     function ready(error, data, info2015, info2012) {
         if (error) throw error;
 
+        // rework data for visualizations
         info2015.forEach(function(d) {
              pisaById2015[d.id] = +d.Accumulated;
              GDPById2015[d.id] = +d.GDP;
@@ -165,6 +166,7 @@ document.addEventListener("DOMContentLoaded", function() {
              d.Math = mathById2015[d.id];
          })
 
+        // set ranges for radar chart score calculations
         ranges = {
             minGDP: radarChart.createMin(GDPById2012, GDPById2015),
             maxGDP: radarChart.createMax(GDPById2012, GDPById2015),
@@ -182,6 +184,7 @@ document.addEventListener("DOMContentLoaded", function() {
             maxAccumulated: radarChart.createMax(pisaById2012, pisaById2015)
         }
 
+        // draw world map
         g.selectAll("path")
             .data(data.features)
         .enter().append("path")
@@ -209,19 +212,21 @@ document.addEventListener("DOMContentLoaded", function() {
             .on("click", function(d) {
                 updateData(data.features, slider.value());
 
-                updateValues("#radarTitle", d.properties.name, slider.value(),
-                                        pisaById2012[d.id], pisaById2015[d.id],
-                                        d);
-
-                radarChart.draw("#chart", dradar, mycfg);
-
+                // remember country, needed when updating radarchart for slider
                 currentCountry = {
                     id: d.id,
-                    name: d.properties.name
+                    name: d.properties.name,
+                    color2012: pisaById2012[d.id],
+                    color2015: pisaById2015[d.id],
+                    slider: slider.value()
                 };
+
+                updateValues("#radarTitle", currentCountry, d);
+
+                radarChart.draw("#chart", dradar, mycfg);
             });
 
-        // construct legend
+        // construct legend for world map
         var legend = worldmap.selectAll(".legend")
             .data(color.domain())
             .enter().append("g")
@@ -229,7 +234,6 @@ document.addEventListener("DOMContentLoaded", function() {
             .attr("transform", function(d, i)
             { return "translate(0," + Number(heightworld / 2 + 100 - i * 20) + ")"; });
 
-        // create rectangles for the colors of the legend
         legend.append("rect")
             .attr("x", widthworld - 18)
             .attr("width", function(d, i) {
@@ -243,7 +247,6 @@ document.addEventListener("DOMContentLoaded", function() {
             .style("opacity", 0.8)
             .style("fill", color);
 
-        // add text to the legend
         legend.append("text")
             .attr("x", widthworld - 23)
             .attr("y", 21)
@@ -251,11 +254,7 @@ document.addEventListener("DOMContentLoaded", function() {
             .style("text-anchor", "end")
             .text(function(d) { return d; });
 
-        /////////////////
-        // SCATTERPLOT //
-        /////////////////
-
-        // construct domain and range
+        // draw scatterplot
         x.domain(d3.extent(info2015, function(d)
                  { return pisaById2015[d.id]; })).nice();
         y.domain(d3.extent(info2015, function(d)
@@ -278,7 +277,6 @@ document.addEventListener("DOMContentLoaded", function() {
 	        .attr("x2", x(lg.ptB.x))
 	        .attr("y2", y(lg.ptB.y));
 
-        // add x-axis
         svgscatter.append("g")
             .attr("class", "x axis")
             .attr("transform", "translate(0," + heightscatter + ")")
@@ -291,7 +289,6 @@ document.addEventListener("DOMContentLoaded", function() {
             .style("text-anchor", "end")
             .text("PISA accumulated score");
 
-        // add y-axis
         svgscatter.append("g")
             .attr("class", "y axis")
             .call(yAxis)
@@ -304,7 +301,6 @@ document.addEventListener("DOMContentLoaded", function() {
             .style("text-anchor", "end")
             .text("Spendings in millions($)");
 
-        // draw scatterplot
         svgscatter.selectAll(".dot")
             .data(data.features)
             .enter().append("circle")
@@ -351,19 +347,20 @@ document.addEventListener("DOMContentLoaded", function() {
             .on("click", function(d) {
                 updateData(data.features, slider.value());
 
-                updateValues("#radarTitle", d.properties.name, slider.value(),
-                                        pisaById2012[d.id], pisaById2015[d.id],
-                                        d);
-
-                radarChart.draw("#chart", dradar, mycfg);
-
+                // remember country, needed when updating radarchart for slider
                 currentCountry = {
                     id: d.id,
-                    name: d.properties.name
+                    name: d.properties.name,
+                    color2012: pisaById2012[d.id],
+                    color2015: pisaById2015[d.id],
+                    slider: slider.value()
                 };
+
+                updateValues("#radarTitle", currentCountry, d);
+
+                radarChart.draw("#chart", dradar, mycfg);
             });
 
-        // add initial title to the scatterplot
         svgscatter.append("text")
             .attr("class", "scatterTitle")
             .attr("x", (widthscatter / 2))
@@ -429,11 +426,11 @@ document.addEventListener("DOMContentLoaded", function() {
                     .call(yAxis);
             });
 
+        // call slider
         var slider = new simpleSlider();
 
         slider.width(100).x(30).y(10).value(1).event(function(){
-            if (slider.value() <= 0.5)
-            {
+            if (slider.value() <= 0.5) {
                 data.features.forEach(function(d) {
                     d.Accumulated = pisaById2012[d.id];
                     d.GDP = GDPById2012[d.id];
@@ -458,13 +455,8 @@ document.addEventListener("DOMContentLoaded", function() {
                     Reading: readingsById2012[currentCountry.id],
                     Math: mathById2012[currentCountry.id]
                 }
-
-                updateValues("#radarTitle", currentCountry.name, slider.value(),
-                                        pisaById2012[currentCountry.id], pisaById2015[currentCountry.id],
-                                        countryData);
             }
-            else
-            {
+            else {
                 data.features.forEach(function(d) {
                     d.Accumulated = pisaById2015[d.id];
                     d.GDP = GDPById2015[d.id];
@@ -489,11 +481,11 @@ document.addEventListener("DOMContentLoaded", function() {
                     Reading: readingsById2015[currentCountry.id],
                     Math: mathById2015[currentCountry.id]
                 }
-
-                updateValues("#radarTitle", currentCountry.name, slider.value(),
-                                        pisaById2012[currentCountry.id], pisaById2015[currentCountry.id],
-                                        countryData);
             }
+
+            currentCountry.slider = slider.value();
+
+            updateValues("#radarTitle", currentCountry, countryData);
 
             d3.selectAll("path")
                 .data(data.features)
@@ -550,6 +542,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         svgslider.call(slider);
 
+        // container to show country on radar chart
         var container = d3.select("body")
     		.append("div")
     		.attr("class", "col-lg-6 col-md-6 col-sm-6 col-xs-12");
@@ -596,12 +589,12 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    function updateValues(id, name, sliderValue, countryColor2012, countryColor2015, d) {
+    function updateValues(id, country, d) {
         d3.select(id)
-            .text(name);
+            .text(country.name);
 
-        if (sliderValue <= 0.5) {
-            cfg.color = color(countryColor2012);
+        if (country.slider <= 0.5) {
+            cfg.color = color(country.color2012);
             dradar[0][0].value = (d.GDP - ranges.minGDP[0]) / (ranges.maxGDP[0] - ranges.minGDP[0]);
             dradar[0][1].value = (d.Salary - ranges.minSalary[0]) / (ranges.maxSalary[0] - ranges.minSalary[0]);
             dradar[0][2].value = (d.Spendings - ranges.minSpendings[0]) / (ranges.maxSpendings[0] - ranges.minSpendings[0]);
@@ -610,7 +603,7 @@ document.addEventListener("DOMContentLoaded", function() {
             dradar[0][5].value = (d.Math - ranges.minMath[0]) / (ranges.maxMath[0] - ranges.minMath[0]);
         }
         else {
-            cfg.color = color(countryColor2015);
+            cfg.color = color(country.color2015);
 
             dradar[0][0].value = (d.GDP - ranges.minGDP[1]) / (ranges.maxGDP[1] - ranges.minGDP[1]);
             dradar[0][1].value = (d.Salary - ranges.minSalary[1]) / (ranges.maxSalary[1] - ranges.minSalary[1]);

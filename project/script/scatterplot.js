@@ -106,29 +106,18 @@ function updateScatter(id, x, y, d) {
             }
         })
         .attr("r", function(d) {
+            if (isNaN(d.Accumulated)) { return 0; }
+
             if (selectValue == datapoints[0]) {
-                if (d.Spendings == 0 || isNaN(d.Accumulated)) {
-                    return 0;
-                }
-                else {
-                    return 3;
-                }
+                if (d.Spendings == 0) { return 0; }
             }
             else if (selectValue == datapoints[1]) {
-                if (d.GDP == 0 || isNaN(d.Accumulated)) {
-                    return 0;
-                }
-                else {
-                    return 3;
-                }
+                if (d.GDP == 0) { return 0; }
             }
             else {
-                if (d.Salary == 0 || isNaN(d.Accumulated)) {
-                    return 0;
-                }
-                else {
-                    return 3;
-                }
+                if (d.Salary == 0) { return 0; }
             }
+
+            return 3;
         });
 }
