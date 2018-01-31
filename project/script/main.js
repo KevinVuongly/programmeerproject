@@ -233,7 +233,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 updateValues("#radarTitle", d.properties.name, slider.value(),
                                         pisaById2012[d.id], pisaById2015[d.id],
-                                        d, ranges);
+                                        d);
 
                 radarChart.draw("#chart", dradar, mycfg);
 
@@ -396,7 +396,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 updateValues("#radarTitle", d.properties.name, slider.value(),
                                         pisaById2012[d.id], pisaById2015[d.id],
-                                        d, ranges);
+                                        d);
 
                 radarChart.draw("#chart", dradar, mycfg);
 
@@ -504,7 +504,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 updateValues("#radarTitle", currentCountry.name, slider.value(),
                                         pisaById2012[currentCountry.id], pisaById2015[currentCountry.id],
-                                        countryData, ranges);
+                                        countryData);
             }
             else
             {
@@ -535,7 +535,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 updateValues("#radarTitle", currentCountry.name, slider.value(),
                                         pisaById2012[currentCountry.id], pisaById2015[currentCountry.id],
-                                        countryData, ranges);
+                                        countryData);
             }
 
             d3.selectAll("path")
@@ -614,7 +614,7 @@ document.addEventListener("DOMContentLoaded", function() {
     	radarChart.draw("#chart", dradar, mycfg);
     }
 
-    function updateValues(id, name, sliderValue, countryColor2012, countryColor2015, d, ranges) {
+    function updateValues(id, name, sliderValue, countryColor2012, countryColor2015, d) {
         d3.select(id)
             .text(name);
 
