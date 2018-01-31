@@ -431,9 +431,9 @@ document.addEventListener("DOMContentLoaded", function() {
                     d3.select("#ylabel")
                         .text("Education spendings in millions($)");
 
-                    var lg = calcLinear(year, "Accumulated", "Spendings",
-                                        ranges.minAccumulated[yearPoint],
-                                        ranges.maxAccumulated[yearPoint]);
+                    dropdown = "Spendings";
+
+
 
                 }
                 else if (selectValue == datapoints[1]) {
@@ -446,9 +446,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     d3.select("#ylabel")
                         .text("GDP per capita($)");
 
-                    var lg = calcLinear(year, "Accumulated", "GDP",
-                                        ranges.minAccumulated[yearPoint],
-                                        ranges.maxAccumulated[yearPoint]);
+                    dropdown = "GDP";
                 }
                 else {
                     y.domain(d3.extent(data.features, function(d)
@@ -460,18 +458,14 @@ document.addEventListener("DOMContentLoaded", function() {
                     d3.select("#ylabel")
                         .text("Teacher salaries in annual earnings($)")
 
-                    var lg = calcLinear(year, "Accumulated", "Salary",
-                                        ranges.minAccumulated[yearPoint],
-                                        ranges.maxAccumulated[yearPoint]);
+                    dropdown = "Salary";
                 }
 
-                d3.select(".regression")
-                    .transition()
-                    .duration(250)
-                    .attr("x1", x(lg.ptA.x))
-                    .attr("y1", y(lg.ptA.y))
-                    .attr("x2", x(lg.ptB.x))
-                    .attr("y2", y(lg.ptB.y));
+                var lg = calcLinear(year, "Accumulated", dropdown,
+                                    ranges.minAccumulated[yearPoint],
+                                    ranges.maxAccumulated[yearPoint]);
+                                    
+                drawRegression(".regression", x, y, lg);
 
                 d3.selectAll(".dot")
                     .transition()
@@ -608,41 +602,26 @@ document.addEventListener("DOMContentLoaded", function() {
                 y.domain(d3.extent(data.features, function(d)
                          { return d.Spendings; })).nice();
 
-                var lg = calcLinear(year, "Accumulated", "Spendings",
-                                    ranges.minAccumulated[yearPoint],
-                                    ranges.maxAccumulated[yearPoint]);
+                dropdown = "Spendings";
             }
             else if (selectValue == datapoints[1]) {
                 y.domain(d3.extent(data.features, function(d)
                          { return d.GDP; })).nice();
 
-                var lg = calcLinear(year, "Accumulated", "GDP",
-                                    ranges.minAccumulated[yearPoint],
-                                    ranges.maxAccumulated[yearPoint]);
+                dropdown = "GDP";
             }
             else {
                 y.domain(d3.extent(data.features, function(d)
                          { return d.Salary; })).nice();
 
-                var lg = calcLinear(year, "Accumulated", "Salary",
-                                    ranges.minAccumulated[yearPoint],
-                                    ranges.maxAccumulated[yearPoint]);
+                dropdown = "Salary";
             }
 
-            if (isNaN(lg.ptA.y) || isNaN(lg.ptB.x)) {
-                lg.ptA.x = 0
-                lg.ptA.y = 0
-                lg.ptB.x = 0
-                lg.ptB.y = 0
-            }
+            var lg = calcLinear(year, "Accumulated", dropdown,
+                                ranges.minAccumulated[yearPoint],
+                                ranges.maxAccumulated[yearPoint]);
 
-            d3.select(".regression")
-                .transition()
-                .duration(250)
-                .attr("x1", x(lg.ptA.x))
-                .attr("y1", y(lg.ptA.y))
-                .attr("x2", x(lg.ptB.x))
-                .attr("y2", y(lg.ptB.y));
+            drawRegression(".regression", x, y, lg);
 
             d3.selectAll(".dot")
                 .data(data.features)
