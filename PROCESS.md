@@ -45,3 +45,6 @@ the problem or keep each visualization in it's own js file and try to find a sol
 
 # Week 4 Day 3
 - Worked on code quality
+
+# Week 4 Day 4
+- Worked on code quality, updated README and added REPORT

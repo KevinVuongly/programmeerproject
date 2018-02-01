@@ -18,14 +18,17 @@ The world map is created according to the accumulated PISA score per country. By
 #### Radar chart
 The radar chart shows a relative score for each variable. The scores are calculated by looking at the position of the variable between the minimum and maximum of the available data;  
 
-score(x) = (x - x[min]) / (x[max] - x[min])
+score(x) = (x - x[min]) / (x[max] - x[min])  
+
+x[min]: the minimum value of the variable  
+x[max]: the maximum value of the variable
 
 #### Scatterplot
 The scatterplot plots the accumulated PISA score in the x-axis and a variable, which is picked by using the dropdown, in the y-axis. By drawing a regression line there is a clear finding to be made wether the correlation is positive or negative. Just like with the world map, by clicking on a scatterpoint updates the radar chart.
 
 ### Files and functions
 ##### main.js
-In this file, all the visualizations ultimately happen. Here are where all the visualizations are called for.
+In this file, all the visualizations ultimately happen. Here is where all the visualizations are called for.
 The functions that this file calls for are listed on other .js files which are listed below.
 THe functions __updateData__, which obviously updates the data formatting, and __updateRadarValues__, which updates the values needed for the radar chart, in the main file.
 Both functions will be called for when the user picks a year out through the slider.
@@ -34,7 +37,7 @@ Both functions will be called for when the user picks a year out through the sli
 This file contains external code that I used to construct the slider.
 
 ##### d3-tip.js
-This file contains external code that I used to construct the tooltips.
+This file contains external code that I used to construct the tooltip.
 
 ##### scatterplot.js
 This file contains all global variables and interactivity functions needed for the scatterplot.
@@ -49,7 +52,7 @@ This file contains all global variables and functions needed for the radar chart
 - __createMax__ function does exactly the same as createMin with the difference that it is used to get the maximum value of the array.
 - __draw__ is the external code that draws the radar chart.
 
+## Challenges and decisions
+A huge challenge that I met was concerning the code quality. I had a really hard time to adjust the code to local variables while trying to keep the unit interface small. What I've learned is the importance of using objects, this way I managed to keep the unit interface as small as possible. The other issue concerning local variables that I have with my code is that all the visualizations take place in the main javascript file. I'd rather have each visualization in a separate javascript file and this would be something that I would've dealt with if I had more time.
 
-## Challenges met
-
-## Decisions
+Another issue I had was concerning gaps in the data. I decided to create an object specifically for countries that had the most important data available: the PISA score. Countries whose PISA score are unknown would automatically be filtered for. Concerning other variables, I listed the value as 0, which I can easily ignore by using conditions. This way I don't have to deal with literally every country on the world concerning the other visualizations than the world map. If I had more time available, I'd rather create a general object instead of a separate object of each dataset. This way I can let my code deal with multiple datasets without having to constantly change my code.
