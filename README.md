@@ -13,8 +13,8 @@ we try to show that investing, directly and indirectly, into education has a pos
 ## Solution
 
 ##### Summary
-The main visualization is the world map based on the PISA scores for it's legend,
-radar chart linked to this visualization get updated by clicking on a country.
+The main visualization is the world map based on the PISA scores for it's legend.
+The radar chart gets updated by clicking either on a country on the world map or on a scatter point in the scatterplot.
 The scatterplot with regression line is used to view for positive correlations.
 
 ##### Screenshots
