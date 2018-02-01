@@ -1,4 +1,12 @@
-/* Simple, reusable slider in pure d3 */
+/*
+    Kevin Vuong
+    10730141
+
+    This file contains functions to construct the slider.
+
+    All code is from:
+    https://bl.ocks.org/Lulkafe/3832d628340038d9484fbd9edb705e01
+*/
 
 function simpleSlider() {
 

@@ -1,17 +1,18 @@
-//Practically all this code comes from https://github.com/alangrafu/radar-chart-d3
-//I only made some additions and aesthetic adjustments to make the chart look better
-//(of course, that is only my point of view)
-//Such as a better placement of the titles at each line end,
-//adding numbers that reflect what each circular level stands for
-//Not placing the last level and slight differences in color
-//
-//For a bit of extra information check the blog about it:
-//http://nbremer.blogspot.nl/2013/09/making-d3-radar-chart-look-bit-better.html
+/*
+    Kevin Vuong
+    10730141
 
+    This file contains functions to determine the radar radar chart
+	
+    Code used for the radarChart.draw():
+    http://bl.ocks.org/nbremer/6506614
+*/
+
+// width and height of the radar chart
 const w = 380,
 	  h = 380;
 
-// data
+// data needed for drawing the radar chart
 var dradar = [
 		  [
 			{axis:"GDP per resident",value:0},
@@ -55,7 +56,7 @@ var currentCountry = {
 	Math: 0
 };
 
-// options for the Radar chart, other than default
+// options for the radar chart, other than default
 var mycfg = {
   w: w,
   h: h,
@@ -65,16 +66,19 @@ var mycfg = {
 }
 
 var radarChart = {
+	// gets hold of the minimum value of the parameter array
     createMin: function(Id2012, Id2015) {
         return [Math.min.apply(null, Object.values(Id2012).filter(getMinimum)),
                 Math.min.apply(null, Object.values(Id2015).filter(getMinimum))];
     },
 
+	// gets hold of the maximum value of the parameter array
     createMax: function(Id2012, Id2015) {
         return [Math.max.apply(null, Object.values(Id2012)),
                 Math.max.apply(null, Object.values(Id2015))];
     },
 
+	// draws the radar chart
     draw: function(id, d, options) {
 
         if ('undefined' !== typeof options) {

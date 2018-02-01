@@ -26,7 +26,29 @@ The scatterplot plots the accumulated PISA score in the x-axis and a variable, w
 ### Files and functions
 ##### main.js
 In this file, all the visualizations ultimately happen. Here are where all the visualizations are called for.
-To keep unit interfaces small, I decided to keep the __updateData__, which obviously updates the data formatting, and __updateRadarValues__, which updates the values needed for the radar chart, in the main file.
+The functions that this file calls for are listed on other .js files which are listed below.
+THe functions __updateData__, which obviously updates the data formatting, and __updateRadarValues__, which updates the values needed for the radar chart, in the main file.
+Both functions will be called for when the user picks a year out through the slider.
+
+##### slider.js
+This file contains external code that I used to construct the slider.
+
+##### d3-tip.js
+This file contains external code that I used to construct the tooltips.
+
+##### scatterplot.js
+This file contains all global variables and interactivity functions needed for the scatterplot.
+- __getMinimum__ function is used to determine the ranges of the datasets. It ignores an element if it is irrelevant. In my case, the element is irrelevant if it has the value of 0 which means that the data isn't available for that given country.
+- __calcLinear__ function calculates the regression line according to the data provided.
+- __updateScatter__ function updates the scatterplot to it's new values.
+- __drawRegression__ function draws the regression line. This should be called for immediately after the calcLinear is called for.
+
+##### radarchart.js
+This file contains all global variables and functions needed for the radar chart.
+- __createMin__ function is used to get the minimum value of an array. This function is linked with the getMinimum function in scatterplot.js.
+- __createMax__ function does exactly the same as createMin with the difference that it is used to get the maximum value of the array.
+- __draw__ is the external code that draws the radar chart.
+
 
 ## Challenges met
 

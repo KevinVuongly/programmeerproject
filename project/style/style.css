@@ -1,3 +1,10 @@
+/*
+    Kevin Vuong
+    10730141
+
+    This file is used to markup the front-end including the visualizations
+*/
+
 html, body {
   height: 100%;
 }
@@ -18,11 +25,12 @@ body {
     text-align: center;
 }
 
+/* world map and slider styling */
 .worldmap, .slider {
     display: table;
     margin: 0 auto;
 }
-
+/* scatterplot styling */
 .axis path,
 .axis line {
     fill: none;
@@ -43,7 +51,7 @@ body {
     margin: 0 auto;
 }
 
-
+/* radar chart styling */
 #chart {
     position: absolute;
     top: 25px;

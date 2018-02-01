@@ -1,3 +1,13 @@
+/*
+    Kevin Vuong
+    10730141
+
+    This file contains the general visualization of the website.
+
+    Code used for the world map:
+    http://bl.ocks.org/micahstubbs/01529b106c93f9b649c4006de5c79b80
+*/
+
 var marginworld = {top: 50, right: 20, bottom: 30, left: 30},
      widthworld = 650 - marginworld.left - marginworld.right,
      heightworld = 600 - marginworld.top - marginworld.bottom;
@@ -133,6 +143,7 @@ document.addEventListener("DOMContentLoaded", function() {
         .defer(d3.csv, "../data/2012.csv")
         .await(ready);
 
+    // draws front-end
     function ready(error, data, info2015, info2012) {
         if (error) throw error;
 
@@ -590,6 +601,7 @@ document.addEventListener("DOMContentLoaded", function() {
     	radarChart.draw("#chart", dradar, mycfg);
     }
 
+    // updates the data formatting according to the data that is summoned for
     function updateData(data, sliderValue) {
         if (sliderValue <= 0.5){
             data.forEach(function(d) {
@@ -615,6 +627,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
+    // updates the relevant values to get it ready for a new drawing of the radar chart
     function updateRadarValues(id, country) {
         d3.select(id)
             .text(country.name);
@@ -645,6 +658,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
+    // changes the pan and zooming of the world map
     function zoomed() {
         g.attr("transform",
         "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");

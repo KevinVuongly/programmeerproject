@@ -1,7 +1,15 @@
+/*
+    Kevin Vuong
+    10730141
+
+    This file contains interactivity functions needed for the scatterplot.
+*/
+
 var marginscatter = {top: 70, right: 30, bottom: 30, left: 60},
     widthscatter = 600 - marginscatter.left - marginscatter.right,
     heightscatter = 400 - marginscatter.top - marginscatter.bottom;
 
+// initial ranges of data, needed for radar chart
 var ranges = {
     minGDP: 0,
     maxGDP: 0,
@@ -21,6 +29,7 @@ var ranges = {
 
 var datapoints = ["Education spendings", "GDP per capita", "Teacher salaries"];
 
+// initial regression information
 var rangeRegression = {
     x: "Accumulated",
     y: "Spendings",
@@ -28,10 +37,12 @@ var rangeRegression = {
     maxX: 0
 }
 
+// returns the parameter if condition holds
 function getMinimum(point) {
     return point > 0;
 }
 
+// calculate the regression line according to data provided
 function calcLinear(data, info){
 
     var pts = [];
@@ -99,16 +110,7 @@ function calcLinear(data, info){
     }
 }
 
-function drawRegression(id, points) {
-    d3.select(id)
-        .transition()
-        .duration(250)
-        .attr("x1", points.x(points.ptA.x))
-        .attr("y1", points.y(points.ptA.y))
-        .attr("x2", points.x(points.ptB.x))
-        .attr("y2", points.y(points.ptB.y));
-}
-
+// updates scatterplot according to the parameters provided
 function updateScatter(id, x, y, d) {
     d3.selectAll(id)
         .transition()
@@ -130,8 +132,10 @@ function updateScatter(id, x, y, d) {
             }
         })
         .attr("r", function(d) {
+            // if PISA score is unknown of the country, don't draw scatterpoint
             if (isNaN(d.Accumulated)) { return 0; }
 
+            // if the variable value is unknown e.g. has the value of 0, don't draw scatterpoint
             if (selectValue == datapoints[0]) {
                 if (d.Spendings == 0) { return 0; }
             }
@@ -144,4 +148,15 @@ function updateScatter(id, x, y, d) {
 
             return 3;
         });
+}
+
+// draws the regression
+function drawRegression(id, points) {
+    d3.select(id)
+        .transition()
+        .duration(250)
+        .attr("x1", points.x(points.ptA.x))
+        .attr("y1", points.y(points.ptA.y))
+        .attr("x2", points.x(points.ptB.x))
+        .attr("y2", points.y(points.ptB.y));
 }

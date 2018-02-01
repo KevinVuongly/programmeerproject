@@ -1,7 +1,14 @@
-// d3.tip
-// Copyright (c) 2013 Justin Palmer
-//
-// Tooltips for d3.js SVG visualizations
+/*
+    Kevin Vuong
+    10730141
+
+    This file contains the tooltip function which can be called for the construct the tooltip through d3.
+
+    Code is from:
+    http://bl.ocks.org/micahstubbs/01529b106c93f9b649c4006de5c79b80
+    Copyright (c) 2013 Justin Palmer
+*/
+
 
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
