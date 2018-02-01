@@ -17,6 +17,7 @@ The world map is created according to the accumulated PISA score per country. By
 
 #### Radar chart
 The radar chart shows a relative score for each variable. The scores are calculated by looking at the position of the variable between the minimum and maximum of the available data;  
+  
 score = (x - min)/(max - min)
 
 ### Files and functions
