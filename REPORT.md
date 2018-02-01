@@ -29,7 +29,7 @@ The scatterplot plots the accumulated PISA score in the x-axis and a variable, w
 ### Files and functions
 ##### main.js
 In this file, all the visualizations ultimately happen. Here is where all the visualizations are called for.
-The functions that this file calls for are listed on other .js files which are listed below.
+A general __ready__ function is used to call the visualizations. By using d3.queue(), the datasets get loaded in and through d3 all visualizations are appended to the body. Majority of interactivity are listed in functions. These functions are listed on other javascript files which are listed below.
 THe functions __updateData__, which obviously updates the data formatting, and __updateRadarValues__, which updates the values needed for the radar chart, in the main file.
 Both functions will be called for when the user picks a year out through the slider.
 
@@ -44,7 +44,7 @@ This file contains all global variables and interactivity functions needed for t
 - __getMinimum__ function is used to determine the ranges of the datasets. It ignores an element if it is irrelevant. In my case, the element is irrelevant if it has the value of 0 which means that the data isn't available for that given country.
 - __calcLinear__ function calculates the regression line according to the data provided.
 - __updateScatter__ function updates the scatterplot to it's new values.
-- __drawRegression__ function draws the regression line. This should be called for immediately after the calcLinear is called for.
+- __drawRegression__ function draws the regression line by d3's transition(). This should be called for immediately after the calcLinear is called for.
 
 ##### radarchart.js
 This file contains all global variables and functions needed for the radar chart.
