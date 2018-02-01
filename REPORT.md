@@ -52,6 +52,12 @@ This file contains all global variables and functions needed for the radar chart
 - __createMax__ function does exactly the same as createMin with the difference that it is used to get the maximum value of the array.
 - __draw__ is the external code that draws the radar chart.
 
+##### style.css
+All markup for visualizations happens in this files except for the tooltip(see below).
+
+##### d3-tip.css
+Since the markup code for the tooltip is quite big, I decided to create a separate CSS file for the tooltip.
+
 ## Challenges and decisions
 A huge challenge that I met was concerning the code quality. I had a really hard time to adjust the code to local variables while trying to keep the unit interface small. What I've learned is the importance of using objects, this way I managed to keep the unit interface as small as possible. The other issue concerning local variables that I have with my code is that all the visualizations take place in the main javascript file. I'd rather have each visualization in a separate javascript file and this would be something that I would've dealt with if I had more time.
 
