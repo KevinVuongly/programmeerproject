@@ -59,3 +59,6 @@ Like my proposal, the world map can be updated through time and the area chart g
 - No experience in creating a world map, especially getting it colored according to a legend and implementing the linked views to the world map
 - No experience in creating a radar chart
 - Not all data is available for some certain countries creating gaps in the visualizations
+
+## License
+This project is licensed under the The Unlicense - see the [LICENSE](LICENSE) file for details
