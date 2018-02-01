@@ -46,16 +46,16 @@ https://data.oecd.org/eduresource/education-spending.htm
 https://data.oecd.org/gdp/gross-domestic-product-gdp.htm
 
 ### External components
-[Bootstrap](https://getbootstrap.com/) - The web framework used for front-end (under MIT License)
-[D3, including queue() and topojson](https://github.com/d3/d3) - Library used to create dynamic visualizations (under BSD 3-Clause "New" or "Revised" License)
-[jQuery](https://jquery.org) - The web framework used for handle events (under MIT License)
+- [Bootstrap](https://getbootstrap.com/) - The web framework used for front-end (under MIT License)
+- [D3, including queue() and topojson](https://github.com/d3/d3) - Library used to create dynamic visualizations (under BSD 3-Clause "New" or "Revised" License)
+- [jQuery](https://jquery.org) - The web framework used for handle events (under MIT License)
 
 ### External code
 Acknowledgements to the following people for creating the code I've used:
 
 - [Lulkafe](https://bl.ocks.org/Lulkafe/3832d628340038d9484fbd9edb705e01) for the slider
-- [nmbremer](http://bl.ocks.org/nbremer/6506614) for the excellent radar chart
-- [HarryStevens](https://bl.ocks.org/HarryStevens/be559bed98d662f69e68fc8a7e0ad097) for the function to determine the regression line in the scatterplot
+- [nmbremer](http://bl.ocks.org/nbremer/6506614) for the excellent radar chart(under MIT License)
+- [HarryStevens](https://bl.ocks.org/HarryStevens/be559bed98d662f69e68fc8a7e0ad097) for the function to determine the regression line in the scatterplot(under GNU License, version 3)
 
 ## License
 This project is licensed under the The Unlicense - see the [LICENSE](LICENSE) file for details
