@@ -1,4 +1,4 @@
-# Influences on the quality of education
+# The global difference in quality of education
 ## Kevin Vuong 10730141
 
 https://kevinvuongly.github.io/programmeerproject/project/templates/index.html
@@ -8,17 +8,18 @@ Every country differs from quality of education.
 For example, given the PISA index in 2015, Singapore scored way higher than Indonesia in every aspect.
 Striking is the fact that the richer countries score higher than the poorer countries.
 By making an interactive visualization of possible factors for example education spending, GDP or teacher salaries,
-we try to show that investing into education has a positive effect on the quality of education.
+we try to show that investing, directly and indirectly, into education has a positive effect on the quality of education.
 
 ## Solution
 
 ##### Summary
 The main visualization is the world map based on the PISA scores for it's legend,
 radar chart linked to this visualization get updated by clicking on a country.
-The scatterplot is used to view for positive correlations.
+The scatterplot with regressionline is used to view for positive correlations.
 
-##### Sketch
-![](doc/sketch.png)
+##### screenshots
+![](doc/hover.png)
+![](doc/updateradar.png)
 
 ##### Main features
 - Different event listeners like onclick and hover (MVP)
@@ -44,21 +45,9 @@ https://data.oecd.org/eduresource/education-spending.htm
 https://data.oecd.org/gdp/gross-domestic-product-gdp.htm
 
 ### External components
-- D3-queue to evaluate asynchronous tasks with configurable concurrency
-- D3-tip to include tooltips
-- D3-map to create the world map
-- bootstrap for the front-end web framework
-
-### Similar related visualization
-![](doc/similarvisualization.png)
-
-The world map is based on population instead of the PISA score but the idea is essentially the same.
-Like my proposal, the world map can be updated through time and the area chart gets updated when clicked on a country. All of this should be possible to implement through D3.
-
-### Hardest parts
-- No experience in creating a world map, especially getting it colored according to a legend and implementing the linked views to the world map
-- No experience in creating a radar chart
-- Not all data is available for some certain countries creating gaps in the visualizations
+[Bootstrap](https://getbootstrap.com/) - The web framework used for front-end (under MIT License)
+[D3, including queue() and topojson](https://github.com/d3/d3) - Library used to create dynamic visualizations (under BSD 3-Clause "New" or "Revised" License)
+[jQuery](https://jquery.org) - The web framework used for handle events (under MIT License)
 
 ## License
 This project is licensed under the The Unlicense - see the [LICENSE](LICENSE) file for details

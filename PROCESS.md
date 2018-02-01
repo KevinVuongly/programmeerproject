@@ -42,3 +42,6 @@ the problem or keep each visualization in it's own js file and try to find a sol
 # Week 4 Day 2
 - Worked on code quality, lines of duplicate code rewritten to update functions
 - To keep interfaces small, rewrote variables into objects
+
+# Week 4 Day 3
+- Worked on code quality
