@@ -1,8 +1,52 @@
+html, body {
+  height: 100%;
+}
+
 body {
     background-color: #f3f3f3;
+
+    font: 14px sans-serif;
+    margin: auto;
+    position: relative;
+
+    justify-content: center;
+
+    align-items: center;
+}
+
+#title, #student {
+    text-align: center;
 }
 
 .worldmap, .slider {
     display: table;
     margin: 0 auto;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.dot {
+    stroke: #000;
+}
+
+.dot:hover {
+    stroke: #fff;
+}
+
+.scatterplot {
+    display: table;
+    margin: 0 auto;
+}
+
+
+#chart {
+    position: absolute;
+    top: 25px;
+    left: 100px;
+    font-size: 14px;
 }
