@@ -12,6 +12,12 @@ To get into more detail, the scatterplot and the radar chart try to show the pos
 ## Technical components
 
 ### High level overview
+#### World map
+The world map is created according to the accumulated PISA score per country. By clicking on a country gets the radar chart updated to the country.
+
+#### Radar chart
+The radar chart shows a relative score for each variable. The scores are calculated by looking at the position of the variable between the minimum and maximum of the available data;  
+score = (x - min)/(max - min)
 
 ### Files and functions
 
