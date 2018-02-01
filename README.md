@@ -15,16 +15,17 @@ we try to show that investing, directly and indirectly, into education has a pos
 ##### Summary
 The main visualization is the world map based on the PISA scores for it's legend,
 radar chart linked to this visualization get updated by clicking on a country.
-The scatterplot with regressionline is used to view for positive correlations.
+The scatterplot with regression line is used to view for positive correlations.
 
-##### screenshots
+##### Screenshots
 ![](doc/hover.png)
 ![](doc/updateradar.png)
 
 ##### Main features
-- Different event listeners like onclick and hover (MVP)
-- Dropdown to pick values to change the visualizations for
-- Slider to change for which year you want to see
+- Event listener for hover to show extra information of the country
+- Event listener for on click to update radar chart according to the country clicked for
+- Slider to change every visualization according to the year picked for
+- Dropdown to update the scatterplot according to the subject picked for
 
 ## Prerequisites
 
@@ -48,6 +49,13 @@ https://data.oecd.org/gdp/gross-domestic-product-gdp.htm
 [Bootstrap](https://getbootstrap.com/) - The web framework used for front-end (under MIT License)
 [D3, including queue() and topojson](https://github.com/d3/d3) - Library used to create dynamic visualizations (under BSD 3-Clause "New" or "Revised" License)
 [jQuery](https://jquery.org) - The web framework used for handle events (under MIT License)
+
+### External code
+Acknowledgements to the following people for creating the code I've used:
+
+- [Lulkafe](https://bl.ocks.org/Lulkafe/3832d628340038d9484fbd9edb705e01) for the slider
+- [nmbremer](http://bl.ocks.org/nbremer/6506614) for the excellent radar chart
+- [HarryStevens](https://bl.ocks.org/HarryStevens/be559bed98d662f69e68fc8a7e0ad097) for the function to determine the regression line in the scatterplot
 
 ## License
 This project is licensed under the The Unlicense - see the [LICENSE](LICENSE) file for details
